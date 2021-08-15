@@ -1,58 +1,54 @@
-// Ecoute des requetes http et reponse
-const http = require("http"); // Import du package http
-const app = require("./app"); //Import de app pour utilisation de l'application sur le serveur
+const express = require("express");
+const cors = require("cors");
+const app = express();
 
-// La fonction normalisation renvoie un port valide
-const normalizePort = (val) => {
-  const port = parseInt(val, 10);
-
-  if (isNaN(port)) {
-    return val;
-  }
-  if (port >= 0) {
-    return port;
-  }
-  return false;
+var corsOptions = {
+  origin: "http://localhost:8081",
 };
 
-// Ajout du port de connection si celui-ci n'est pas declarer par l environnement
-// Si aucun port n'est fourni on écoutera sur le port 3000
-const port = normalizePort(process.env.PORT || "3000");
-app.set("port", port); //Set du port de connection
+app.use(cors(corsOptions));
 
-// la fonction errorHandler recherche les différentes erreurs et les gère de manière appropriée
-// pour ensuite enregistrée dans le serveur
-const errorHandler = (error) => {
-  if (error.syscall !== "listen") {
-    throw error;
-  }
-  const address = server.address();
-  const bind =
-    typeof address === "string" ? "pipe " + address : "port: " + port;
-  switch (error.code) {
-    case "EACCES":
-      console.error(bind + " requires elevated privileges.");
-      process.exit(1);
-      break;
-    case "EADDRINUSE":
-      console.error(bind + " is already in use.");
-      process.exit(1);
-      break;
-    default:
-      throw error;
-  }
-};
+// parse requests of content-type - application/json
+app.use(express.json());
 
-//Passer l'application au serveur
-const server = http.createServer(app);
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true }));
 
-// Lance le serveur et affiche sur quel port se connecter ou gère les erreurs s'il y en a
-server.on("error", errorHandler);
-server.on("listening", () => {
-  const address = server.address();
-  const bind = typeof address === "string" ? "pipe " + address : "port " + port;
-  console.log("Listening on " + bind);
+// simple route
+app.get("/", (req, res) => {
+  res.json({ message: "Bienvenue sur le site du reseau Groupomania." });
 });
 
-// Le serveur écoute le port définit
-server.listen(port);
+const db = require("./models");
+const Role = db.role;
+
+db.sequelize.sync().then(() => {
+  initial();
+});
+
+function initial() {
+  Role.create({
+    id: 1,
+    name: "user",
+  });
+
+  Role.create({
+    id: 2,
+    name: "moderator",
+  });
+
+  Role.create({
+    id: 3,
+    name: "admin",
+  });
+}
+
+// routes
+require("./routes/auth.routes")(app);
+require("./routes/user.routes")(app);
+
+// set port, listen for requests
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}.`);
+});

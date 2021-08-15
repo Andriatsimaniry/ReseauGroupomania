@@ -7,11 +7,21 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.36",
+    "@fortawesome/free-solid-svg-icons": "^5.15.4",
+    "@fortawesome/vue-fontawesome": "^2.0.2",
+    "@popperjs/core": "^2.9.3",
+    "axios": "^0.21.1",
     "bootstrap": "^5.1.0",
     "core-js": "^3.6.5",
+    "jquery": "^3.6.0",
+    "popper.js": "^1.16.1",
+    "vee-validate": "^3.4.11",
     "vue": "^3.0.0",
+    "vue-fontawesome": "^0.0.2",
     "vue-router": "^4.0.0-0",
-    "vuex": "^4.0.0-0"
+    "vuex": "^4.0.0-0",
+    "yup": "^0.32.9"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
@@ -21,5 +31,7 @@
     "@vue/compiler-sfc": "^3.0.0"
   },
   "main": "index.js",
-  "license": "MIT"
+  "license": "MIT",
+  "description": "```\r yarn install\r ```",
+  "author": ""
 }
