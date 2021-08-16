@@ -32,10 +32,10 @@ export default {
       return this.$store.state.auth.user;
     }
   },
- mounted() {
+  mounted() {
     if (!this.currentUser) {
       this.$router.push('/login');
     }
   }
 };
-</script> 
+</script>

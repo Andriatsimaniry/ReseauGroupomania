@@ -27,7 +27,8 @@
             <span>Login</span>
           </button>
         </div>
-  <div class="form-group">
+
+        <div class="form-group">
           <div v-if="message" class="alert alert-danger" role="alert">
             {{ message }}
           </div>
@@ -65,7 +66,7 @@ export default {
       return this.$store.state.auth.status.loggedIn;
     },
   },
- created() {
+  created() {
     if (this.loggedIn) {
       this.$router.push("/profile");
     }
@@ -94,5 +95,4 @@ export default {
 </script>
 
 <style scoped>
-
-</style>       
+</style>

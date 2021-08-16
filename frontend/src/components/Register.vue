@@ -35,6 +35,7 @@
           </div>
         </div>
       </Form>
+
       <div
         v-if="message"
         class="alert"
@@ -75,7 +76,8 @@ export default {
         .min(6, "Must be at least 6 characters!")
         .max(40, "Must be maximum 40 characters!"),
     });
-return {
+
+    return {
       successful: false,
       loading: false,
       message: "",
@@ -115,7 +117,7 @@ return {
           this.loading = false;
         }
       );
-       },
+    },
   },
 };
 </script>

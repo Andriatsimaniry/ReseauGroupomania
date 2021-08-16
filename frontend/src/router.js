@@ -57,7 +57,6 @@ const router = createRouter({
   routes,
 });
 
-// Géré les accès non autorisé
 router.beforeEach((to, from, next) => {
     const publicPages = ['/login', '/register', '/home'];
     const authRequired = !publicPages.includes(to.path);
@@ -71,5 +70,5 @@ router.beforeEach((to, from, next) => {
       next();
     }
   });
-  
+
 export default router;
