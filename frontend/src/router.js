@@ -1,4 +1,5 @@
 import { createWebHistory, createRouter } from "vue-router";
+// CreatWebHistory pour passer de l'utilisation du hachage au historymode dans le navigateur, en utilisant l'API d'historique HTML5.
 import Home from "./components/Home.vue";
 import Login from "./components/Login.vue";
 import Register from "./components/Register.vue";
@@ -50,6 +51,24 @@ const routes = [
     // lazy-loaded
     component: BoardUser,
   },
+
+  // Routes Posts
+  {
+    path: "/", // Chemin de l'Url pour la route Posts
+    alias: "/posts", 
+    name: "posts", // Nom de la route
+    component: () => import("./components/PostsList") //Composant à charge lorsque cette route est appelée
+  },
+  {
+    path: "/posts/:id", 
+    name: "post-details",
+    component: () => import("./components/Post") 
+  },
+  {
+    path: "/add",
+    name: "add",
+    component: () => import("./components/AddPost")
+  }
 ];
 
 const router = createRouter({
