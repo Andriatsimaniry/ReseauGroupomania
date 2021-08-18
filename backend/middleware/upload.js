@@ -4,7 +4,7 @@ const imageFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("image")) {
     cb(null, true);
   } else {
-    cb("Please upload only images.", false);
+    cb("Veuillez télécharger uniquement des images.", false);
   }
 };
 
@@ -13,7 +13,7 @@ var storage = multer.diskStorage({
     cb(null, __basedir + "/resources/static/assets/uploads/");
   },
   filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-bezkoder-${file.originalname}`);
+    cb(null, `${Date.now()}-Groupomania-${file.originalname}`);
   },
 });
 

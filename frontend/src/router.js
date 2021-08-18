@@ -1,6 +1,6 @@
 import { createWebHistory, createRouter } from "vue-router";
 // CreatWebHistory pour passer de l'utilisation du hachage au historymode dans le navigateur, en utilisant l'API d'historique HTML5.
-import Home from "./components/Home.vue";
+
 import Login from "./components/Login.vue";
 import Register from "./components/Register.vue";
 // lazy-loaded
@@ -10,15 +10,8 @@ const BoardModerator = () => import("./components/BoardModerator.vue")
 const BoardUser = () => import("./components/BoardUser.vue")
 
 const routes = [
-  {
-    path: "/",
-    name: "home",
-    component: Home,
-  },
-  {
-    path: "/home",
-    component: Home,
-  },
+  
+  
   {
     path: "/login",
     component: Login,
@@ -77,7 +70,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    const publicPages = ['/login', '/register', '/home'];
+    const publicPages = ['/login', '/register'];
     const authRequired = !publicPages.includes(to.path);
     const loggedIn = localStorage.getItem('user');
   
