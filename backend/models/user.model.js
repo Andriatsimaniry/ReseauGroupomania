@@ -1,3 +1,6 @@
+
+// Définir le modèle Sequelize de l'utilisateur dans la base de donnée Mysql
+// et de permettre Sequelize d'écrire les fonctions CRUD
 module.exports = (sequelize, Sequelize) => {
   const User = sequelize.define("users", {
     username: {

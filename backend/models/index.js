@@ -1,3 +1,5 @@
+// Initialiser Sequelize 
+
 const config = require("../config/db.config.js");
 
 const Sequelize = require("sequelize");
@@ -24,6 +26,8 @@ db.role = require("../models/role.model.js")(sequelize, Sequelize);
 db.image = require("./image.model.js")(sequelize, Sequelize);
 db.posts = require("./posts.model.js")(sequelize, Sequelize);
 
+// les rôles est une relation plusieurs-à-plusieurs 
+// le modèle utilisateur peut appartenir à plusieurs Rôles et vice versa.
 db.role.belongsToMany(db.user, {
   through: "user_roles",
   foreignKey: "roleId",

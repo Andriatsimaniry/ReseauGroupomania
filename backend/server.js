@@ -11,10 +11,10 @@ var corsOptions = {
 
 app.use(cors(corsOptions));
 
-// parse requests of content-type - application/json
+// analyser les requêtes de type content - application/json
 app.use(express.json());
 
-// parse requests of content-type - application/x-www-form-urlencoded
+// analyser les requêtes de type content - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 initRoutes(app);
 // simple route
@@ -51,8 +51,8 @@ require("./routes/auth.routes")(app);
 require("./routes/user.routes")(app);
 require("./routes/post.routes")(app);
 
-// set port, listen for requests
+// écouter sur le port 8080 pour les requêtes entrantes.
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
+  console.log(`Le serveur s'exécute sur le port ${PORT}.`);
 });

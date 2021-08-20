@@ -1,3 +1,4 @@
+// Configuration la ba base de donées Mysql 
 module.exports = {
   HOST: "localhost",
   USER: "root",

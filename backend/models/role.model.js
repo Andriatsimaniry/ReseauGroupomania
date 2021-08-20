@@ -1,3 +1,4 @@
+// Définir le rôle de l'utilisateur dans la base
 module.exports = (sequelize, Sequelize) => {
   const Role = sequelize.define("roles", {
     id: {
