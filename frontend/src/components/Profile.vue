@@ -2,40 +2,66 @@
   <div class="container">
     <header class="jumbotron">
       <h3>
-        <strong>Name : {{currentUser.username}}</strong> 
+        <strong>Nom d'utilisateur : {{ currentUser.username }}</strong>
       </h3>
     </header>
-    <!-- <p>
-      <strong>Token:</strong>
-      {{currentUser.accessToken.substring(0, 20)}} ... {{currentUser.accessToken.substr(currentUser.accessToken.length - 20)}}
-    </p>
-    <p>
-      <strong>Id:</strong>
-      {{currentUser.id}}
-    </p> -->
-    <p>
-      <strong>Email:</strong>
-      {{currentUser.email}}
-    </p>
-    <strong>Autorité: </strong>Utilisateur
-    <!-- <ul>
-      <li v-for="role in currentUser.roles" :key="role">{{role}}</li>
-    </ul> -->
+    <div>
+      <strong>
+        <label for="username">Nom d'utilisateur</label>
+      </strong>
+      <input class="ml-4" name="username" v-model="currentUser.username" />
+    </div>
+    <div>
+      <strong>
+        <label for="username">Email</label>
+      </strong>
+      <input class="ml-4" name="username" v-model="currentUser.email" />
+    </div>
+
+    <div class="d-flex mt-4">
+      <button @click="modifyUser" class="btn btn-success">
+        Modifier informations
+      </button>
+      <button @click="deleteUser" class="btn ml-4 btn-danger">
+        Supprimer compte
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
+import UserDataService from "../services/userDataService";
+
 export default {
-  name: 'Profile',
+  name: "Profile",
   computed: {
     currentUser() {
       return this.$store.state.auth.user;
-    }
+    },
   },
   mounted() {
     if (!this.currentUser) {
-      this.$router.push('/login');
+      this.$router.push("/login");
     }
-  }
+  },
+  methods: {
+    deleteUser() {
+      UserDataService.delete(this.currentUser.id)
+        .then(() => {
+          this.$store.dispatch("auth/logout");
+          this.$router.push("/login");
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
+    modifyUser() {
+      UserDataService.update(this.currentUser.id, this.currentUser)
+        .then(() => {})
+        .catch((e) => {
+          console.log(e);
+        });
+    },
+  },
 };
 </script>
