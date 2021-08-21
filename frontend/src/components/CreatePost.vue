@@ -1,6 +1,6 @@
 <template>
   <div class="create-post-container col-12">
-    <h3>Creer votre post :</h3>
+    <h3>Creer votre publication :</h3>
     <div class="form-group">
       <textarea
         class="form-control mb-3"
@@ -11,7 +11,7 @@
         rows="3"
       ></textarea>
       <div class="d-flex justify-content-end">
-        <button @click="savePost" class="btn btn-success">Poster</button>
+        <button @click="savePost" class="btn btn-success">Publier</button>
       </div>
     </div>
   </div>
@@ -24,10 +24,10 @@ import PostDataService from "../services/PostDataService";
 export default {
   name: "create-post",
   setup(props, context) {
-    const user = localStorage.getItem('user'); 
+    const user = localStorage.getItem('user');
     const username = user ? JSON.parse(user).username : 'anonymous';
-    const roles = user ? JSON.parse(user).roles.toString() : '[]';
-
+    const roles = user ? JSON.parse(user).roles.toString() : '';
+    
     let userPost = reactive({
       post: '',
       username,
@@ -36,9 +36,9 @@ export default {
 
     const savePost = function () {
       PostDataService.create(userPost)
-        .then((response) => {
+        .then(() => {
+          // vide la publicaation courrante
           userPost.post = '';
-          console.log(response.data);
           context.emit("newPost");
         })
         .catch((e) => {

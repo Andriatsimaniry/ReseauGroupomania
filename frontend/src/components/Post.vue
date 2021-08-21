@@ -12,11 +12,11 @@
       <span class="date-creation">Créé le : {{ currentPost.createdAt }}</span>
 
       <div class="d-flex buttons-container">
-        <button class="badge badge-danger mr-2" @click="deletePost">
+        <button class="badge badge-danger mr-2" @click="deletePost" v-if="isEditable()">
           Supprimer
         </button>
         <button
-          v-if="!modifying"
+          v-if="!modifying && isEditable()"
           type="submit"
           class="badge badge-success"
           @click="modifying = true"
@@ -24,7 +24,7 @@
           Modifier
         </button>
         <button
-          v-if="modifying"
+          v-if="modifying && isEditable()"
           type="submit"
           class="badge badge-success"
           @click="updatePost"
@@ -32,7 +32,7 @@
           Confirmer
         </button>
         <button
-          v-if="modifying"
+          v-if="modifying && isEditable()"
           type="submit"
           class="badge badge-danger"
           @click="modifying = false"
@@ -56,7 +56,7 @@ export default {
         type: String,
         required: true,
       },
-      description: {
+      post: {
         type: String,
         required: true,
       },
@@ -64,11 +64,11 @@ export default {
         type: Number,
         required: true,
       },
-      published: {
+      roles: {
         type: Boolean,
         required: true,
       },
-      title: {
+      username: {
         type: String,
         required: true,
       },
@@ -80,6 +80,7 @@ export default {
   },
   setup(props, context) {
     const currentPost = reactive(props.post);
+    const currentUser = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null;
     let modifying = ref(false);
 
     const deletePost = function () {
@@ -96,13 +97,19 @@ export default {
     const updatePost = function () {
       modifying.value = false;
       PostDataService.update(currentPost.id, currentPost)
-        .then((response) => {
-          console.log(response.data);
-          this.message = "Le Post a été mise à jour avec succès!";
+        .then(() => {
         })
         .catch((e) => {
           console.log(e);
         });
+    };
+
+    const isEditable = function() {
+      let isEditable = false;
+      if (currentUser.username === currentPost.username || currentUser.roles.includes('ROLE_ADMIN')) {
+        isEditable = true;
+      }
+      return isEditable;
     };
 
     return {
@@ -110,6 +117,7 @@ export default {
       deletePost,
       updatePost,
       modifying,
+      isEditable
     };
   },
 };
