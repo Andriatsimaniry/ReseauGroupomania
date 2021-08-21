@@ -14,7 +14,7 @@ exports.create = (req, res) => {
     // Créer une nouvelle publication
     const post = {     
       username: req.body.username,
-      role: req.body.role,
+      roles: req.body.roles,
       post: req.body.post
     };
   

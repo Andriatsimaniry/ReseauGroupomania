@@ -1,131 +1,124 @@
 <template>
-  <div v-if="currentPost" class="edit-form">
-    <h4>Post</h4>
-    <form>
-      <div class="form-group">
-        <label for="title">Title</label>
-        <input type="text" class="form-control" id="title"
-          v-model="currentPost.title"
-        />
+  <div class="post-container">
+    <div>
+      <div>user: {{ currentPost.username }}</div>
+      <div v-if="modifying">
+        <input name="modifiedText" v-model="currentPost.post" />
       </div>
-      <div class="form-group">
-        <label for="description">Description</label>
-        <input type="text" class="form-control" id="description"
-          v-model="currentPost.description"
-        />
+      <div v-if="!modifying">{{ currentPost.post }}</div>
+    </div>
+
+    <div class="d-flex justify-content-between mt-4">
+      <span class="date-creation">Créé le : {{ currentPost.createdAt }}</span>
+
+      <div class="d-flex buttons-container">
+        <button class="badge badge-danger mr-2" @click="deletePost">
+          Supprimer
+        </button>
+        <button
+          v-if="!modifying"
+          type="submit"
+          class="badge badge-success"
+          @click="modifying = true"
+        >
+          Modifier
+        </button>
+        <button
+          v-if="modifying"
+          type="submit"
+          class="badge badge-success"
+          @click="updatePost"
+        >
+          Confirmer
+        </button>
+        <button
+          v-if="modifying"
+          type="submit"
+          class="badge badge-danger"
+          @click="modifying = false"
+        >
+          Annuler
+        </button>
       </div>
-
-      <div class="form-group">
-        <label><strong>Status:</strong></label>
-        {{ currentPost.published ? "Published" : "Pending" }}
-      </div>
-    </form>
-
-    <button class="badge badge-primary mr-2"
-      v-if="currentPost.published"
-      @click="updatePublished(false)"
-    >
-      UnPublish
-    </button>
-    <button v-else class="badge badge-primary mr-2"
-      @click="updatePublished(true)"
-    >
-      Publish
-    </button>
-
-    <button class="badge badge-danger mr-2"
-      @click="deletePost"
-    >
-      Delete
-    </button>
-
-    <button type="submit" class="badge badge-success"
-      @click="updatePost"
-    >
-      Update
-    </button>
-    <p>{{ message }}</p>
-  </div>
-
-  <div v-else>
-    <br />
-    <p>Cliquez un Post...</p>
+    </div>
   </div>
 </template>
 
 <script>
+import { reactive, ref } from "vue";
 import PostDataService from "../services/PostDataService";
 
 export default {
   name: "post",
-  data() {
+  props: {
+    post: {
+      createdAt: {
+        type: String,
+        required: true,
+      },
+      description: {
+        type: String,
+        required: true,
+      },
+      id: {
+        type: Number,
+        required: true,
+      },
+      published: {
+        type: Boolean,
+        required: true,
+      },
+      title: {
+        type: String,
+        required: true,
+      },
+      updatedAt: {
+        type: String,
+        required: true,
+      },
+    },
+  },
+  setup(props, context) {
+    const currentPost = reactive(props.post);
+    let modifying = ref(false);
+
+    const deletePost = function () {
+      PostDataService.delete(currentPost.id)
+        .then((response) => {
+          console.log(response.data);
+          context.emit("refreshList");
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    };
+
+    const updatePost = function () {
+      modifying.value = false;
+      PostDataService.update(currentPost.id, currentPost)
+        .then((response) => {
+          console.log(response.data);
+          this.message = "Le Post a été mise à jour avec succès!";
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    };
+
     return {
-      currentPost: null,
-      message: ''
+      currentPost,
+      deletePost,
+      updatePost,
+      modifying,
     };
   },
-  methods: {
-    getPost(id) {
-      PostDataService.get(id)
-        .then(response => {
-          this.currentPost = response.data;
-          console.log(response.data);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
-
-    updatePublished(status) {
-      var data = {
-        id: this.currentPost.id,
-        title: this.currentPost.title,
-        description: this.currentPost.description,
-        published: status
-      };
-
-      PostDataService.update(this.currentPost.id, data)
-        .then(response => {
-          console.log(response.data);
-          this.currentPost.published = status;
-          this.message = 'Le Post a été mise à jour avec succès!';
-        })
-   .catch(e => {
-          console.log(e);
-        });
-    },
-
-    updatePost() {
-      PostDataService.update(this.currentPost.id, this.currentPost)
-        .then(response => {
-          console.log(response.data);
-          this.message = 'Le Post a été mise à jour avec succès!';
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
-
-    deletePost() {
-      PostDataService.delete(this.currentPost.id)
-        .then(response => {
-          console.log(response.data);
-          this.$router.push({ name: "posts" });
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    }
-  },
-  mounted() {
-    this.message = '';
-    this.getPost(this.$route.params.id);
-  }
 };
+
 </script>
    <style>
-.edit-form {
-  max-width: 300px;
-  margin: auto;
+.date-creation {
+  color: lightgray;
+  font-size: 12px;
 }
 </style>  
+

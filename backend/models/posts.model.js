@@ -5,8 +5,8 @@ module.exports = (sequelize, Sequelize) => {
       username: {
         type: Sequelize.STRING
       },
-      role: {
-        type: Sequelize.STRING
+      roles: {
+        type: Sequelize.STRING,
       },
       post: {
         type: Sequelize.STRING

@@ -1,119 +1,54 @@
 <template>
   <div class="list row">
-    <div class="col-md-8">
-      <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Search by title"
-          v-model="title"/>
-        <div class="input-group-append">
-          <button class="btn btn-outline-secondary" type="button"
-            @click="searchTitle"
-          >
-            Search
-          </button>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <h4>Posts List</h4>
+
+    <CreatePost @newPost="retrievePosts"/>
+
+    <div class="col-12">
+      <h4>Mur des posts</h4>
       <ul class="list-group">
         <li class="list-group-item"
-          :class="{ active: index == currentIndex }"
-          v-for="(post, index) in posts"
-          :key="index"
-          @click="setActivePost(post, index)"
+          v-for="post in posts"
+          :key="post.id"
         >
-          {{ post.title }}
+          <Post @refreshList="retrievePosts" :post="post" />
         </li>
       </ul>
-
-      <button class="m-3 btn btn-sm btn-danger" @click="removeAllPosts">
-        Remove All
-      </button>
-    </div>
-    <div class="col-md-6">
-      <div v-if="currentPost">
-        <h4>Post</h4>
-        <div>
-          <label><strong>Title:</strong></label> {{ currentPost.title }}
-        </div>
-        <div>
-          <label><strong>Description:</strong></label> {{ currentPost.description }}
-        </div>
-        <div>
-          <label><strong>Status:</strong></label> {{ currentPost.published ? "Published" : "Pending" }}
-        </div>
-
-        <router-link :to="'/posts/' + currentPost.id" class="badge badge-warning">Edit</router-link>
-      </div>
-      <div v-else>
-        <br />
-        <p>Please click on a Post...</p>
-      </div>
     </div>
   </div>
 </template>
 
 <script>
 import PostDataService from "../services/PostDataService";
+import CreatePost from "./CreatePost";
+import Post from "./Post";
+import { onMounted, ref } from "vue";
 
 export default {
   name: "posts-list",
-  data() {
-    return {
-      posts: [],
-      currentPost: null,
-      currentIndex: -1,
-      title: ""
-    };
+  components: {
+    CreatePost,
+    Post
   },
-  methods: {
-    retrievePosts() {
+  setup() {
+    let posts = ref([]);
+    const retrievePosts = function() {
       PostDataService.getAll()
         .then(response => {
-          this.posts = response.data;
-          console.log(response.data);
+          posts.value = response.data;
+          posts.value = posts.value.reverse();
+          console.log('reponse find all', posts.value);
         })
         .catch(e => {
           console.log(e);
         });
-    },
+    };
 
-    refreshList() {
-      this.retrievePosts();
-      this.currentPost = null;
-      this.currentIndex = -1;
-    },
+    onMounted(retrievePosts);
 
-    setActivePost(post, index) {
-      this.currentPost = post;
-      this.currentIndex = post ? index : -1;
-    },
-
-     removeAllPosts() {
-      PostDataService.deleteAll()
-        .then(response => {
-          console.log(response.data);
-          this.refreshList();
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
-    
-    searchTitle() {
-      PostDataService.findByTitle(this.title)
-        .then(response => {
-          this.posts = response.data;
-          this.setActivePost(null);
-          console.log(response.data);
-        })
-        .catch(e => {
-          console.log(e);
-        });
+    return {
+      retrievePosts,
+      posts
     }
-  },
-  mounted() {
-    this.retrievePosts();
   }
 };
 </script>

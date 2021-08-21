@@ -3,20 +3,8 @@
     <nav class="navbar navbar-expand navbar-dark bg-dark">
       <a href="/" class="navbar-brand">GroupoMania</a>
       <div class="navbar-nav mr-auto">
-        <li v-if="showAdminBoard" class="nav-item">
-          <router-link to="/admin" class="nav-link">Admin Board</router-link>
-        </li>
-        <li v-if="showModeratorBoard" class="nav-item">
-          <router-link to="/mod" class="nav-link">Moderator Board</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link v-if="currentUser" to="/user" class="nav-link">User</router-link>
-        </li>
         <li class="nav-item">
           <router-link to="/posts" class="nav-link">Posts</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link to="/add" class="nav-link">Add</router-link>
         </li>
       </div>
 
@@ -55,6 +43,7 @@
 </template>
 
 <script>
+
 export default {
   computed: {
     currentUser() {
