@@ -6,6 +6,9 @@
         <li class="nav-item">
           <router-link to="/posts" class="nav-link">Posts</router-link>
         </li>
+        <li v-if="showAdminBoard" class="nav-item">
+          <router-link to="/users" class="nav-link">Utilisateurs</router-link>
+        </li>
       </div>
 
       <div v-if="!currentUser" class="navbar-nav ml-auto">
@@ -52,13 +55,6 @@ export default {
     showAdminBoard() {
       if (this.currentUser && this.currentUser['roles']) {
         return this.currentUser['roles'].includes('ROLE_ADMIN');
-      }
-
-      return false;
-    },
-    showModeratorBoard() {
-      if (this.currentUser && this.currentUser['roles']) {
-        return this.currentUser['roles'].includes('ROLE_MODERATOR');
       }
 
       return false;

@@ -3,6 +3,7 @@ import { createWebHistory, createRouter } from "vue-router";
 
 import Login from "./components/Login.vue";
 import Register from "./components/Register.vue";
+import UserList from "./components/UserList.vue";
 // lazy-loaded
 const Profile = () => import("./components/Profile.vue")
 
@@ -24,6 +25,12 @@ const routes = [
     // lazy-loaded
     component: Profile,
   },
+  {
+    path: "/users",
+    name: "users",
+    // lazy-loaded
+    component: UserList,
+  },
 
   // Routes Posts
   {
@@ -31,11 +38,6 @@ const routes = [
     alias: "/posts", 
     name: "posts", // Nom de la route
     component: () => import("./components/PostsList") //Composant à charge lorsque cette route est appelée
-  },
-  {
-    path: "/posts/:id", 
-    name: "post-details",
-    component: () => import("./components/Post") 
   }
 ];
 

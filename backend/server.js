@@ -50,6 +50,7 @@ function initial() {
 // routes
 require("./routes/auth.routes")(app);
 require("./routes/post.routes")(app);
+require("./routes/user.routes")(app);
 
 // écouter sur le port 8080 pour les requêtes entrantes.
 const PORT = process.env.PORT || 8080;
