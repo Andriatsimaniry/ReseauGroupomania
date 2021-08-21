@@ -1,3 +1,7 @@
+
+// premiere partie : Pour l'authentification  
+// Publier /api/auth/signup - Publier /api/auth/signin
+
 const { verifySignUp } = require("../middleware");
 const controller = require("../controllers/auth.controller");
 

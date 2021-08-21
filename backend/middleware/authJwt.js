@@ -1,3 +1,4 @@
+// Pour traiter l'authetification et l'autorisation
 const jwt = require("jsonwebtoken");
 const config = require("../config/auth.config.js");
 const db = require("../models");
@@ -8,14 +9,14 @@ verifyToken = (req, res, next) => {
 
   if (!token) {
     return res.status(403).send({
-      message: "No token provided!",
+      message: "Aucun jeton fourni !",
     });
   }
 
   jwt.verify(token, config.secret, (err, decoded) => {
     if (err) {
       return res.status(401).send({
-        message: "Unauthorized!",
+        message: "Non autorisé !",
       });
     }
     req.userId = decoded.id;
@@ -33,7 +34,7 @@ isAdmin = (req, res, next) => {
         }
       }
       res.status(403).send({
-        message: "Require Admin Role!",
+        message: "Exiger le rôle d'administrateur !",
       });
       return;
     });
@@ -51,7 +52,7 @@ isModerator = (req, res, next) => {
       }
 
       res.status(403).send({
-        message: "Require Moderator Role!",
+        message: "Exiger le rôle de modérateur !",
       });
     });
   });
@@ -72,7 +73,7 @@ isModeratorOrAdmin = (req, res, next) => {
       }
 
       res.status(403).send({
-        message: "Require Moderator or Admin Role!",
+        message: "Exiger un rôle de modérateur ou d'administrateur !",
       });
     });
   });

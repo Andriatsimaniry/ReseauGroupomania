@@ -2,14 +2,14 @@
 
 module.exports = (sequelize, Sequelize) => {
     const Post = sequelize.define("Post", {
-      title: {
+      username: {
         type: Sequelize.STRING
       },
-      description: {
+      role: {
         type: Sequelize.STRING
       },
-      published: {
-        type: Sequelize.BOOLEAN
+      post: {
+        type: Sequelize.STRING
       }
     });
   

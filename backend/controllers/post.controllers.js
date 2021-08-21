@@ -4,7 +4,7 @@ const Op = db.Sequelize.Op;
 
 // Creer et sauver des nouvelles publications
 exports.create = (req, res) => {
-    if (!req.body.title) {
+    if (!req.body.post) {
       res.status(400).send({
         message: "Le contenu ne peut pas être vide!"
       });
@@ -12,10 +12,10 @@ exports.create = (req, res) => {
     }
   
     // Créer une nouvelle publication
-    const post = {
-      title: req.body.title,
-      description: req.body.description,
-      published: req.body.published ? req.body.published : false
+    const post = {     
+      username: req.body.username,
+      role: req.body.role,
+      post: req.body.post
     };
   
     // Enregistrer la publication dans la base de données
@@ -33,8 +33,8 @@ exports.create = (req, res) => {
 
 // Récuperer toutes les Publications de la base de données
 exports.findAll = (req, res) => {
-    const title = req.query.title;
-    var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
+    const post = req.query.post;
+    var condition = post ? { post: { [Op.like]: `%${post}%` } } : null;
   
     Post.findAll({ where: condition })
       .then(data => {
@@ -48,20 +48,7 @@ exports.findAll = (req, res) => {
       });
   };
 
-// Trouver une seule publication avec un identifiant
-exports.findOne = (req, res) => {
-    const id = req.params.id;
-  
-    Post.findByPk(id)
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message: "Erreur lors de la récupération de la publication avec l'identifiant=" + id
-        });
-      });
-  };
+
 // Mettre à jour une publication avec un identifiant
 exports.update = (req, res) => {
     const id = req.params.id;
@@ -110,29 +97,5 @@ exports.delete = (req, res) => {
         });
       });
   };
-// Supprimez tous les messages de la base de données.
-// exports.findAllPublished = (req, res) => {
-//     Post.findAll({ where: { published: true } })
-//       .then(data => {
-//         res.send(data);
-//       })
-//       .catch(err => {
-//         res.status(500).send({
-//           message:
-//             err.message || "Une erreur s'est produite lors de la récupération des publications."
-//         });
-//       });
-//   };
-// Trouver toutes les articles publiés
-exports.findAllPublished = (req, res) => {
-    Post.findAll({ where: { published: true } })
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Une erreur s'est produite lors de la récupération des publications."
-        });
-      });
-  };
+
+

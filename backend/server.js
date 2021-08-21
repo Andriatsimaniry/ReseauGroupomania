@@ -25,6 +25,7 @@ app.get("/", (req, res) => {
 const db = require("./models");
 const Role = db.role;
 
+// initial() la fonction qui crée 3 lignes dans la base de donnée
 db.sequelize.sync().then(() => {
   initial();
 });
@@ -48,7 +49,6 @@ function initial() {
 
 // routes
 require("./routes/auth.routes")(app);
-require("./routes/user.routes")(app);
 require("./routes/post.routes")(app);
 
 // écouter sur le port 8080 pour les requêtes entrantes.
