@@ -1,3 +1,4 @@
+<!-- Les cartes de vues des utilisateurs -->
 <template>
   <div class="user-card-container">
     <div>

@@ -3,7 +3,7 @@
     <div>
       <div>user: {{ currentPost.username }}</div>
       <div v-if="modifying">
-        <input name="modifiedText" v-model="currentPost.post" />
+        <textarea rows="5" class="w-100" name="modifiedText" v-model="currentPost.post" />
       </div>
       <div v-if="!modifying">{{ currentPost.post }}</div>
     </div>
@@ -12,7 +12,11 @@
       <span class="date-creation">Créé le : {{ currentPost.createdAt }}</span>
 
       <div class="d-flex buttons-container">
-        <button class="badge badge-danger mr-2" @click="deletePost" v-if="isEditable()">
+        <button
+          class="badge badge-danger mr-2"
+          @click="deletePost"
+          v-if="isEditable()"
+        >
           Supprimer
         </button>
         <button
@@ -80,7 +84,9 @@ export default {
   },
   setup(props, context) {
     const currentPost = reactive(props.post);
-    const currentUser = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null;
+    const currentUser = localStorage.getItem("user")
+      ? JSON.parse(localStorage.getItem("user"))
+      : null;
     let modifying = ref(false);
 
     const deletePost = function () {
@@ -97,16 +103,18 @@ export default {
     const updatePost = function () {
       modifying.value = false;
       PostDataService.update(currentPost.id, currentPost)
-        .then(() => {
-        })
+        .then(() => {})
         .catch((e) => {
           console.log(e);
         });
     };
 
-    const isEditable = function() {
+    const isEditable = function () {
       let isEditable = false;
-      if (currentUser.username === currentPost.username || currentUser.roles.includes('ROLE_ADMIN')) {
+      if (
+        currentUser.username === currentPost.username ||
+        currentUser.roles.includes("ROLE_ADMIN")
+      ) {
         isEditable = true;
       }
       return isEditable;
@@ -117,11 +125,10 @@ export default {
       deletePost,
       updatePost,
       modifying,
-      isEditable
+      isEditable,
     };
   },
 };
-
 </script>
    <style>
 .date-creation {

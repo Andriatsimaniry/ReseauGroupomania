@@ -41,48 +41,12 @@ isAdmin = (req, res, next) => {
   });
 };
 
-isModerator = (req, res, next) => {
-  User.findByPk(req.userId).then((user) => {
-    user.getRoles().then((roles) => {
-      for (let i = 0; i < roles.length; i++) {
-        if (roles[i].name === "moderator") {
-          next();
-          return;
-        }
-      }
 
-      res.status(403).send({
-        message: "Exiger le rôle de modérateur !",
-      });
-    });
-  });
-};
 
-isModeratorOrAdmin = (req, res, next) => {
-  User.findByPk(req.userId).then((user) => {
-    user.getRoles().then((roles) => {
-      for (let i = 0; i < roles.length; i++) {
-        if (roles[i].name === "moderator") {
-          next();
-          return;
-        }
-        if (roles[i].name === "admin") {
-          next();
-          return;
-        }
-      }
-
-      res.status(403).send({
-        message: "Exiger un rôle de modérateur ou d'administrateur !",
-      });
-    });
-  });
-};
-
-const authJwt = {
+ const authJwt = {
   verifyToken: verifyToken,
   isAdmin: isAdmin,
-  isModerator: isModerator,
-  isModeratorOrAdmin: isModeratorOrAdmin,
+  // isModerator: isModerator,
+  // isModeratorOrAdmin: isModeratorOrAdmin,
 };
 module.exports = authJwt;

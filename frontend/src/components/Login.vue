@@ -51,8 +51,8 @@ export default {
   },
   data() {
     const schema = yup.object().shape({
-      username: yup.string().required("Username is required!"),
-      password: yup.string().required("Password is required!"),
+      username: yup.string().required("Nom d'utilisateur est nécessaire!"),
+      password: yup.string().required("Mot de passe requis!"),
     });
 
     return {

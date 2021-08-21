@@ -62,19 +62,19 @@ export default {
     const schema = yup.object().shape({
       username: yup
         .string()
-        .required("Username is required!")
-        .min(3, "Must be at least 3 characters!")
-        .max(20, "Must be maximum 20 characters!"),
+        .required("Nom d'utilisateur est nécessaire!")
+        .min(3, "Doit comporter au moins 3 caractères !")
+        .max(20, "Doit comporter au maximum 20 caractères !"),
       email: yup
         .string()
-        .required("Email is required!")
-        .email("Email is invalid!")
-        .max(50, "Must be maximum 50 characters!"),
+        .required("L'e-mail est obligatoire !")
+        .email("L'email est invalide!")
+        .max(50, "Doit contenir au maximum 50 caractères !"),
       password: yup
         .string()
-        .required("Password is required!")
-        .min(6, "Must be at least 6 characters!")
-        .max(40, "Must be maximum 40 characters!"),
+        .required("Mot de passe requis!")
+        .min(6, "Doit être au moins 6 caractères!")
+        .max(40, "Doit contenir au maximum 40 caractères !"),
     });
 
     return {

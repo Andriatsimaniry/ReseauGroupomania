@@ -1,3 +1,4 @@
+<!-- Création de la Publication -->
 <template>
   <div class="create-post-container col-12">
     <h3>Creer votre publication :</h3>
@@ -11,7 +12,8 @@
         rows="3"
       ></textarea>
       <div class="d-flex justify-content-end">
-        <button @click="savePost" class="btn btn-success">Publier</button>
+        <!-- on écoute l'évenement click qui est emis-->
+        <button @click="savePost" :disabled="userPost.post == ''" class="btn btn-success">Publier</button>
       </div>
     </div>
   </div>
@@ -34,10 +36,10 @@ export default {
       roles
     });
 
-    const savePost = function () {
+    const savePost = function () {  // Rajouter la publication actuelle dans la liste de toutes les publications
       PostDataService.create(userPost)
         .then(() => {
-          // vide la publicaation courrante
+          // vide la publication courrante
           userPost.post = '';
           context.emit("newPost");
         })
@@ -46,7 +48,7 @@ export default {
         });
     };
 
-    return {
+    return {  // Pour pouvoir accessible au template 
       savePost,
       userPost
     };

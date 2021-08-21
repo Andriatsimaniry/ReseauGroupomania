@@ -54,7 +54,7 @@ exports.delete = (req, res) => {
           });
         } else {
           res.send({
-            message: `Impossible de supprimer l'utilisateur avec id=${id}. Maybe Tutorial was not found!`
+            message: `Impossible de supprimer l'utilisateur avec id=${id}.L'utilisateur n'a pas été retrouvé `
           });
         }
       })

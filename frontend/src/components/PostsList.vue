@@ -1,10 +1,11 @@
+<!-- Liste de toutes les Publications -->
 <template>
   <div class="list row">
 
     <CreatePost @newPost="retrievePosts"/>
 
     <div class="col-12">
-      <h4>Mur des posts</h4>
+      <h4>Liste des Publications</h4>
       <ul class="list-group">
         <li class="list-group-item"
           v-for="post in posts"
@@ -30,7 +31,7 @@ export default {
     Post
   },
   setup() {
-    let posts = ref([]);
+    let posts = ref([]);  //Pour être reactive; tableau vide
     const retrievePosts = function() {
       PostDataService.getAll()
         .then(response => {

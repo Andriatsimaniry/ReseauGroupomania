@@ -87,7 +87,7 @@ exports.delete = (req, res) => {
           });
         } else {
           res.send({
-            message: `Impossible de supprimer la publication avec id=${id}. Maybe Tutorial was not found!`
+            message: `Impossible de supprimer la publication avec id=${id}. la publication n'a pas été trouvée`
           });
         }
       })

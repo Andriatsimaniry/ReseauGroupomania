@@ -59,7 +59,7 @@ export default {
       UserDataService.update(this.currentUser.id, this.currentUser)
         .then(() => {
           this.$store.dispatch("auth/update", this.currentUser);
-          localStorage.setItem('user', JSON.stringify(this.currentUser));
+          localStorage.setItem("user", JSON.stringify(this.currentUser));
           this.$router.push("/posts");
         })
         .catch((e) => {
