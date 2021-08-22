@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div>
     <nav class="navbar navbar-expand navbar-dark bg-dark">
       <a href="/" class="navbar-brand">GroupoMania</a>
       <div class="navbar-nav mr-auto">

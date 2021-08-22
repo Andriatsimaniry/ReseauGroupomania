@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-const initRoutes = require("./routes/web");
+
 
 global.__basedir = __dirname;
 
@@ -16,7 +16,7 @@ app.use(express.json());
 
 // analyser les requêtes de type content - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
-initRoutes(app);
+
 // simple route
 app.get("/", (req, res) => {
   res.json({ message: "Bienvenue sur le site du reseau Groupomania." });

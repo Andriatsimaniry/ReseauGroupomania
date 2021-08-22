@@ -30,13 +30,13 @@ export default {
     CreatePost,
     Post
   },
-  setup() {
-    let posts = ref([]);  //Pour être reactive; tableau vide
-    const retrievePosts = function() {
+  setup() { //Retourner une fonction de rendu ,utiliser l'état réactif déclaré.
+    let posts = ref([]);  //Pour être reactive; tableau vide.
+    const retrievePosts = function() { // Fonction pour récupérer toutes les publications
       PostDataService.getAll()
         .then(response => {
           posts.value = response.data;
-          posts.value = posts.value.reverse();
+          posts.value = posts.value.reverse(); //Pour mettre la dernière publication de l'utilisateur au dessus
           console.log('reponse find all', posts.value);
         })
         .catch(e => {
@@ -44,7 +44,7 @@ export default {
         });
     };
 
-    onMounted(retrievePosts);
+    onMounted(retrievePosts); //Appelé après que l'instance à été monté
 
     return {
       retrievePosts,

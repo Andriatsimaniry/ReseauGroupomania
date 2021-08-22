@@ -23,7 +23,6 @@ db.sequelize = sequelize;
 
 db.user = require("../models/user.model.js")(sequelize, Sequelize);
 db.role = require("../models/role.model.js")(sequelize, Sequelize);
-db.image = require("./image.model.js")(sequelize, Sequelize);
 db.posts = require("./posts.model.js")(sequelize, Sequelize);
 
 // les rôles est une relation plusieurs-à-plusieurs 

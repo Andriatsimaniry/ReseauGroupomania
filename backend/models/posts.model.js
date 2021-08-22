@@ -11,7 +11,7 @@ module.exports = (sequelize, Sequelize) => {
       post: {
         // type: Sequelize.TEXT('long'),
         type:
-        DataTypes.TEXT('tiny') ,
+        DataTypes.TEXT('long') ,
       },
     });
   
