@@ -39,8 +39,8 @@
 </template>
 
 <script>
-import { Form, Field, ErrorMessage } from "vee-validate";
-import * as yup from "yup"; // Yup Validation basée sur un schéma 
+import { Form, Field, ErrorMessage } from "vee-validate"; // Composant pour gerer les validations des formulaires
+import * as yup from "yup"; // Yup Validation de saisie basée sur un schéma 
 
 export default {
   name: "Login",
