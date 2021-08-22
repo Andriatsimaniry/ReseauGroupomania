@@ -30,7 +30,7 @@
                 v-show="loading"
                 class="spinner-border spinner-border-sm"
               ></span>
-              Sign Up
+              S'inscrire
             </button>
           </div>
         </div>

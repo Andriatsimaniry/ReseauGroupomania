@@ -24,7 +24,7 @@
               v-show="loading"
               class="spinner-border spinner-border-sm"
             ></span>
-            <span>Login</span>
+            <span>Se connecter</span>
           </button>
         </div>
 
