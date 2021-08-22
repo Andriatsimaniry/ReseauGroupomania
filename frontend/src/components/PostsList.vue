@@ -6,14 +6,15 @@
 
     <div class="col-12">
       <h4>Liste des Publications</h4>
-      <ul class="list-group">
-        <li class="list-group-item"
-          v-for="post in posts"
-          :key="post.id"
-        >
-          <Post @refreshList="retrievePosts" :post="post" />
-        </li>
-      </ul>
+        <div class="post-list-container">
+          <div
+            class="post-container my-2"
+            v-for="post in posts"
+            :key="post.id"
+          >
+            <Post @refreshList="retrievePosts" :post="post" />
+          </div>
+        </div>
     </div>
   </div>
 </template>
@@ -59,5 +60,9 @@ export default {
   text-align: left;
   max-width: 750px;
   margin: auto;
+}
+.post-container {
+  border: 1px solid lightgray;
+  border-radius: 3px;
 }
 </style>

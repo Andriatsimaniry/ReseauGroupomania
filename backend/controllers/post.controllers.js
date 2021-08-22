@@ -69,7 +69,7 @@ exports.update = (req, res) => {
       })
       .catch(err => {
         res.status(500).send({
-          message: " Erreur lors de la mise à jour de la publication avecid=" + id
+          message: " Erreur lors de la mise à jour de la publication avec id=" + id
         });
       });
   };

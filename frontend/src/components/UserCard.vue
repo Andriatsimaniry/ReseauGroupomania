@@ -1,11 +1,10 @@
 <!-- Les cartes de vues des utilisateurs -->
 <template>
-  <div class="user-card-container">
+  <div class="user-card-container d-flex justify-content-between align-items-center">
     <div>
         <div>
-          <span>Username : </span>
-          <span v-if="!modifying">{{ currentUser.username }}</span>
-          <span v-if="modifying"><input name="modifiedText" v-model="currentUser.username" /></span>
+          <span>Nom d'utilisateur : </span>
+          <span>{{ currentUser.username }}</span>
         </div>
         <div>
           <span>Email : </span>
@@ -14,15 +13,15 @@
         </div>
     </div>
 
-    <div class="d-flex justify-content-between mt-4">
+    <div class="d-flex justify-content-between">
       <div class="d-flex buttons-container">
-        <button class="badge badge-danger mr-2" @click="deletePost">
+        <button class="btn btn-danger btn-sm mr-2" @click="deletePost">
           Supprimer
         </button>
         <button
           v-if="!modifying"
           type="submit"
-          class="badge badge-success"
+          class="btn btn-success btn-sm"
           @click="modifying = true"
         >
           Modifier
@@ -30,7 +29,7 @@
         <button
           v-if="modifying"
           type="submit"
-          class="badge badge-success"
+          class="btn btn-success btn-sm"
           @click="updatePost"
         >
           Confirmer
@@ -38,7 +37,7 @@
         <button
           v-if="modifying"
           type="submit"
-          class="badge badge-danger"
+          class="btn btn-danger btn-sm"
           @click="modifying = false"
         >
           Annuler

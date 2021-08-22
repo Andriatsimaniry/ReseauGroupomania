@@ -1,49 +1,54 @@
 <template>
-  <div class="post-container">
-    <div>
-      <div>user: {{ currentPost.username }}</div>
-      <div v-if="modifying">
-        <textarea rows="5" class="w-100" name="modifiedText" v-model="currentPost.post" />
+  <div class="post">
+    <div class="post-header d-flex justify-content-between px-2 py-1">
+      <span><strong>{{ currentPost.username }}</strong></span>
+      <span class="date-creation">Créé le : {{ currentPost.createdAt }}</span>
+    </div>
+
+    <div class="d-flex  p-2">
+      <div class="w-100" v-if="modifying">
+        <textarea
+          rows="5"
+          class="w-100"
+          name="modifiedText"
+          v-model="currentPost.post"
+        />
       </div>
       <div v-if="!modifying">{{ currentPost.post }}</div>
     </div>
 
-    <div class="d-flex justify-content-between mt-4">
-      <span class="date-creation">Créé le : {{ currentPost.createdAt }}</span>
-
-      <div class="d-flex buttons-container">
-        <button
-          class="badge badge-danger mr-2"
-          @click="deletePost"
-          v-if="isEditable()"
-        >
-          Supprimer
-        </button>
-        <button
-          v-if="!modifying && isEditable()"
-          type="submit"
-          class="badge badge-success"
-          @click="modifying = true"
-        >
-          Modifier
-        </button>
-        <button
-          v-if="modifying && isEditable()"
-          type="submit"
-          class="badge badge-success"
-          @click="updatePost"
-        >
-          Confirmer
-        </button>
-        <button
-          v-if="modifying && isEditable()"
-          type="submit"
-          class="badge badge-danger"
-          @click="modifying = false"
-        >
-          Annuler
-        </button>
-      </div>
+    <div class="d-flex buttons-container p-2 justify-content-end">
+      <button
+        class="btn btn-danger mr-2 btn-sm"
+        @click="deletePost"
+        v-if="isEditable()"
+      >
+        Supprimer
+      </button>
+      <button
+        v-if="!modifying && isEditable()"
+        type="submit"
+        class="btn btn-success btn-sm"
+        @click="modifying = true"
+      >
+        Modifier
+      </button>
+      <button
+        v-if="modifying && isEditable()"
+        type="submit"
+        class="btn btn-success mr-2 btn-sm"
+        @click="updatePost"
+      >
+        Confirmer
+      </button>
+      <button
+        v-if="modifying && isEditable()"
+        type="submit"
+        class="btn btn-danger btn-sm"
+        @click="modifying = false"
+      >
+        Annuler
+      </button>
     </div>
   </div>
 </template>
@@ -130,10 +135,13 @@ export default {
   },
 };
 </script>
-   <style>
-.date-creation {
-  color: lightgray;
-  font-size: 12px;
-}
+<style scoped>
+  .date-creation {
+    color: gray;
+    font-size: 12px;
+  }
+  .post-header {
+    background-color: #ffd7d7;
+  }
 </style>  
 

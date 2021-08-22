@@ -8,12 +8,6 @@
     </header>
     <div>
       <strong>
-        <label for="username">Nom d'utilisateur</label>
-      </strong>
-      <input class="ml-4" name="username" v-model="currentUser.username" />
-    </div>
-    <div>
-      <strong>
         <label for="username">Email</label>
       </strong>
       <input class="ml-4" name="username" v-model="currentUser.email" />

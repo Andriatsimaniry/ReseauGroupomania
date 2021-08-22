@@ -1,10 +1,12 @@
 <template>
-  <div>
-    <nav class="navbar navbar-expand navbar-dark bg-dark">
-      <a href="/" class="navbar-brand">GroupoMania</a>
+  <div id="app">
+    <nav class="navbar navbar-expand">
+      <a href="/" class="navbar-brand">
+        <img src="./assets/icon-left-font-monochrome-white.svg"/>
+      </a>
       <div class="navbar-nav mr-auto">
         <li class="nav-item">
-          <router-link to="/posts" class="nav-link">Posts</router-link>
+          <router-link to="/posts" class="nav-link">Publications</router-link>
         </li>
         <li v-if="showAdminBoard" class="nav-item">
           <router-link to="/users" class="nav-link">Utilisateurs</router-link>
@@ -14,12 +16,12 @@
       <div v-if="!currentUser" class="navbar-nav ml-auto">
         <li class="nav-item">
           <router-link to="/register" class="nav-link">
-            <font-awesome-icon icon="user-plus" /> Sign Up
+            <font-awesome-icon icon="user-plus" /> S'inscrire
           </router-link>
         </li>
         <li class="nav-item">
           <router-link to="/login" class="nav-link">
-            <font-awesome-icon icon="sign-in-alt" /> Login
+            <font-awesome-icon icon="sign-in-alt" /> Se connecter
           </router-link>
         </li>
       </div>
@@ -33,13 +35,13 @@
         </li>
         <li class="nav-item">
           <a class="nav-link" @click.prevent="logOut">
-            <font-awesome-icon icon="sign-out-alt" /> LogOut
+            <font-awesome-icon icon="sign-out-alt" /> Se déconnecter
           </a>
         </li>
       </div>
     </nav>
 
-    <div class="container">
+    <div class="container py-4">
       <router-view />
     </div>
   </div>
@@ -68,3 +70,16 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+ .navbar {
+   background: #fd2d02;
+ }
+ a.nav-link {
+   color: white;
+   cursor: pointer;
+ }
+ a.navbar-brand img {
+   height: 20px;
+ }
+</style>

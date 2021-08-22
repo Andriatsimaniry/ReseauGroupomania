@@ -4,14 +4,14 @@
   <div class="list row">
     <div class="col-12">
       <h4>Liste des utilisateurs</h4>
-      <ul class="list-group">
-        <li class="list-group-item"
+      <div class="user-list-container">
+        <div class="user-card my-2 p-2"
           v-for="user in users"
           :key="user.id"
         >
           <UserCard @refreshList="retrieveUsers" :user="user" />
-        </li>
-      </ul>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -54,5 +54,9 @@ export default {
   text-align: left;
   max-width: 750px;
   margin: auto;
+}
+.user-card {
+  border: 1px solid lightgray;
+  border-radius: 3px;
 }
 </style>
