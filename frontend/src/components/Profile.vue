@@ -1,3 +1,4 @@
+<!-- Profil de l' utilisateur -->
 <template>
   <div class="container">
     <header class="jumbotron">
@@ -44,6 +45,8 @@ export default {
       this.$router.push("/login");
     }
   },
+
+  // L'utilisateur peut supprimer son compte
   methods: {
     deleteUser() {
       UserDataService.delete(this.currentUser.id)
@@ -55,6 +58,8 @@ export default {
           console.log(e);
         });
     },
+
+  // l'Utilisateur peut modifier son compte
     modifyUser() {
       UserDataService.update(this.currentUser.id, this.currentUser)
         .then(() => {

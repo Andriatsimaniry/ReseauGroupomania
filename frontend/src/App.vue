@@ -48,9 +48,9 @@
 <script>
 
 export default {
-  computed: {
+  computed: {   // La fonction est mise en cache en fonction de leurs dépendances réactive
     currentUser() {
-      return this.$store.state.auth.user;
+      return this.$store.state.auth.user; //Chaque modification apportée /mise à jour DOM déclenchées.
     },
     showAdminBoard() {
       if (this.currentUser && this.currentUser['roles']) {
@@ -60,10 +60,10 @@ export default {
       return false;
     }
   },
-  methods: {
+  methods: {  // La fonction est exécutée à chaque fois qu'un nouveau rendu se produit
     logOut() {
-      this.$store.dispatch('auth/logout');
-      this.$router.push('/login');
+      this.$store.dispatch('auth/logout'); //la valeur renvoyée sera une promesse qui se résout / si ts les gest ont résolus
+      this.$router.push('/login'); // Renvoie sur la page Loggin
     }
   }
 };

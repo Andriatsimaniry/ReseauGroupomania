@@ -40,7 +40,7 @@
 
 <script>
 import { Form, Field, ErrorMessage } from "vee-validate";
-import * as yup from "yup";
+import * as yup from "yup"; // Yup Validation basée sur un schéma 
 
 export default {
   name: "Login",

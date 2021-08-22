@@ -60,7 +60,7 @@ export default {
   },
   data() {
     const schema = yup.object().shape({
-      username: yup
+      username: yup  // Yup Validation basée sur un schéma 
         .string()
         .required("Nom d'utilisateur est nécessaire!")
         .min(3, "Doit comporter au moins 3 caractères !")
@@ -89,7 +89,7 @@ export default {
       return this.$store.state.auth.status.loggedIn;
     },
   },
-  mounted() {
+  mounted() { // Appelé après que l'instance a été montée
     if (this.loggedIn) {
       this.$router.push("/profile");
     }

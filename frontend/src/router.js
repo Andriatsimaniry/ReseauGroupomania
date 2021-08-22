@@ -1,6 +1,7 @@
 import { createWebHistory, createRouter } from "vue-router";
-// CreatWebHistory pour passer de l'utilisation du hachage au historymode dans le navigateur, en utilisant l'API d'historique HTML5.
-
+// CreatWebHistory pour passer de l'utilisation du hachage au history mode dans le navigateur,
+// en utilisant l'API d'historique HTML5.
+ 
 import Login from "./components/Login.vue";
 import Register from "./components/Register.vue";
 import UserList from "./components/UserList.vue";
@@ -41,7 +42,7 @@ const routes = [
     path: "/", // Chemin de l'Url pour la route Posts
     alias: "/posts",
     name: "posts", // Nom de la route
-    component: () => import("./components/PostsList"), //Composant à charge lorsque cette route est appelée
+    component: () => import("./components/PostsList"), //Composant à charger lorsque cette route est appelée
   },
 ];
 
@@ -65,8 +66,7 @@ router.beforeEach((to, from, next) => {
   const authRequired = !publicPages.includes(to.path);
   const loggedIn = localStorage.getItem("user");
 
-  // trying to access a restricted page + not logged in
-  // redirect to login page
+// rediriger vers la page de connexion
   if (authRequired && !loggedIn) {
     next("/login");
   } else {
