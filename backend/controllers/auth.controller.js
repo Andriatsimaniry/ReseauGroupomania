@@ -53,7 +53,7 @@ exports.signin = (req, res) => {
         return res.status(404).send({ message: "Utilisateur non trouvé." });
       }
 
-      // comparer password avec passworddans la base de données en utilisant bcrypt , s'il est correct
+      // comparer password avec password dans la base de données en utilisant bcrypt , s'il est correct
       var passwordIsValid = bcrypt.compareSync(
         req.body.password,
         user.password

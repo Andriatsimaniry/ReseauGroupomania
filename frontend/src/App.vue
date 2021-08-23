@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div>
     <nav class="navbar navbar-expand">
       <a href="/" class="navbar-brand">
         <img src="./assets/icon-left-font-monochrome-white.svg"/>

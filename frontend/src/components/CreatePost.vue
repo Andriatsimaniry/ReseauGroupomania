@@ -12,7 +12,7 @@
         rows="3"
       ></textarea>
       <div class="d-flex justify-content-end">
-        <!-- on écoute l'évenement click qui est emis-->
+        <!-- on écoute l'évenement click qui est emis la publication / désactiver si c'est vide -->
         <button @click="savePost" :disabled="userPost.post == ''" class="btn btn-success">Publier</button>
       </div>
     </div>
@@ -39,7 +39,7 @@ export default {
     const savePost = function () {  // Rajouter la publication actuelle dans la liste de toutes les publications
       PostDataService.create(userPost)
         .then(() => {
-          // vide la publication courrante
+          // vide  le contenu  de la publication courrante
           userPost.post = '';
           context.emit("newPost");
         })

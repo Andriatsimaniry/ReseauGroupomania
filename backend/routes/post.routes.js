@@ -1,19 +1,20 @@
 module.exports = app => {
+    const auth = require ("../middleware/authJwt");
     const posts = require("../controllers/post.controllers.js");
   
     var router = require("express").Router();
   
     // Créer une nouvelle publication
-    router.post("/", posts.create);
+    router.post("/",auth.verifyToken, posts.create);
   
     // Récupérer toutes les publications
-    router.get("/", posts.findAll);
+    router.get("/",auth.verifyToken, posts.findAll);
   
     // Mettre à jour une publication avec id
-    router.put("/:id", posts.update);
+    router.put("/:id",auth.verifyToken, posts.update);
   
     //Supprimer une publication avec id
-    router.delete("/:id", posts.delete);
+    router.delete("/:id",auth.verifyToken, posts.delete);
 
   
     app.use('/api/posts', router);
