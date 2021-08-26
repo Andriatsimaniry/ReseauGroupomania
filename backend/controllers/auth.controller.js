@@ -3,17 +3,26 @@ const db = require("../models");
 const config = require("../config/auth.config");
 const User = db.user;
 const Role = db.role;
+const maskData = require("maskdata");
 
 const Op = db.Sequelize.Op;
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcrypt");
 
+// Pour masquer l'email
+const emailMask2Options = {
+  maskWith: "*",
+  unmaskedStartCharactersBeforeAt: 6,
+  unmaskedEndCharactersAfterAt: 2,
+  maskAtTheRate: false,
+};
+
 // créer un nouvel utilisateur dans la base de données (le rôle est l'utilisateur si aucun rôle n'est spécifié)
 exports.signup = (req, res) => {
   User.create({
     username: req.body.username,
-    email: req.body.email,
+    email: maskData.maskEmail2(req.body.email, emailMask2Options),
     password: bcrypt.hashSync(req.body.password, 4),
   })
     .then((user) => {
