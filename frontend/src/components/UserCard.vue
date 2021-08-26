@@ -7,7 +7,7 @@
           <span>{{ currentUser.username }}</span>
         </div>
         <div>
-          <span>Email : </span>
+          <span>E-mail : </span>
           <span v-if="!modifying">{{ currentUser.email }}</span>
           <span v-if="modifying"><input name="modifiedText" v-model="currentUser.email" /></span>
         </div>
@@ -109,6 +109,7 @@ export default {
 
 </script>
    <style>
+   
 .date-creation {
   color: lightgray;
   font-size: 12px;

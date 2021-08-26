@@ -22,6 +22,7 @@ const emailMask2Options = {
 exports.signup = (req, res) => {
   User.create({
     username: req.body.username,
+   
     email: maskData.maskEmail2(req.body.email, emailMask2Options),
     password: bcrypt.hashSync(req.body.password, 4),
   })
@@ -54,7 +55,8 @@ exports.signup = (req, res) => {
 exports.signin = (req, res) => {
   User.findOne({
     where: {
-      username: req.body.username,
+      // username: req.body.username,
+      email: req.body.email,
     },
   })
     .then((user) => {

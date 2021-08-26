@@ -54,6 +54,7 @@
 </template>
 
 <script>
+
 import { reactive, ref } from "vue";
 import PostDataService from "../services/PostDataService";
 
@@ -134,6 +135,7 @@ export default {
     };
   },
 };
+
 </script>
 <style scoped>
   .date-creation {

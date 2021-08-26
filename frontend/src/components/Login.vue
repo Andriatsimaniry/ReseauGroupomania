@@ -8,9 +8,12 @@
       />
       <Form @submit="handleLogin" :validation-schema="schema">
         <div class="form-group">
-          <label for="username">Nom d'utilisateur</label>
-          <Field name="username" type="text" class="form-control" />
-          <ErrorMessage name="username" class="error-feedback" />
+          <!-- <label for="username">Nom d'utilisateur</label> -->
+          <label for="email">E-mail</label>
+          <!-- <Field name="username" type="text" class="form-control" /> -->
+          <Field name="email" type="text" class="form-control" />
+          <!-- <ErrorMessage name="username" class="error-feedback" /> -->
+          <ErrorMessage name="email" class="error-feedback" />
         </div>
         <div class="form-group">
           <label for="password">Mot de passe</label>
@@ -51,7 +54,8 @@ export default {
   },
   data() {
     const schema = yup.object().shape({
-      username: yup.string().required("Nom d'utilisateur est nécessaire!"),
+      // username: yup.string().required("Nom d'utilisateur est nécessaire!"),
+      email: yup.string().required("Email d'utilisateur est necessaire!"),
       password: yup.string().required("Mot de passe requis!"),
     });
 
