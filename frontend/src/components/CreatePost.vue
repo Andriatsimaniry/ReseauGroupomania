@@ -13,7 +13,15 @@
       ></textarea>
       <div class="d-flex justify-content-end">
         <!-- on écoute l'évenement click qui est emis la publication / désactiver si c'est vide -->
+         <button
+        type="submit"
+        class="btn btn-success mr-2 btn-sm"
+        @click="telecharge"
+      >
+        Ajouter un Fichier
+      </button>
         <button @click="savePost" :disabled="userPost.post == ''" class="btn btn-success">Publier</button>
+        
       </div>
     </div>
   </div>
@@ -27,13 +35,14 @@ export default {
   name: "create-post",
   setup(props, context) {
     const user = localStorage.getItem('user');
-    const username = user ? JSON.parse(user).username : 'anonymous';
+    const userId = user ? JSON.parse(user).id : null;
     const roles = user ? JSON.parse(user).roles.toString() : '';
     
     let userPost = reactive({
       post: '',
-      username,
-      roles
+      userId,
+      roles,
+      like: 0
     });
 
     const savePost = function () {  // Rajouter la publication actuelle dans la liste de toutes les publications

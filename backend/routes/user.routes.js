@@ -1,17 +1,18 @@
 module.exports = app => {
+  const auth = require ("../middleware/authJwt");
     const user = require("../controllers/user.controller.js");
   
     var router = require("express").Router();
   
     // Récupérer toutes l'utilisateur
-    router.get("/", user.findAll);
+    router.get("/", auth.verifyToken, user.findAll);
   
     // Mettre à jour utilisateur avec id
-    router.put("/:id", user.update);
+    router.put("/:id", auth.verifyToken, user.update);
   
     //Supprimer utilisateur avec id
-    router.delete("/:id", user.delete);
+    router.delete("/:id", auth.verifyToken, user.delete);
 
   
-    app.use('/api/user', router);
+    app.use('/api/user', auth.verifyToken, router);
   };

@@ -2,17 +2,21 @@
 const { DataTypes } = require("sequelize");
 module.exports = (sequelize, Sequelize) => {
     const Post = sequelize.define("Post", {
-      username: {
-        type: Sequelize.STRING
+      id: {
+        type: Sequelize.UUID,
+        primaryKey: true,
+        defaultValue: Sequelize.UUIDV4,
+        allowNull: false
       },
-      roles: {
-        type: Sequelize.STRING,
+      userId: {
+        type: Sequelize.UUID
       },
       post: {
-        // type: Sequelize.TEXT('long'),
-        type:
-        DataTypes.TEXT('long') ,
+        type: DataTypes.TEXT('long'),
       },
+      like: {  
+        type: Sequelize.INTEGER,  
+      }      
     });
   
     return Post;

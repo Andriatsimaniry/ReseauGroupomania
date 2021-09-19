@@ -1,6 +1,8 @@
 const db = require("../models");
 const Post = db.posts;
 const Op = db.Sequelize.Op;
+const fs = require("fs");
+const Image = db.images;
 
 // Creer et sauver des nouvelles publications
 exports.create = (req, res) => {
@@ -13,9 +15,10 @@ exports.create = (req, res) => {
   
     // Créer une nouvelle publication
     const post = {     
-      username: req.body.username,
+      userId: req.body.userId,
       roles: req.body.roles,
-      post: req.body.post
+      post: req.body.post,
+      like: 0
     };
   
     // Enregistrer la publication dans la base de données
@@ -98,4 +101,89 @@ exports.delete = (req, res) => {
       });
   };
 
-
+//Code j'aime , j'aime pas
+exports.like = (req, res, next) => {
+  if (req.body.like === 1) {
+    // incremente j'aime 
+    Post.update(
+      { _id: req.params.id },
+      {
+        $inc: { likes: req.body.like++ },
+        // rajouter  j'aime
+        $push: { usersLiked: req.body.userId },
+      }
+    )
+      .then(() => res.status(200).json({ message: "'j'aime' ajouté" }))
+      .catch((error) => res.status(400).json({ message: error }));
+  } else if (req.body.like === -1) {
+    Post.update(
+      // enlever j'aime
+      { _id: req.params.id },
+      {
+        $inc: { dislikes: req.body.like++ * -1 },
+        $push: { usersDisliked: req.body.userId },
+      }
+    )
+      .then(() => res.status(200).json({ message: "'j'aime pas' Ajouté " }))
+      .catch((error) => res.status(400).json({ message: error }));
+  } else {
+    Post.findOne({ _id: req.params.id })
+      .then((post) => {
+        if (post.usersLiked.includes(req.body.userId)) {
+          Post.update(
+            { _id: req.params.id },
+            { $pull: { usersLiked: req.body.userId }, $inc: { likes: -1 } }
+          )
+            .then(() =>
+              res.status(200).json({
+                message: " 'j'aime' enlevé!",
+              })
+            )
+            .catch((error) => res.status(400).json({ message: error }));
+        } else if (post.usersDisliked.includes(req.body.userId)) {
+          Post.update(
+            { _id: req.params.id },
+            {
+              $pull: { usersDisliked: req.body.userId },
+              $inc: { dislikes: -1 },
+            }
+          )
+            .then(() =>
+              res.status(200).json({
+                message: "'j'aime pas' enlevé  !",
+              })
+            )
+            .catch((error) => res.status(400).json({ message: error }));
+        }
+      })
+      .catch((error) => res.status(400).json({ message: error }));
+  }
+  exports.uploadFiles = async (req, res) => {
+    try {
+      console.log(req.file);
+  
+      if (req.file == undefined) { //vérifier le téléchargement du fichier
+        return res.send(`vous dever choisir un fichier.`);
+      }
+  
+      Image.create({ // modèle sequelize pour pour enregistrer un objet image
+        type: req.file.mimetype,
+        name: req.file.originalname,
+        data: fs.readFileSync( //pour lire les données
+          __basedir + "/resources/static/assets/uploads/" + req.file.filename
+        ),
+      }).then((image) => {
+        fs.writeFileSync( //pour écrire des données 
+          __basedir + "/resources/static/assets/tmp/" + image.name, //écrire les données images dans le dossier tmp
+          image.data
+        );
+  
+        return res.send(`le fichier a bien été télécharger.`);
+      });
+    } catch (error) {
+      console.log(error);
+      return res.send(`Erreur pour télécharger les images: ${error}`);
+    }
+  };
+  
+};

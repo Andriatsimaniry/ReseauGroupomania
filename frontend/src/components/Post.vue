@@ -1,11 +1,15 @@
 <template>
   <div class="post">
     <div class="post-header d-flex justify-content-between px-2 py-1">
-      <span><strong>{{ currentPost.username }}</strong></span>
-      <span class="date-creation">Créé le : {{ currentPost.createdAt }}</span>
+      <span
+        ><strong>{{ currentPost.username }}</strong></span
+      >
+      <span class="date-creation">Créé le : {{ getDateUtc() }}</span>
     </div>
-
-    <div class="d-flex  p-2">
+    <div class="post-footer d-flex justify-content-between px-2 py-1">
+    
+    </div>
+    <div class="d-flex p-2">
       <div class="w-100" v-if="modifying">
         <textarea
           rows="5"
@@ -17,7 +21,25 @@
       <div v-if="!modifying">{{ currentPost.post }}</div>
     </div>
 
-    <div class="d-flex buttons-container p-2 justify-content-end">
+    <div class="d-flex buttons-container align-items-center p-2 justify-content-end">
+      <font-awesome-icon  v-if="!isEditable()" class="mr-2 thumbs-up" icon="thumbs-up" @click="reaction(1)"/>
+      <font-awesome-icon  v-if="!isEditable()" class="mr-2 thumbs-down" icon="thumbs-down" @click="reaction(-1)"/>
+       <button
+       v-if="!isEditable()"
+        type="submit"
+        class="btn btn-success mr-2 btn-sm"
+        @click="telecharge"
+      >
+        Répondre
+      </button>
+      <button
+        v-if="modifying && isEditable()"
+        type="submit"
+        class="btn btn-success mr-2 btn-sm"
+        @click="telecharge"
+      >
+        Ajouter un Fichier
+      </button>
       <button
         class="btn btn-danger mr-2 btn-sm"
         @click="deletePost"
@@ -54,7 +76,6 @@
 </template>
 
 <script>
-
 import { reactive, ref } from "vue";
 import PostDataService from "../services/PostDataService";
 
@@ -95,6 +116,13 @@ export default {
       : null;
     let modifying = ref(false);
 
+    const getDateUtc = function() {
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',hour: '2-digit',minute:'2-digit',second:'2-digit' };
+      return new Date(currentPost.createdAt).toLocaleDateString('fr-FR', options);
+    }
+
+    
+
     const deletePost = function () {
       PostDataService.delete(currentPost.id)
         .then((response) => {
@@ -118,7 +146,7 @@ export default {
     const isEditable = function () {
       let isEditable = false;
       if (
-        currentUser.username === currentPost.username ||
+        currentUser.id === currentPost.userId ||
         currentUser.roles.includes("ROLE_ADMIN")
       ) {
         isEditable = true;
@@ -126,24 +154,48 @@ export default {
       return isEditable;
     };
 
+    const reaction = function(like) {
+      PostDataService.reaction(currentPost.id, currentPost, like)
+        .then(() => {})
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+
+    const telecharge = function() {
+      PostDataService.telecharge(currentPost.id, currentPost)
+        .then(() => {})
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+
     return {
       currentPost,
       deletePost,
       updatePost,
       modifying,
       isEditable,
+      getDateUtc,
+      reaction,
+      telecharge
     };
   },
 };
-
 </script>
 <style scoped>
-  .date-creation {
-    color: gray;
-    font-size: 12px;
-  }
-  .post-header {
-    background-color: #ffd7d7;
-  }
+.date-creation {
+  color: gray;
+  font-size: 12px;
+}
+.post-header {
+  background-color: #ffd7d7;
+}
+.thumbs-down{
+  color: red;
+}
+.thumbs-up{
+  color: green;
+}
 </style>  
 

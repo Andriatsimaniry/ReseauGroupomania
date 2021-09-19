@@ -12,10 +12,12 @@ module.exports = app => {
   
     // Mettre à jour une publication avec id
     router.put("/:id",auth.verifyToken, posts.update);
+
+    // Mettre à jour une publication avec id et like
+    router.put("/:id/like",auth.verifyToken, posts.like);
   
     //Supprimer une publication avec id
     router.delete("/:id",auth.verifyToken, posts.delete);
 
-  
     app.use('/api/posts', router);
   };

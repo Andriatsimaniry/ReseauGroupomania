@@ -2,8 +2,10 @@ const express = require("express");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 const app = express();
+const initRoutes = require("./routes/web");
 
 
+global.__basedir = __dirname;
 //Résolution des Cors
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -60,11 +62,6 @@ function initial() {
   });
 
   Role.create({
-    id: 2,
-    name: "moderator",
-  });
-
-  Role.create({
     id: 3,
     name: "admin",
   });
@@ -74,6 +71,7 @@ function initial() {
 require("./routes/auth.routes")(app);
 require("./routes/post.routes")(app);
 require("./routes/user.routes")(app);
+require("./routes/web")(app);
 
 // écouter sur le port 8080 pour les requêtes entrantes.
 const PORT = process.env.PORT || 8080;

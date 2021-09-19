@@ -1,4 +1,4 @@
-// Initialiser Sequelize 
+// Initialiser Sequelize
 
 const config = require("../config/db.config.js");
 
@@ -6,7 +6,7 @@ const Sequelize = require("sequelize");
 const sequelize = new Sequelize(config.DB, config.USER, config.PASSWORD, {
   host: config.HOST,
   dialect: config.dialect,
-  operatorsAliases: false,
+  // operatorsAliases: false,
 
   pool: {
     max: config.pool.max,
@@ -24,8 +24,10 @@ db.sequelize = sequelize;
 db.user = require("../models/user.model.js")(sequelize, Sequelize);
 db.role = require("../models/role.model.js")(sequelize, Sequelize);
 db.posts = require("./posts.model.js")(sequelize, Sequelize);
+db.image = require("./image.model.js")(sequelize, Sequelize);
+db.comments = require("./comment.model.js")(sequelize, Sequelize);
 
-// les rôles est une relation plusieurs-à-plusieurs 
+// les rôles est une relation plusieurs-à-plusieurs
 // le modèle utilisateur peut appartenir à plusieurs Rôles et vice versa.
 db.role.belongsToMany(db.user, {
   through: "user_roles",
@@ -37,6 +39,11 @@ db.user.belongsToMany(db.role, {
   foreignKey: "userId",
   otherKey: "roleId"
 });
+db.user.hasMany(db.posts);
+db.posts.belongsTo(db.user);
+db.user.hasMany(db.comments);
+db.comments.belongsTo(db.user);
+
 
 db.ROLES = ["user", "admin"];
 

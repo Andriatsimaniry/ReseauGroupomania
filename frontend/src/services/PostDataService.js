@@ -23,6 +23,10 @@ class PostDataService {
   delete(id) {
     return http.delete(`/posts/${id}`, {headers: authHeader()});
   }
+
+  reaction(id, data, like) {
+    return http.put(`/posts/${id}/like`, {...data, like: like}, {headers: authHeader()});
+  }
 }
 
 export default new PostDataService();
