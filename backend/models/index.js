@@ -39,12 +39,11 @@ db.user.belongsToMany(db.role, {
   foreignKey: "userId",
   otherKey: "roleId"
 });
-db.user.hasMany(db.posts);
-db.posts.belongsTo(db.user);
-db.user.hasMany(db.comments);
+db.comments.belongsTo(db.posts);
 db.comments.belongsTo(db.user);
-
-
-db.ROLES = ["user", "admin"];
+db.posts.hasMany(db.comments);
+db.posts.belongsTo(db.user);
+db.user.hasMany(db.posts);
+db.user.hasMany(db.comments);
 
 module.exports = db;

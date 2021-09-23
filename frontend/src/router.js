@@ -5,7 +5,7 @@ import { createWebHistory, createRouter } from "vue-router";
 import Login from "./components/Login.vue";
 import Register from "./components/Register.vue";
 import UserList from "./components/UserList.vue";
-// lazy-loaded
+
 const Profile = () => import("./components/Profile.vue");
 
 const routes = [
@@ -20,7 +20,7 @@ const routes = [
   {
     path: "/profile",
     name: "profile",
-    // lazy-loaded
+  
     component: Profile,
   },
   {
@@ -33,7 +33,7 @@ const routes = [
         next(from.path);
       }
     },
-    // lazy-loaded
+    
     component: UserList,
   },
 

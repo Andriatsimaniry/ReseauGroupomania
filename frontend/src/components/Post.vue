@@ -2,7 +2,7 @@
   <div class="post">
     <div class="post-header d-flex justify-content-between px-2 py-1">
       <span
-        ><strong>{{ currentPost.username }}</strong></span
+        ><strong>{{ currentPost.user.username }}</strong></span
       >
       <span class="date-creation">Créé le : {{ getDateUtc() }}</span>
     </div>
@@ -24,14 +24,6 @@
     <div class="d-flex buttons-container align-items-center p-2 justify-content-end">
       <font-awesome-icon  v-if="!isEditable()" class="mr-2 thumbs-up" icon="thumbs-up" @click="reaction(1)"/>
       <font-awesome-icon  v-if="!isEditable()" class="mr-2 thumbs-down" icon="thumbs-down" @click="reaction(-1)"/>
-       <button
-       v-if="!isEditable()"
-        type="submit"
-        class="btn btn-success mr-2 btn-sm"
-        @click="telecharge"
-      >
-        Répondre
-      </button>
       <button
         v-if="modifying && isEditable()"
         type="submit"
@@ -72,15 +64,31 @@
         Annuler
       </button>
     </div>
+    <div
+      class="comment-container my-1 mx-3"
+      v-for="comment in comments"
+      :key="comment.id"
+    >
+      <Comment @refreshComment="retrieveComments" :comment="comment" />
+    </div>
+    <div class="comment-section d-flex flex-grow-1">
+      <textarea id="newComment" class="flex-grow-1" placeholder="Entrez votre commentaire ici." rows=1 v-model="userComment.content"></textarea>
+      <button class="comment-button" @click="commenter">Envoyer</button>
+    </div>
   </div>
 </template>
 
 <script>
-import { reactive, ref } from "vue";
+import { reactive, ref, onMounted } from "vue";
 import PostDataService from "../services/PostDataService";
+import CommentService from "../services/comment.service";
+import Comment from "./Comment.vue";
 
 export default {
   name: "post",
+  components: {
+    Comment
+  },
   props: {
     post: {
       createdAt: {
@@ -111,10 +119,18 @@ export default {
   },
   setup(props, context) {
     const currentPost = reactive(props.post);
+    let comments = ref([]); 
+
     const currentUser = localStorage.getItem("user")
       ? JSON.parse(localStorage.getItem("user"))
       : null;
     let modifying = ref(false);
+
+    let userComment = reactive({
+      postId: currentPost.id,
+      userId: currentUser.id,
+      content: ''
+    });
 
     const getDateUtc = function() {
       const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',hour: '2-digit',minute:'2-digit',second:'2-digit' };
@@ -138,6 +154,18 @@ export default {
       modifying.value = false;
       PostDataService.update(currentPost.id, currentPost)
         .then(() => {})
+        .catch((e) => {
+          console.log(e);
+        });
+    };
+
+    const commenter = function() {
+      CommentService.create(currentPost.id, userComment)
+      .then(() => {
+          // vide  le contenu  du commentaire courrant
+          userComment.content = '';
+          retrieveComments();
+        })
         .catch((e) => {
           console.log(e);
         });
@@ -170,15 +198,37 @@ export default {
         });
     }
 
+    const retrieveComments = function() { // Fonction pour récupérer toutes les publications
+      CommentService.getAll(currentPost.id)
+        .then(response => {
+          comments.value = response.data;
+           //Pour mettre le dernier commentaire de l'utilisateur en dessous
+          comments.value = comments.value.sort(
+            function(a,b){
+              return new Date(a.createdAt) - new Date(b.createdAt);
+            });
+          console.log('reponse find all comments', comments.value);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    };
+
+    onMounted(retrieveComments); //Appelé après que l'instance à été monté
+
     return {
       currentPost,
+      userComment,
+      comments,
       deletePost,
       updatePost,
       modifying,
       isEditable,
       getDateUtc,
       reaction,
-      telecharge
+      telecharge,
+      commenter,
+      retrieveComments
     };
   },
 };
@@ -197,5 +247,27 @@ export default {
 .thumbs-up{
   color: green;
 }
+.comment-section{
+  border: 1px lightgray solid;
+  margin: 1rem;
+  border-radius: 16px;
+  padding: 0 12px;
+}
+textarea {
+   resize: none;
+   border: none;
+}
+textarea:focus-visible{
+  outline: none;
+}
+.comment-button{
+  background-color: transparent;
+  border: none;
+  color: green;
+}
+.comment-button:hover{
+  color: darkgreen;
+}
+
 </style>  
 

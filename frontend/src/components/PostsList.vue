@@ -8,7 +8,7 @@
       <h4>Liste des Publications</h4>
         <div class="post-list-container">
           <div
-            class="post-container my-2"
+            class="post-container my-4"
             v-for="post in posts"
             :key="post.id"
           >
@@ -37,7 +37,10 @@ export default {
       PostDataService.getAll()
         .then(response => {
           posts.value = response.data;
-          posts.value = posts.value.reverse(); //Pour mettre la dernière publication de l'utilisateur au dessus
+          posts.value = posts.value.sort(
+            function(a,b){
+              return new Date(b.createdAt) - new Date(a.createdAt);
+            }); //Pour mettre la dernière publication de l'utilisateur au dessus
           console.log('reponse find all', posts.value);
         })
         .catch(e => {
