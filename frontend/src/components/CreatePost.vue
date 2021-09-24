@@ -41,8 +41,9 @@ export default {
     let userPost = reactive({
       post: '',
       userId,
+      user,
       roles,
-      like: 0
+      
     });
 
     const savePost = function () {  // Rajouter la publication actuelle dans la liste de toutes les publications

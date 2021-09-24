@@ -71,7 +71,7 @@
     >
       <Comment @refreshComment="retrieveComments" :comment="comment" />
     </div>
-    <div class="comment-section d-flex flex-grow-1">
+    <div  v-if="!isEditable()" class="comment-section d-flex flex-grow-1">
       <textarea id="newComment" class="flex-grow-1" placeholder="Entrez votre commentaire ici." rows=1 v-model="userComment.content"></textarea>
       <button class="comment-button" @click="commenter">Envoyer</button>
     </div>

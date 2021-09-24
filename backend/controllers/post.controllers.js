@@ -18,7 +18,10 @@ exports.create = (req, res) => {
       userId: req.body.userId,
       roles: req.body.roles,
       post: req.body.post,
-      like: 0
+      like: 0,
+      dislike: 0,
+     
+      
     };
   
     // Enregistrer la publication dans la base de données
