@@ -1,4 +1,5 @@
 import http from "../http-common";
+import { authHeader } from "../services/auth-header"
 
 class UploadFilesService {
   upload(file, onUploadProgress) {
@@ -6,7 +7,7 @@ class UploadFilesService {
 
     formData.append("file", file);
 
-    return http.post("/upload", formData, {
+    return http.post("/upload",{headers: authHeader()}, formData, {
       headers: {
         "Content-Type": "multipart/form-data"
       },
@@ -15,7 +16,7 @@ class UploadFilesService {
   }
 
   getFiles() {
-    return http.get("/files");
+    return http.get("/files", {headers: authHeader()});
   }
 }
 

@@ -40,7 +40,7 @@
         </li>
       </div>
     </nav>
-
+  
     <div class="container py-4">
       <router-view />
     </div>
@@ -50,6 +50,7 @@
 <script>
 
 export default {
+   
   computed: {   // La fonction est mise en cache en fonction de leurs dépendances réactive
     currentUser() {
       return this.$store.state.auth.user; //Chaque modification apportée /mise à jour DOM déclenchées.

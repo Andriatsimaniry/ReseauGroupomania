@@ -16,9 +16,9 @@
          <button
         type="submit"
         class="btn btn-success mr-2 btn-sm"
-        @click="telecharge"
+        @click="UploadImage"
       >
-        Ajouter un Fichier
+        <upload-image>Ajouter une image</upload-image>
       </button>
         <button @click="savePost" :disabled="userPost.post == ''" class="btn btn-success">Publier</button>
         
@@ -30,6 +30,7 @@
 <script>
 import { reactive } from '@vue/reactivity';
 import PostDataService from "../services/PostDataService";
+import UploadImage from "./UploadImage";
 
 export default {
   name: "create-post",
@@ -37,12 +38,15 @@ export default {
     const user = localStorage.getItem('user');
     const userId = user ? JSON.parse(user).id : null;
     const roles = user ? JSON.parse(user).roles.toString() : '';
+
     
     let userPost = reactive({
       post: '',
       userId,
       user,
       roles,
+      UploadImage
+      
       
     });
 
@@ -56,11 +60,16 @@ export default {
         .catch((e) => {
           console.log(e);
         });
+      
+      
+        
     };
 
     return {  // Pour pouvoir accessible au template 
       savePost,
-      userPost
+      userPost,
+      UploadImage
+      
     };
   },
 };

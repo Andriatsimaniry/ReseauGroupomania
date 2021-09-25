@@ -72,6 +72,8 @@ export default {
       progress: 0,
       message: "",
       imageInfos: [],
+      
+      
     };
   },
   methods: {

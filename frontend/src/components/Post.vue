@@ -22,16 +22,18 @@
     </div>
 
     <div class="d-flex buttons-container align-items-center p-2 justify-content-end">
-      <font-awesome-icon  v-if="!isEditable()" class="mr-2 thumbs-up" icon="thumbs-up" @click="reaction(1)"/>
-      <font-awesome-icon  v-if="!isEditable()" class="mr-2 thumbs-down" icon="thumbs-down" @click="reaction(-1)"/>
+      <font-awesome-icon  v-if="!isEditable()" class="mr-3 thumbs-up" icon="thumbs-up" @click="reaction(1)"/>
+      <font-awesome-icon  v-if="!isEditable()" class="mr-3 thumbs-down" icon="thumbs-down" @click="reaction(-1)"/>
       <button
         v-if="modifying && isEditable()"
         type="submit"
         class="btn btn-success mr-2 btn-sm"
-        @click="telecharge"
+        @click="UploadImage"
       >
-        Ajouter un Fichier
+      <upload-image>Ajouter une image</upload-image>
+        
       </button>
+      
       <button
         class="btn btn-danger mr-2 btn-sm"
         @click="deletePost"
@@ -71,7 +73,7 @@
     >
       <Comment @refreshComment="retrieveComments" :comment="comment" />
     </div>
-    <div  v-if="!isEditable()" class="comment-section d-flex flex-grow-1">
+    <div class="comment-section d-flex flex-grow-1">
       <textarea id="newComment" class="flex-grow-1" placeholder="Entrez votre commentaire ici." rows=1 v-model="userComment.content"></textarea>
       <button class="comment-button" @click="commenter">Envoyer</button>
     </div>
@@ -83,12 +85,16 @@ import { reactive, ref, onMounted } from "vue";
 import PostDataService from "../services/PostDataService";
 import CommentService from "../services/comment.service";
 import Comment from "./Comment.vue";
+import UploadImage from "./UploadImage";
+
 
 export default {
   name: "post",
   components: {
-    Comment
+    Comment,
+    UploadImage
   },
+  
   props: {
     post: {
       createdAt: {
@@ -113,6 +119,10 @@ export default {
       },
       updatedAt: {
         type: String,
+        required: true,
+      },
+       upload: {
+        type: ImageData,
         required: true,
       },
     },
@@ -190,8 +200,8 @@ export default {
         });
     }
 
-    const telecharge = function() {
-      PostDataService.telecharge(currentPost.id, currentPost)
+    const UploadImage = function() {
+      PostDataService.UploadImage(currentPost.id, currentPost)
         .then(() => {})
         .catch((e) => {
           console.log(e);
@@ -226,7 +236,7 @@ export default {
       isEditable,
       getDateUtc,
       reaction,
-      telecharge,
+      UploadImage,
       commenter,
       retrieveComments
     };
