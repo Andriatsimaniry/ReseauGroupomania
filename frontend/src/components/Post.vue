@@ -139,6 +139,7 @@ export default {
     let userComment = reactive({
       postId: currentPost.id,
       userId: currentUser.id,
+      username: currentUser.id,
       content: ''
     });
 

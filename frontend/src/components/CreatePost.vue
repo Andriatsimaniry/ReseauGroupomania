@@ -13,12 +13,13 @@
       ></textarea>
       <div class="d-flex justify-content-end">
         <!-- on écoute l'évenement click qui est emis la publication / désactiver si c'est vide -->
-         <button
+          <button
+        
         type="submit"
         class="btn btn-success mr-2 btn-sm"
         @click="UploadImage"
       >
-        <upload-image>Ajouter une image</upload-image>
+      <upload-image>Ajouter une image</upload-image>
       </button>
         <button @click="savePost" :disabled="userPost.post == ''" class="btn btn-success">Publier</button>
         
@@ -34,6 +35,9 @@ import UploadImage from "./UploadImage";
 
 export default {
   name: "create-post",
+   components: {
+    UploadImage
+  },
   setup(props, context) {
     const user = localStorage.getItem('user');
     const userId = user ? JSON.parse(user).id : null;
@@ -45,7 +49,7 @@ export default {
       userId,
       user,
       roles,
-      UploadImage
+      
       
       
     });
