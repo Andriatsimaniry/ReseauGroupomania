@@ -18,7 +18,7 @@
           :disabled="!currentImage"
           @click="upload"
         >
-          Upload
+          Télécharger
         </button>
       </div>
     </div>
@@ -97,7 +97,7 @@ export default {
         })
         .catch((err) => {
           this.progress = 0;
-          this.message = "Could not upload the image! " + err;
+          this.message = "Impossible de télécharger l'image ! " + err;
           this.currentImage = undefined;
         });
     },
