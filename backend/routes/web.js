@@ -9,7 +9,7 @@ let routes = (app) => {
 
   router.post("/upload", upload.single("file"), uploadController.uploadFiles); // pour appeler le contrôleur de téléchargement
 
-  return app.use("/", router);
+  return app.use("/api", router);
 };
 
 module.exports = routes;

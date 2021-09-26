@@ -1,24 +1,12 @@
 const express = require("express");
+const cors = require("cors");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
-const app = express();
+const app=express().use('*', cors());
 const initRoutes = require("./routes/web");
 
 
 global.__basedir = __dirname;
-//Résolution des Cors
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, DELETE, PATCH, OPTIONS"
-  );
-  next();
-});
 
 //  Pour proteger l'application contre les attaques
 // content-Security-Policy,x-powered-by,Strict-Transport-Security,
@@ -83,6 +71,8 @@ require("./routes/post.routes")(app);
 require("./routes/user.routes")(app);
 require("./routes/comment.routes")(app);
 require("./routes/web")(app);
+
+app.use('/images', express.static('resources/static/assets/tmp'));
 
 // écouter sur le port 8080 pour les requêtes entrantes.
 const PORT = process.env.PORT || 8080;

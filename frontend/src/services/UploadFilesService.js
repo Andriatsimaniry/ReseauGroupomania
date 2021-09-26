@@ -4,13 +4,12 @@ import { authHeader } from "../services/auth-header"
 class UploadFilesService {
   upload(file, onUploadProgress) {
     let formData = new FormData();
+    let headers = authHeader();
+    headers['Content-Type'] = 'multipart/form-data';
 
     formData.append("file", file);
 
-    return http.post("/upload",{headers: authHeader()}, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data"
-      },
+    return http.post("/upload", formData, headers, {
       onUploadProgress
     });
   }

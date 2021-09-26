@@ -9,7 +9,10 @@
     <div class="post-footer d-flex justify-content-between px-2 py-1">
     
     </div>
-    <div class="d-flex p-2">
+    <div class="p-2">
+      <div v-if="currentPost.img" class="w-100 mb-2">
+        <img :src="currentPost.img"/>
+      </div>
       <div class="w-100" v-if="modifying">
         <textarea
           rows="5"
@@ -24,15 +27,6 @@
     <div class="d-flex buttons-container align-items-center p-2 justify-content-end">
       <font-awesome-icon  v-if="!isEditable()" class="mr-3 thumbs-up" icon="thumbs-up" @click="reaction(1)"/>
       <font-awesome-icon  v-if="!isEditable()" class="mr-3 thumbs-down" icon="thumbs-down" @click="reaction(-1)"/>
-      <button
-        v-if="modifying && isEditable()"
-        type="submit"
-        class="btn btn-success mr-2 btn-sm"
-        @click="UploadImage"
-      >
-      <upload-image>Ajouter une image</upload-image>
-        
-      </button>
       
       <button
         class="btn btn-danger mr-2 btn-sm"
@@ -85,14 +79,12 @@ import { reactive, ref, onMounted } from "vue";
 import PostDataService from "../services/PostDataService";
 import CommentService from "../services/comment.service";
 import Comment from "./Comment.vue";
-import UploadImage from "./UploadImage";
 
 
 export default {
   name: "post",
   components: {
-    Comment,
-    UploadImage
+    Comment
   },
   
   props: {
@@ -102,6 +94,10 @@ export default {
         required: true,
       },
       post: {
+        type: String,
+        required: true,
+      },
+      img: {
         type: String,
         required: true,
       },
@@ -201,14 +197,6 @@ export default {
         });
     }
 
-    const UploadImage = function() {
-      PostDataService.UploadImage(currentPost.id, currentPost)
-        .then(() => {})
-        .catch((e) => {
-          console.log(e);
-        });
-    }
-
     const retrieveComments = function() { // Fonction pour récupérer toutes les publications
       CommentService.getAll(currentPost.id)
         .then(response => {
@@ -237,7 +225,6 @@ export default {
       isEditable,
       getDateUtc,
       reaction,
-      UploadImage,
       commenter,
       retrieveComments
     };
@@ -280,5 +267,8 @@ textarea:focus-visible{
   color: darkgreen;
 }
 
+img {
+  max-width: 100%;
+}
 </style>  
 

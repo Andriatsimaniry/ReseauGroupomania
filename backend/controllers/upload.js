@@ -17,13 +17,14 @@ const uploadFiles = async (req, res) => {
       data: fs.readFileSync( //pour lire les données
         __basedir + "/resources/static/assets/uploads/" + req.file.filename
       ),
+      postId: req.body.postId
     }).then((image) => {
       fs.writeFileSync( //pour écrire des données 
         __basedir + "/resources/static/assets/tmp/" + image.name, //écrire les données images dans le dossier tmp
         image.data
       );
 
-      return res.send(`le fichier a bien été télécharger.`);
+      return res.send({imgUrl: "http://localhost:8080" + "/images/" + image.name});
     });
   } catch (error) {
     console.log(error);
@@ -31,6 +32,7 @@ const uploadFiles = async (req, res) => {
   }
 };
 
+
 module.exports = {
-  uploadFiles,
+  uploadFiles
 };

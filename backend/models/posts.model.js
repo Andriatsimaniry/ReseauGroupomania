@@ -1,5 +1,4 @@
 // Modèle Sequelize represente la table des Posts dans la base de données
-const { DataTypes } = require("sequelize");
 const { user } = require(".");
 module.exports = (sequelize, Sequelize) => {
     const Post = sequelize.define("post", {
@@ -9,12 +8,8 @@ module.exports = (sequelize, Sequelize) => {
         defaultValue: Sequelize.UUIDV4,
         allowNull: false
       },
-      username: {  
-        type: Sequelize.STRING, 
-        name: user, 
-      },  
       post: {
-        type: DataTypes.TEXT('long'),
+        type: Sequelize.TEXT('long'),
       },
       like: {  
         type: Sequelize.INTEGER,
@@ -24,9 +19,9 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.INTEGER,
         default:0,
       },
-      
-      
-      
+      img: {  
+        type: Sequelize.STRING
+      } 
     });
 
   
