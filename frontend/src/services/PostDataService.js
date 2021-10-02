@@ -24,8 +24,8 @@ class PostDataService {
     return http.delete(`/posts/${id}`, {headers: authHeader()});
   }
 
-  reaction(id, data, like) {
-    return http.put(`/posts/${id}/like`, {...data, like: like}, {headers: authHeader()});
+  PostLike(id, data, like) {
+    return http.post(`/posts/${id}/likes`, {...data, PostLike: like}, {headers: authHeader()});
   }
 }
 
