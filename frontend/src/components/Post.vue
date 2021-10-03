@@ -21,22 +21,21 @@
         </div>
         <div v-if="!modifying">{{ currentPost.post }}</div>
       </div>
-
-      <div id="PostLike"  v-if="!isEditable()"
-        class="
+        <div v-if="!isEditable()" class="
           d-flex
           buttons-container
           align-items-center
           p-2
           justify-content-end
-        "
-      >
-        v-for="PostLike in PostLikes"
-          :key="PostLike.id"
+        " 
         >
-        <PostLike @refreshPostLike="retrievePostLikes" :PostLike="PostLike" />
-        />
-
+      <font-awesome-icon   class="mr-2 thumbs-up" icon="thumbs-up"  @click ="increment">  
+      </font-awesome-icon> ({{ counter }})
+      <font-awesome-icon   class="mr-2 thumbs-down" icon="thumbs-down" @click="increment">
+      </font-awesome-icon>  ({{ counter }})
+        
+      </div>
+    </div>
         <div>
           <button
             class="btn btn-danger mr-2 btn-sm"
@@ -88,8 +87,7 @@
           <button class="comment-button" @click="commenter">Envoyer</button>
         </div>
       </div>
-    </div>
-  </div>
+  
 </template>
 
 <script>
@@ -97,16 +95,15 @@ import { reactive, ref, onMounted } from "vue";
 import PostDataService from "../services/PostDataService";
 import CommentService from "../services/comment.service";
 import Comment from "./Comment.vue";
-import PostLike from "./PostLike.vue";
+
 
 export default {
   name: "post",
   components: {
     Comment,
-    PostLike,
-     
+    
   },
-  
+
   props: {
     post: {
       createdAt: {
@@ -141,7 +138,10 @@ export default {
         type: ImageData,
         required: true,
       },
-      
+     counter: {
+       type: Number,      
+        default : 0,
+        },
     },
   },
   setup(props, context) {
@@ -219,8 +219,8 @@ export default {
       return isEditable;
     };
 
-    const PostLike = function (PostLike) {
-      PostDataService.PostLike(currentPost.id, currentPost, (PostLike += 1))
+    const increment = function () {
+      PostDataService.increment(currentPost.id, currentPost, increment.counter++)
         .then(() => {})
         .catch((e) => {
           console.log(e);
@@ -254,9 +254,9 @@ export default {
       modifying,
       isEditable,
       getDateUtc,
-      PostLike,
       commenter,
       retrieveComments,
+      increment
     };
   },
 };
@@ -271,10 +271,10 @@ export default {
   background-color: #ffd7d7;
 }
 .thumbs-down {
-  color: gray;
+  color: red;
 }
 .thumbs-up {
-  color: gray;
+  color: blue;
 }
 .comment-section {
   border: 1px lightgray solid;
