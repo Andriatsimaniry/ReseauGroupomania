@@ -25,14 +25,14 @@
           d-flex
           buttons-container
           align-items-center
-          p-2
+          p-0
           justify-content-end
         " 
         >
-      <font-awesome-icon   class="mr-2 thumbs-up" icon="thumbs-up"  @click ="increment">  
-      </font-awesome-icon> ({{ counter }})
-      <font-awesome-icon   class="mr-2 thumbs-down" icon="thumbs-down" @click="increment">
-      </font-awesome-icon>  ({{ counter }})
+      <font-awesome-icon   class="mr-1 thumbs-up" icon="thumbs-up"  @click ="like">  
+      </font-awesome-icon>{{ currentPost.likes?.length }}
+      <font-awesome-icon   class="mr-1 thumbs-down" icon="thumbs-down" @click="dislike">
+      </font-awesome-icon>{{ currentPost.dislikes?.length }}
         
       </div>
     </div>
@@ -138,11 +138,15 @@ export default {
         type: ImageData,
         required: true,
       },
-     counter: {
-       type: Number,      
-        default : 0,
-        },
-    },
+     likes: {
+        type: Array,
+        required: true
+     },
+     dislikes: {
+        type: Array,
+        required: true
+     }
+    }
   },
   setup(props, context) {
     const currentPost = reactive(props.post);
@@ -219,12 +223,38 @@ export default {
       return isEditable;
     };
 
-    const increment = function () {
-      PostDataService.increment(currentPost.id, currentPost, increment.counter++)
+    const like = function () {
+      // On cherche si le current user est deja dans les likes
+      const indexOfUserId = currentPost.likes.indexOf(currentUser.id);
+      // S'il y est on le supprime des likes
+      if (indexOfUserId > -1) {
+        currentPost.likes.splice(indexOfUserId, 1);
+      } else {
+        // Sinon on le rajoute
+        currentPost.likes.push(currentUser.id);
+      }
+      PostDataService.update(currentPost.id, currentPost)
         .then(() => {})
         .catch((e) => {
           console.log(e);
-        });
+      });
+    };
+
+    const dislike = function () {
+      // On cherche si le current user est deja dans les dislikes
+      const indexOfUserId = currentPost.dislikes.indexOf(currentUser.id);
+      // S'il y est on le supprime des dislikes
+      if (indexOfUserId > -1) {
+        currentPost.dislikes.splice(indexOfUserId, 1);
+      } else {
+        // Sinon on le rajoute
+        currentPost.dislikes.push(currentUser.id);
+      }
+      PostDataService.update(currentPost.id, currentPost)
+        .then(() => {})
+        .catch((e) => {
+          console.log(e);
+      });
     };
 
     const retrieveComments = function () {
@@ -256,7 +286,8 @@ export default {
       getDateUtc,
       commenter,
       retrieveComments,
-      increment
+      like,
+      dislike
     };
   },
 };
@@ -301,4 +332,5 @@ textarea:focus-visible {
 img {
   max-width: 100%;
 }
+
 </style>  

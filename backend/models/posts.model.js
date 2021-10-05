@@ -11,13 +11,23 @@ module.exports = (sequelize, Sequelize) => {
       post: {
         type: Sequelize.TEXT('long'),
       },
-      like: {  
-        type: Sequelize.INTEGER,
-        default:0,  
+      likes: {
+        type: Sequelize.STRING,
+        get() {
+            return this.getDataValue('likes') ? this.getDataValue('likes').split(';') : []
+        },
+        set(val) {
+           this.setDataValue('likes',val.join(';'));
+        }
       },  
-      dislike: {
-        type: Sequelize.INTEGER,
-        default:0,
+      dislikes: {
+        type: Sequelize.STRING,
+        get() {
+            return this.getDataValue('dislikes') ? this.getDataValue('dislikes').split(';') : []
+        },
+        set(val) {
+           this.setDataValue('dislikes',val.join(';'));
+        }
       },
       img: {  
         type: Sequelize.STRING
