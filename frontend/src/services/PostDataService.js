@@ -1,4 +1,4 @@
-// Opération CRUD Post
+// des méthodes pour envoyer des requêtes HTTP à l'Apis.
 
 import http from "../http-common";
 import { authHeader } from "../services/auth-header"
@@ -24,9 +24,6 @@ class PostDataService {
     return http.delete(`/posts/${id}`, {headers: authHeader()});
   }
 
-  increment(id, data, like) {
-    return http.post(`/posts/${id}/likes`, {...data, increment: like}, {headers: authHeader()});
-  }
 }
 
 export default new PostDataService();

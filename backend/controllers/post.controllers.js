@@ -41,7 +41,8 @@ exports.findAll = (req, res) => {
     const post = req.query.post;
     var condition = post ? { post: { [Op.like]: `%${post}%` } } : null;
   
-    Post.findAll({ include: [
+    Post.findAll
+    ({ include: [
         {
           model: db.user
         }, 

@@ -1,4 +1,4 @@
-// 2 fonctions principales pour l'authentification
+// Gérer les actions d'inscription et de connexion
 const db = require("../models");
 const config = require("../config/auth.config");
 const User = db.user;
@@ -70,7 +70,7 @@ exports.signin = (req, res) => {
 
       // générer un jeton en utilisant jsonwebtoken
       var token = jwt.sign({ id: user.id }, config.secret, {
-        expiresIn: '1h' // 1 heure
+        expiresIn: 3600, // 1 heure
       });
 
       var authorities = [];

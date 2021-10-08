@@ -1,3 +1,4 @@
+// Vérifie le nom d'utilisateur ou l'e-mail en double
 const db = require("../models");
 const ROLES = db.ROLES;
 const User = db.user;

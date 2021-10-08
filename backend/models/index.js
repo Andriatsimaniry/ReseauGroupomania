@@ -28,22 +28,24 @@ db.images = require("./image.model.js")(sequelize, Sequelize);
 db.comments = require("./comment.model.js")(sequelize, Sequelize);
 
 // les rôles est une relation plusieurs-à-plusieurs
-// le modèle utilisateur peut appartenir à plusieurs Rôles et vice versa.
+
 db.role.belongsToMany(db.user, {
   through: "user_roles",
   foreignKey: "roleId",
   otherKey: "userId"
 });
-db.user.belongsToMany(db.role, {
-  through: "user_roles",
-  foreignKey: "userId",
+db.user.belongsToMany(db.role, { //Le modèle utilisateur peut appartenir à plusieurs Rôles et vice versa
+  through: "user_roles", //Une nouvelle table  user_roles, connexion entre les utilisateurs et la table des rôles
+  foreignKey: "userId", //clé primaire en tant que clé étrangère
   otherKey: "roleId"
 });
-db.comments.belongsTo(db.posts);
+db.comments.belongsTo(db.posts); 
 db.comments.belongsTo(db.user);
 db.posts.hasMany(db.comments);
 db.posts.belongsTo(db.user);
 db.user.hasMany(db.posts);
 db.user.hasMany(db.comments);
+
+db.ROLES = ["user", "admin"];
 
 module.exports = db;

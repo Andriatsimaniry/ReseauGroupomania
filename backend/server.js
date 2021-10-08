@@ -1,3 +1,4 @@
+// Importer et initialiser les modules et routes nécessaire,écouter les connexions
 const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
@@ -38,7 +39,7 @@ app.get("/", (req, res) => {
 const db = require("./models");
 const Role = db.role;
 
-// initial() la fonction qui crée 3 lignes dans la base de donnée
+// initial() la fonction qui crée 2 lignes dans la base de donnée
 db.sequelize.sync().then(() => {
   initial();
 });
@@ -48,7 +49,7 @@ function initial() {
     where: {
       id: 1
     },
-    defaults: { // set the default properties if it doesn't exist
+    defaults: { // définir les propriétés par défaut si elles n'existent pas
       id: 1,
       name: "user"
     }
@@ -56,10 +57,10 @@ function initial() {
 
   Role.findOrCreate({
     where: {
-      id: 3
+      id: 2
     },
-    defaults: { // set the default properties if it doesn't exist
-      id: 3,
+    defaults: { // définir les propriétés par défaut si elles n'existent pas
+      id: 2,
       name: "admin"
     }
   });

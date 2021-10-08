@@ -1,5 +1,5 @@
 
-// premiere partie : Pour l'authentification  
+// Inscription et connexion POST  
 // Publier /api/auth/signup - Publier /api/auth/signin
 
 const { verifySignUp } = require("../middleware");

@@ -1,3 +1,5 @@
+// définit les routes pour chaque composant.
+
 import { createWebHistory, createRouter } from "vue-router";
 // CreatWebHistory pour passer de l'utilisation du hachage au history mode dans le navigateur,
 // en utilisant l'API d'historique HTML5.

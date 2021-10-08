@@ -1,3 +1,4 @@
+//  initialise axios avec l'URL de base HTTP et les en-têtes.
 import axios from "axios";
 
 export default axios.create({

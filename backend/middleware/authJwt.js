@@ -1,4 +1,4 @@
-// Pour traiter l'authetification et l'autorisation
+// Vérifie le jéton, vérifier les rôles d'utilisateur dans la base des données
 const jwt = require("jsonwebtoken");
 const config = require("../config/auth.config.js");
 const db = require("../models");

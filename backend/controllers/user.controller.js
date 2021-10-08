@@ -1,5 +1,14 @@
+// Renvoi le contenu public et protégé
 const db = require("../models");
 const User = db.user;
+
+exports.userBoard = (req, res) => {
+  res.status(200).send("Contenu Utilisateur.");
+};
+
+exports.adminBoard = (req, res) => {
+  res.status(200).send("Contenu Admin.");
+};
 
 // Récuperer toutes les utilisateurs de la base de données
 exports.findAll = (req, res) => {
