@@ -1,4 +1,3 @@
-
 // Définir le modèle Sequelize de l'utilisateur dans la base de donnée Mysql
 // et de permettre Sequelize d'écrire les fonctions CRUD
 module.exports = (sequelize, Sequelize) => {
@@ -7,7 +6,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.UUID,
       primaryKey: true,
       defaultValue: Sequelize.UUIDV4,
-      allowNull: false
+      allowNull: false,
     },
     username: {
       type: Sequelize.STRING,
