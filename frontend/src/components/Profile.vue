@@ -5,12 +5,12 @@
       <h3>
         <strong>Nom d'utilisateur : {{ currentUser.username }}</strong>
       </h3>
+      <input class="ml-4" name="username" v-model="currentUser.username" />
     </header>
     <div>
       <strong>
-        <label for="username">Email</label>
+        <label for="username">Email: {{ currentUser.email }}</label>
       </strong>
-      <input class="ml-4" name="username" v-model="currentUser.email" />
     </div>
 
     <div class="d-flex mt-4">
@@ -53,12 +53,12 @@ export default {
         });
     },
 
-  // l'Utilisateur peut modifier son compte
+    // l'Utilisateur peut modifier son compte
     modifyUser() {
       UserDataService.update(this.currentUser.id, this.currentUser)
         .then(() => {
           this.$store.dispatch("auth/update", this.currentUser);
-          localStorage.setItem("user", JSON.stringify(this.currentUser));
+          localStorage.setItem("users", JSON.stringify(this.currentUser));
           this.$router.push("/posts");
         })
         .catch((e) => {

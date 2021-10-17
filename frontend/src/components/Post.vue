@@ -1,3 +1,4 @@
+<!-- Publication -->
 <template>
   <div class="post">
     <div class="post-header d-flex justify-content-between px-2 py-1">
@@ -20,74 +21,85 @@
           />
         </div>
         <div v-if="!modifying">{{ currentPost.post }}</div>
-      </div>
-        <div v-if="!isEditable()" class="
-          d-flex
-          buttons-container
-          align-items-center
-          p-0
-          justify-content-end
-        " 
+
+        <div
+          v-if="!isEditable()"
+          class="
+            d-flex
+            buttons-container
+            align-items-center
+            p-0
+            justify-content-end
+          "
         >
-      <font-awesome-icon   class="mr-1 thumbs-up" icon="thumbs-up"  @click ="like">  
-      </font-awesome-icon>{{ currentPost.likes?.length }}
-      <font-awesome-icon   class="mr-1 thumbs-down" icon="thumbs-down" @click="dislike">
-      </font-awesome-icon>{{ currentPost.dislikes?.length }}
-        
+          <font-awesome-icon
+            class="mr-1 thumbs-up"
+            icon="thumbs-up"
+            @click="like"
+          >
+          </font-awesome-icon
+          >{{ currentPost.likes?.length }}
+          <font-awesome-icon
+            class="mr-1 thumbs-down"
+            icon="thumbs-down"
+            @click="dislike"
+          >
+          </font-awesome-icon
+          >{{ currentPost.dislikes?.length }}
+        </div>
       </div>
     </div>
-        <div>
-          <button
-            class="btn btn-danger mr-2 btn-sm"
-            @click="deletePost"
-            v-if="isEditable()"
-          >
-            Supprimer
-          </button>
-          <button
-            v-if="!modifying && isEditable()"
-            type="submit"
-            class="btn btn-success btn-sm"
-            @click="modifying = true"
-          >
-            Modifier
-          </button>
-          <button
-            v-if="modifying && isEditable()"
-            type="submit"
-            class="btn btn-success mr-2 btn-sm"
-            @click="updatePost"
-          >
-            Confirmer
-          </button>
-          <button
-            v-if="modifying && isEditable()"
-            type="submit"
-            class="btn btn-danger btn-sm"
-            @click="modifying = false"
-          >
-            Annuler
-          </button>
-        </div>
-        <div
-          class="comment-container my-1 mx-3"
-          v-for="comment in comments"
-          :key="comment.id"
-        >
-          <Comment @refreshComment="retrieveComments" :comment="comment" />
-        </div>
-        <div class="comment-section d-flex flex-grow-1">
-          <textarea
-            id="newComment"
-            class="flex-grow-1"
-            placeholder="Entrez votre commentaire ici."
-            rows="1"
-            v-model="userComment.content"
-          ></textarea>
-          <button class="comment-button" @click="commenter">Envoyer</button>
-        </div>
-      </div>
-  
+    <div>
+      <button
+        class="btn btn-danger mr-2 btn-sm"
+        @click="deletePost"
+        v-if="isEditable()"
+      >
+        Supprimer
+      </button>
+      <button
+        v-if="!modifying && isEditable()"
+        type="submit"
+        class="btn btn-success btn-sm"
+        @click="modifying = true"
+      >
+        Modifier
+      </button>
+      <button
+        v-if="modifying && isEditable()"
+        type="submit"
+        class="btn btn-success mr-2 btn-sm"
+        @click="updatePost"
+      >
+        Confirmer
+      </button>
+      <button
+        v-if="modifying && isEditable()"
+        type="submit"
+        class="btn btn-danger btn-sm"
+        @click="modifying = false"
+      >
+        Annuler
+      </button>
+    </div>
+    <div
+      class="comment-container my-1 mx-3"
+      v-for="comment in comments"
+      :key="comment.id"
+    >
+      <Comment @refreshComment="retrieveComments" :comment="comment" />
+    </div>
+    <div class="comment-section d-flex flex-grow-1">
+      <textarea
+        id="newComment"
+        class="flex-grow-1"
+        placeholder="Entrez votre commentaire ici."
+        rows="1"
+        v-model="userComment.content"
+      ></textarea>
+      <button class="comment-button" @click="commenter">Envoyer</button>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -96,12 +108,10 @@ import PostDataService from "../services/PostDataService";
 import CommentService from "../services/comment.service";
 import Comment from "./Comment.vue";
 
-
 export default {
   name: "post",
   components: {
     Comment,
-    
   },
 
   props: {
@@ -138,15 +148,15 @@ export default {
         type: ImageData,
         required: true,
       },
-     likes: {
+      likes: {
         type: Array,
-        required: true
-     },
-     dislikes: {
+        required: true,
+      },
+      dislikes: {
         type: Array,
-        required: true
-     }
-    }
+        required: true,
+      },
+    },
   },
   setup(props, context) {
     const currentPost = reactive(props.post);
@@ -237,7 +247,7 @@ export default {
         .then(() => {})
         .catch((e) => {
           console.log(e);
-      });
+        });
     };
 
     const dislike = function () {
@@ -254,7 +264,7 @@ export default {
         .then(() => {})
         .catch((e) => {
           console.log(e);
-      });
+        });
     };
 
     const retrieveComments = function () {
@@ -287,7 +297,7 @@ export default {
       commenter,
       retrieveComments,
       like,
-      dislike
+      dislike,
     };
   },
 };
@@ -332,5 +342,4 @@ textarea:focus-visible {
 img {
   max-width: 100%;
 }
-
 </style>  

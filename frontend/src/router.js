@@ -3,7 +3,7 @@
 import { createWebHistory, createRouter } from "vue-router";
 // CreatWebHistory pour passer de l'utilisation du hachage au history mode dans le navigateur,
 // en utilisant l'API d'historique HTML5.
- 
+
 import Login from "./components/Login.vue";
 import Register from "./components/Register.vue";
 import UserList from "./components/UserList.vue";
@@ -22,20 +22,20 @@ const routes = [
   {
     path: "/profile",
     name: "profile",
-  
+
     component: Profile,
   },
   {
     path: "/users",
     name: "users",
     beforeEnter(to, from, next) {
-      if(isAdmin()) {
+      if (isAdmin()) {
         next();
       } else {
         next(from.path);
       }
     },
-    
+
     component: UserList,
   },
 
@@ -68,7 +68,7 @@ router.beforeEach((to, from, next) => {
   const authRequired = !publicPages.includes(to.path);
   const loggedIn = localStorage.getItem("user");
 
-// rediriger vers la page de connexion
+  // rediriger vers la page de connexion
   if (authRequired && !loggedIn) {
     next("/login");
   } else {

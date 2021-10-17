@@ -7,24 +7,30 @@ const uploadFiles = async (req, res) => {
   try {
     console.log(req.file);
 
-    if (req.file == undefined) { //vérifier le téléchargement du fichier
+    if (req.file == undefined) {
+      //vérifier le téléchargement du fichier
       return res.send(`vous dever choisir un fichier.`);
     }
 
-    Image.create({ // modèle sequelize pour enregistrer un objet image
+    Image.create({
+      // modèle sequelize pour enregistrer un objet image
       type: req.file.mimetype,
       name: req.file.originalname,
-      data: fs.readFileSync( //pour lire les données
+      data: fs.readFileSync(
+        //pour lire les données
         __basedir + "/resources/static/assets/uploads/" + req.file.filename
       ),
-      postId: req.body.postId
+      postId: req.body.postId,
     }).then((image) => {
-      fs.writeFileSync( //pour écrire des données 
+      fs.writeFileSync(
+        //pour écrire des données
         __basedir + "/resources/static/assets/tmp/" + image.name, //écrire les données images dans le dossier tmp
         image.data
       );
 
-      return res.send({imgUrl: "http://localhost:8080" + "/images/" + image.name});
+      return res.send({
+        imgUrl: "http://localhost:8080" + "/images/" + image.name,
+      });
     });
   } catch (error) {
     console.log(error);
@@ -32,7 +38,6 @@ const uploadFiles = async (req, res) => {
   }
 };
 
-
 module.exports = {
-  uploadFiles
+  uploadFiles,
 };

@@ -7,9 +7,17 @@ import {
   faSignInAlt,
   faSignOutAlt,
   faThumbsUp,
-  faThumbsDown
+  faThumbsDown,
 } from "@fortawesome/free-solid-svg-icons";
 
-library.add(faHome, faUser, faUserPlus, faSignInAlt, faSignOutAlt, faThumbsUp, faThumbsDown);
+library.add(
+  faHome,
+  faUser,
+  faUserPlus,
+  faSignInAlt,
+  faSignOutAlt,
+  faThumbsUp,
+  faThumbsDown
+);
 
 export { FontAwesomeIcon };

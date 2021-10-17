@@ -5,5 +5,5 @@ const home = (req, res) => {
 };
 
 module.exports = {
-  getHome: home
+  getHome: home,
 };

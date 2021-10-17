@@ -1,81 +1,79 @@
-<!-- Liste de toutes les Publications -->
+<!-- Commentaire -->
 <template>
- 
-            <div class="comment">
-              <div class="comment-header d-flex justify-content-between px-2 py-1">
-                <span>
-                  <strong>{{ currentComment.user.username }}</strong>
-                </span>
-                <span class="date-creation">Créé le : {{ getDateUtc(currentComment.createdAt) }}</span>
-              </div>
+  <div class="comment">
+    <div class="comment-header d-flex justify-content-between px-2 py-1">
+      <span>
+        <strong>{{ currentComment.user.username }}</strong>
+      </span>
+      <span class="date-creation"
+        >Créé le : {{ getDateUtc(currentComment.createdAt) }}</span
+      >
+    </div>
 
-              <div class="d-flex p-2">
-                <div class="w-100" v-if="modifying">
-                  <textarea
-                    rows="5"
-                    class="w-100"
-                    name="modifiedText"
-                    v-model="currentComment.content"
-                  />
-                </div>
-                <div v-if="!modifying">{{ currentComment.content }}</div>
-              </div>
+    <div class="d-flex p-2">
+      <div class="w-100" v-if="modifying">
+        <textarea
+          rows="5"
+          class="w-100"
+          name="modifiedText"
+          v-model="currentComment.content"
+        />
+      </div>
+      <div v-if="!modifying">{{ currentComment.content }}</div>
+    </div>
 
-              <div class="d-flex buttons-container align-items-center p-2 justify-content-end">
-                <font-awesome-icon  v-if="!isEditable(currentComment.user)" class="mr-2 thumbs-up" icon="thumbs-up" @click="reaction(1)"/>
-                <font-awesome-icon  v-if="!isEditable(currentComment.user)" class="mr-2 thumbs-down" icon="thumbs-down" @click="reaction(-1)"/>
-                <button
-                  v-if="modifying && isEditable(currentComment.user)"
-                  type="submit"
-                  class="btn btn-success mr-2 btn-sm"
-                  @click="telecharge"
-                >
-                  Ajouter un Fichier
-                </button>
-                <button
-                  class="btn btn-danger mr-2 btn-sm"
-                  @click="deleteComment"
-                  v-if="isEditable(currentComment.user)"
-                >
-                  Supprimer
-                </button>
-                <button
-                  v-if="!modifying && isEditable(currentComment.user)"
-                  type="submit"
-                  class="btn btn-success btn-sm"
-                  @click="modifying = true"
-                >
-                  Modifier
-                </button>
-                <button
-                  v-if="modifying && isEditable(currentComment.user)"
-                  type="submit"
-                  class="btn btn-success mr-2 btn-sm"
-                  @click="updateComment"
-                >
-                  Confirmer
-                </button>
-                <button
-                  v-if="modifying && isEditable(currentComment.user)"
-                  type="submit"
-                  class="btn btn-danger btn-sm"
-                  @click="modifying = false"
-                >
-                  Annuler
-                </button>
-              </div>
-            </div>
-
+    <div
+      class="
+        d-flex
+        buttons-container
+        align-items-center
+        p-2
+        justify-content-end
+      "
+    >
+      <button
+        class="btn btn-danger mr-2 btn-sm"
+        @click="deleteComment"
+        v-if="isEditable(currentComment.user)"
+      >
+        Supprimer
+      </button>
+      <button
+        v-if="!modifying && isEditable(currentComment.user)"
+        type="submit"
+        class="btn btn-success btn-sm"
+        @click="modifying = true"
+      >
+        Modifier
+      </button>
+      <button
+        v-if="modifying && isEditable(currentComment.user)"
+        type="submit"
+        class="btn btn-success mr-2 btn-sm"
+        @click="updateComment"
+      >
+        Confirmer
+      </button>
+      <button
+        v-if="modifying && isEditable(currentComment.user)"
+        type="submit"
+        class="btn btn-danger btn-sm"
+        @click="modifying = false"
+      >
+        Annuler
+      </button>
+    </div>
+  </div>
 </template>
 
 <script>
 import { ref, reactive } from "vue";
 import CommentService from "../services/comment.service";
 
-
 export default {
   name: "posts-list",
-  props: { comment: {
+  props: {
+    comment: {
       createdAt: {
         type: String,
         required: true,
@@ -99,15 +97,17 @@ export default {
       updatedAt: {
         type: String,
         required: true,
-      }
-  } },
-  setup(props, context) { //Retourner une fonction de rendu ,utiliser l'état réactif déclaré.
+      },
+    },
+  },
+  setup(props, context) {
+    //Retourner une fonction de rendu ,utiliser l'état réactif déclaré.
     const currentComment = reactive(props.comment);
     const currentUser = localStorage.getItem("user")
       ? JSON.parse(localStorage.getItem("user"))
       : null;
     let modifying = ref(false);
-    
+
     const isEditable = function (commentUser) {
       let isEditable = false;
       if (
@@ -119,10 +119,18 @@ export default {
       return isEditable;
     };
 
-    const getDateUtc = function(dateString) {
-      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',hour: '2-digit',minute:'2-digit',second:'2-digit' };
-      return new Date(dateString).toLocaleDateString('fr-FR', options);
-    }
+    const getDateUtc = function (dateString) {
+      const options = {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      };
+      return new Date(dateString).toLocaleDateString("fr-FR", options);
+    };
 
     const deleteComment = function () {
       CommentService.delete(currentComment.postId, currentComment.id)
@@ -137,7 +145,11 @@ export default {
 
     const updateComment = function () {
       modifying.value = false;
-      CommentService.update(currentComment.postId, currentComment.id, currentComment)
+      CommentService.update(
+        currentComment.postId,
+        currentComment.id,
+        currentComment
+      )
         .then(() => {})
         .catch((e) => {
           console.log(e);
@@ -150,9 +162,9 @@ export default {
       updateComment,
       deleteComment,
       modifying,
-      currentComment
-    }
-  }
+      currentComment,
+    };
+  },
 };
 </script>
 
@@ -173,10 +185,10 @@ export default {
 .comment-header {
   background-color: #ffd7d7;
 }
-.thumbs-down{
+.thumbs-down {
   color: red;
 }
-.thumbs-up{
+.thumbs-up {
   color: green;
 }
 </style>

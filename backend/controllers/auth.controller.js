@@ -9,12 +9,11 @@ const Op = db.Sequelize.Op;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcrypt");
 
-
 // créer un nouvel utilisateur dans la base de données (le rôle est l'utilisateur si aucun rôle n'est spécifié)
 exports.signup = (req, res) => {
   User.create({
     username: req.body.username,
-   email: req.body.email,
+    email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 4),
   })
     .then((user) => {
@@ -27,7 +26,9 @@ exports.signup = (req, res) => {
           },
         }).then((roles) => {
           user.setRoles(roles).then(() => {
-            res.send({ message: "L'utilisateur a été enregistré avec succès !" });
+            res.send({
+              message: "L'utilisateur a été enregistré avec succès !",
+            });
           });
         });
       } else {
@@ -79,7 +80,7 @@ exports.signin = (req, res) => {
           authorities.push("ROLE_" + roles[i].name.toUpperCase());
         }
 
-      // retourner les informations de l'utilisateur et accéder au jeton
+        // retourner les informations de l'utilisateur et accéder au jeton
         res.status(200).send({
           id: user.id,
           username: user.username,

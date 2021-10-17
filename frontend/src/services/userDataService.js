@@ -1,18 +1,18 @@
 //  Opération CRUD user
 import http from "../http-common";
-import { authHeader } from "../services/auth-header"
+import { authHeader } from "../services/auth-header";
 
 class UserDataService {
   getAll() {
-    return http.get("/user", {headers: authHeader()});
+    return http.get("/users", { headers: authHeader() });
   }
 
   update(id, data) {
-    return http.put(`/user/${id}`, data, {headers: authHeader()});
+    return http.put(`/users/${id}`, data, { headers: authHeader() });
   }
 
   delete(id) {
-    return http.delete(`/user/${id}`, {headers: authHeader()});
+    return http.delete(`/users/${id}`, { headers: authHeader() });
   }
 }
 

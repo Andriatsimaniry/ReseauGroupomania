@@ -1,4 +1,4 @@
-// imports 
+// imports
 const multer = require("multer");
 
 // Filtre pour ne faire passer que l'image
@@ -11,10 +11,12 @@ const imageFilter = (req, file, cb) => {
 };
 //  stockage sur disque
 var storage = multer.diskStorage({
-  destination: (req, file, cb) => { // Pour stocker les fichiers télécharger
+  destination: (req, file, cb) => {
+    // Pour stocker les fichiers télécharger
     cb(null, __basedir + "/resources/static/assets/uploads/");
   },
-  filename: (req, file, cb) => {  // le nom de fichier dans le dossier de destination
+  filename: (req, file, cb) => {
+    // le nom de fichier dans le dossier de destination
     cb(null, `${Date.now()}-original-${file.originalname}`); // pour éviter un doublon
   },
 });

@@ -1,21 +1,30 @@
 <!-- Les cartes de vues des utilisateurs -->
 <template>
-  <div class="user-card-container d-flex justify-content-between align-items-center">
+  <div
+    class="
+      user-card-container
+      d-flex
+      justify-content-between
+      align-items-center
+    "
+  >
     <div>
-        <div>
-          <span>Nom d'utilisateur : </span>
-          <span>{{ currentUser.username }}</span>
-        </div>
-        <div>
-          <span>E-mail : </span>
-          <span v-if="!modifying">{{ currentUser.email }}</span>
-          <span v-if="modifying"><input name="modifiedText" v-model="currentUser.email" /></span>
-        </div>
+      <div>
+        <span>Nom d'utilisateur : </span>
+        <span v-if="!modifying">{{ currentUser.username }}</span>
+        <span v-if="modifying"
+          ><input name="modifiedText" v-model="currentUser.username"
+        /></span>
+      </div>
+      <div>
+        <span>E-mail : {{ currentUser.email }} </span>
+        <span></span>
+      </div>
     </div>
 
     <div class="d-flex justify-content-between">
       <div class="d-flex buttons-container">
-        <button class="btn btn-danger btn-sm mr-2" @click="deletePost">
+        <button class="btn btn-danger btn-sm mr-2" @click="deleteUser">
           Supprimer
         </button>
         <button
@@ -30,7 +39,7 @@
           v-if="modifying"
           type="submit"
           class="btn btn-success btn-sm"
-          @click="updatePost"
+          @click="updateUser"
         >
           Confirmer
         </button>
@@ -70,14 +79,14 @@ export default {
       email: {
         type: String,
         required: true,
-      }
+      },
     },
   },
   setup(props, context) {
     const currentUser = reactive(props.user);
     let modifying = ref(false);
 
-    const deletePost = function () {
+    const deleteUser = function () {
       UserDataService.delete(currentUser.id)
         .then((response) => {
           console.log(response.data);
@@ -88,11 +97,10 @@ export default {
         });
     };
 
-    const updatePost = function () {
+    const updateUser = function () {
       modifying.value = false;
       UserDataService.update(currentUser.id, currentUser)
-        .then(() => {
-        })
+        .then(() => {})
         .catch((e) => {
           console.log(e);
         });
@@ -100,16 +108,14 @@ export default {
 
     return {
       currentUser,
-      deletePost,
-      updatePost,
-      modifying
+      deleteUser,
+      updateUser,
+      modifying,
     };
   },
 };
-
 </script>
    <style>
-   
 .date-creation {
   color: lightgray;
   font-size: 12px;

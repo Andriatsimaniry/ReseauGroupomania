@@ -17,7 +17,6 @@
         rows="3"
       ></textarea>
       <div class="d-flex justify-content-between">
-        
         <label class="btn btn-default p-0">
           <input
             type="file"
@@ -26,83 +25,89 @@
             @change="selectImage"
           />
         </label>
-        <button @click="savePost" :disabled="userPost.post == ''" class="btn btn-success">Publier</button>
-        
+        <button
+          @click="savePost"
+          :disabled="userPost.post == ''"
+          class="btn btn-success"
+        >
+          Publier
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { reactive, ref } from '@vue/reactivity';
+import { reactive, ref } from "@vue/reactivity";
 import PostDataService from "../services/PostDataService";
 import UploadService from "../services/UploadFilesService";
 
 export default {
   name: "create-post",
   setup(props, context) {
-    const user = localStorage.getItem('user');
+    const user = localStorage.getItem("user");
     const userId = user ? JSON.parse(user).id : null;
-    const roles = user ? JSON.parse(user).roles.toString() : '';
+    const roles = user ? JSON.parse(user).roles.toString() : "";
 
     let fileInput = ref(null);
 
     let userPost = reactive({
-      post: '',
+      post: "",
       userId,
       img: null,
-      roles
+      roles,
     });
 
     let imgPost = reactive({
       currentImage: undefined,
       previewImage: undefined,
       message: "",
-      imageInfos: [] 
+      imageInfos: [],
     });
 
-    const savePost = function () {  // Rajouter la publication actuelle dans la liste de toutes les publications
-      // first upload file if any 
+    const savePost = function () {
+      // Rajouter la publication actuelle dans la liste de toutes les publications
+      // first upload file if any
       if (imgPost.currentImage) {
         UploadService.upload(imgPost.currentImage)
-        .then((response) => {
-          userPost.img = response.data.imgUrl;
-          return PostDataService.create(userPost);
-        })
-        .then(() => {
+          .then((response) => {
+            userPost.img = response.data.imgUrl;
+            return PostDataService.create(userPost);
+          })
+          .then(() => {
             // vide  le contenu  de la publication courrante
-            userPost.post = '';
+            userPost.post = "";
             userPost.img = null;
             imgPost.currentImage = undefined;
             imgPost.previewImage = undefined;
-            imgPost.message = '';
+            imgPost.message = "";
             imgPost.imageInfos = [];
-            fileInput.value.value = '';
+            fileInput.value.value = "";
             context.emit("newPost");
           })
-        .catch((err) => {
+          .catch((err) => {
             console.log(err);
-        });
+          });
       } else {
         PostDataService.create(userPost)
           .then(() => {
             // vide  le contenu  de la publication courrante
-            userPost.post = '';
+            userPost.post = "";
             context.emit("newPost");
           })
           .catch((e) => {
             console.log(e);
           });
-      }       
+      }
     };
 
-    const selectImage = function() {
+    const selectImage = function () {
       imgPost.currentImage = fileInput.value.files.item(0);
       imgPost.previewImage = URL.createObjectURL(imgPost.currentImage);
       imgPost.message = "";
     };
 
-    const upload = function() {
+    const upload = function () {
       UploadService.upload(imgPost.currentImage)
         .then((response) => {
           imgPost.message = response.data.message;
@@ -117,13 +122,14 @@ export default {
         });
     };
 
-    return {  // Pour pouvoir accessible au template 
+    return {
+      // Pour pouvoir accessible au template
       savePost,
       selectImage,
       upload,
       userPost,
       imgPost,
-      fileInput
+      fileInput,
     };
   },
 };

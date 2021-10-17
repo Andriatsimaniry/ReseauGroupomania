@@ -3,9 +3,8 @@ const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
-const app=express().use('*', cors());
+const app = express().use("*", cors());
 const initRoutes = require("./routes/web");
-
 
 global.__basedir = __dirname;
 
@@ -13,7 +12,6 @@ global.__basedir = __dirname;
 // content-Security-Policy,x-powered-by,Strict-Transport-Security,
 // X-Download-Option,Cache-Control,Content-Type-Options,X-frame-Option,X-Xss-Protection
 app.use(helmet());
-
 
 // Pour éviter les attaques de force brute
 const apiLimiter = rateLimit({
@@ -23,7 +21,6 @@ const apiLimiter = rateLimit({
 
 //  S'applique à toutes les demandes
 app.use("/api/", apiLimiter);
-
 
 // analyser les requêtes de type content - application/json
 app.use(express.json());
@@ -47,22 +44,24 @@ db.sequelize.sync().then(() => {
 function initial() {
   Role.findOrCreate({
     where: {
-      id: 1
-    },
-    defaults: { // définir les propriétés par défaut si elles n'existent pas
       id: 1,
-      name: "user"
-    }
+    },
+    defaults: {
+      // définir les propriétés par défaut si elles n'existent pas
+      id: 1,
+      name: "user",
+    },
   });
 
   Role.findOrCreate({
     where: {
-      id: 2
-    },
-    defaults: { // définir les propriétés par défaut si elles n'existent pas
       id: 2,
-      name: "admin"
-    }
+    },
+    defaults: {
+      // définir les propriétés par défaut si elles n'existent pas
+      id: 2,
+      name: "admin",
+    },
   });
 }
 
@@ -73,9 +72,10 @@ require("./routes/user.routes")(app);
 require("./routes/comment.routes")(app);
 require("./routes/web")(app);
 
-app.use('/images', express.static('resources/static/assets/tmp'));
+app.use("/images", express.static("resources/static/assets/tmp"));
 
 // écouter sur le port 8080 pour les requêtes entrantes.
+
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Le serveur s'exécute sur le port ${PORT}.`);

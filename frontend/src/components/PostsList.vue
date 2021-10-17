@@ -1,20 +1,15 @@
 <!-- Liste de toutes les Publications -->
 <template>
   <div class="list row">
-
-    <CreatePost @newPost="retrievePosts"/>
+    <CreatePost @newPost="retrievePosts" />
 
     <div class="col-12">
       <h4>Liste des Publications</h4>
-        <div class="post-list-container">
-          <div
-            class="post-container my-4"
-            v-for="post in posts"
-            :key="post.id"
-          >
-            <Post @refreshList="retrievePosts" :post="post" />
-          </div>
+      <div class="post-list-container">
+        <div class="post-container my-4" v-for="post in posts" :key="post.id">
+          <Post @refreshList="retrievePosts" :post="post" />
         </div>
+      </div>
     </div>
   </div>
 </template>
@@ -29,21 +24,22 @@ export default {
   name: "posts-list",
   components: {
     CreatePost,
-    Post
+    Post,
   },
-  setup() { //Retourner une fonction de rendu ,utiliser l'état réactif déclaré.
-    let posts = ref([]);  //Pour être reactive; tableau vide.
-    const retrievePosts = function() { // Fonction pour récupérer toutes les publications
+  setup() {
+    //Retourner une fonction de rendu ,utiliser l'état réactif déclaré.
+    let posts = ref([]); //Pour être reactive; tableau vide.
+    const retrievePosts = function () {
+      // Fonction pour récupérer toutes les publications
       PostDataService.getAll()
-        .then(response => {
+        .then((response) => {
           posts.value = response.data;
-          posts.value = posts.value.sort(
-            function(a,b){
-              return new Date(b.createdAt) - new Date(a.createdAt);
-            }); //Pour mettre la dernière publication de l'utilisateur au dessus
-          console.log('reponse find all', posts.value);
+          posts.value = posts.value.sort(function (a, b) {
+            return new Date(b.createdAt) - new Date(a.createdAt);
+          }); //Pour mettre la dernière publication de l'utilisateur au dessus
+          console.log("reponse find all", posts.value);
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e);
         });
     };
@@ -52,9 +48,9 @@ export default {
 
     return {
       retrievePosts,
-      posts
-    }
-  }
+      posts,
+    };
+  },
 };
 </script>
 
