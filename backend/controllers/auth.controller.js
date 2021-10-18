@@ -9,7 +9,7 @@ const Op = db.Sequelize.Op;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcrypt");
 
-// créer un nouvel utilisateur dans la base de données (le rôle est l'utilisateur si aucun rôle n'est spécifié)
+// créer un nouvel utilisateur dans la base de données 
 exports.signup = (req, res) => {
   User.create({
     username: req.body.username,
@@ -17,31 +17,17 @@ exports.signup = (req, res) => {
     password: bcrypt.hashSync(req.body.password, 4),
   })
     .then((user) => {
-      if (req.body.roles) {
-        Role.findAll({
-          where: {
-            name: {
-              [Op.or]: req.body.roles,
-            },
-          },
-        }).then((roles) => {
-          user.setRoles(roles).then(() => {
-            res.send({
-              message: "L'utilisateur a été enregistré avec succès !",
-            });
+        user.setRoles([1]).then(() => {
+          res.send ({
+            message: "L'Utilisateur a été enregistré avec succès !",
           });
         });
-      } else {
-        // user role = 1
-        user.setRoles([1]).then(() => {
-          res.send({ message: "L'utilisateur a été enregistré avec succès !" });
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({ message: err.message });
-    });
-};
+      })
+      .catch((err) => {
+        res.status(500).send({ message: err.message });
+      });
+  };
+   
 
 // recherche username de la requête dans la base de données, si elle existe
 exports.signin = (req, res) => {
