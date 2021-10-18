@@ -34,8 +34,10 @@ app.get("/", (req, res) => {
 });
 
 const db = require("./models");
+const { user } = require("./models");
 const Role = db.role;
-
+const User = db.user;
+var bcrypt = require("bcrypt");
 // initial() la fonction qui crée 2 lignes dans la base de donnée
 db.sequelize.sync().then(() => {
   initial();
@@ -62,6 +64,18 @@ function initial() {
       id: 2,
       name: "admin",
     },
+  });
+  //  Creer un utilisateur administrateur
+  User.create({
+    username: "admin",
+    email: "admin@gmail.com",
+    password: bcrypt.hashSync("admin", 4),
+  }).then((user) => {
+    user.setRoles([2]).then(() => {
+      ({
+        message: "L'Administrateur a été enregistré avec succès !",
+      });
+    });
   });
 }
 
