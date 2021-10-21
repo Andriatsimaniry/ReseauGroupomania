@@ -66,14 +66,19 @@ function initial() {
     },
   });
   //  Creer un utilisateur administrateur
-  User.create({
-    username: "admin",
-    email: "admin@gmail.com",
-    password: bcrypt.hashSync("admin", 4),
-  }).then((user) => {
+  User.findOrCreate({
+    where: {
+      username: "admin",
+    },
+    defaults: {
+      username: "admin",
+      email: "admin@gmail.com",
+      password: bcrypt.hashSync("admin", 4),
+    },
+  }).then(user => {
     user.setRoles([2]).then(() => {
       ({
-        message: "L'Administrateur a été enregistré avec succès !",
+        message: "L'administrateur a été enregistré avec succès !",
       });
     });
   });

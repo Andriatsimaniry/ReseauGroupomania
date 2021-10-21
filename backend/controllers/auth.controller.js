@@ -29,7 +29,7 @@ exports.signup = (req, res) => {
   };
    
 
-// recherche username de la requête dans la base de données, si elle existe
+// recherche l"email de la requête dans la base de données, si elle existe
 exports.signin = (req, res) => {
   User.findOne({
     where: {
