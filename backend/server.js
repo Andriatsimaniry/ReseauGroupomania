@@ -66,23 +66,26 @@ function initial() {
     },
   });
   //  Creer un utilisateur administrateur
+
   User.findOrCreate({
-    where: {
-      username: "admin",
-    },
+    where: {username:"admin", },
     defaults: {
       username: "admin",
       email: "admin@gmail.com",
       password: bcrypt.hashSync("admin", 4),
     },
-  }).then(user => {
-    user.setRoles([2]).then(() => {
-      ({
-        message: "L'administrateur a été enregistré avec succès !",
-      });
+  }).then((user) => {
+      user.setRoles([2]).then(() => { 
+          ({
+            message: "L'administrateur a été enregistré avec succès !",
+          });
+        });
+    })
+    .catch((err) => {
+      ({ message: err.message });
     });
-  });
-}
+    
+};
 
 // routes
 require("./routes/auth.routes")(app);
