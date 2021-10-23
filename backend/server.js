@@ -73,9 +73,9 @@ function initial() {
       username: "admin",
       email: "admin@gmail.com",
       password: bcrypt.hashSync("admin", 4),
-    },
-  }).then((user) => {
-      user.setRoles([2]).then(() => { 
+    }
+  }).then((users) => {
+      users[0].setRoles([2]).then(() => { 
           ({
             message: "L'administrateur a été enregistré avec succès !",
           });
