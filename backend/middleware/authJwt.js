@@ -20,7 +20,21 @@ verifyToken = (req, res, next) => {
       });
     }
     req.userId = decoded.id;
-    next();
+    // todo verifie si l'userId existe dans la base
+    // User.findOne({
+    //   where: {
+    //     id: req.body.id,
+    //   },
+    // })
+    //   .then((user) => {
+    //     if (!user) {
+    //       return res.status(400).send({ message: "Utilisateur non trouvé." });
+    //     }else{
+          next();
+    //     }
+    //   })
+
+    
   });
 };
 

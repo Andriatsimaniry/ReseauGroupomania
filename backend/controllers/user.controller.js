@@ -44,33 +44,36 @@ exports.update = (req, res) => {
 };
 // Supprimer un utilisateur avec l'identifiant spécifié dans la demande
 exports.delete = (req, res) => {
-//  const id = req.params.id;
-User.destroy({
-  where: {
-    id: req.params.id
-  }
-})
-    .then((num) => {
-      if (num == 1) {
-        res.send({
-          message: "L'utilisateur a été supprimé avec succès!",
+  Post.destroy({
+    where: {
+      userId: req.params.id,
+    },
+  }).then((num) => {
+    if (num == 1) {
+      User.destroy({
+        where: {
+          id: req.params.id,
+        },
+      })
+        .then((num) => {
+          if (num == 1) {
+            res.send({
+              message: "L'utilisateur a été supprimé avec succès!",
+            });
+            //
+          } else {
+            res.send({
+              message: `Impossible de supprimer l'utilisateur avec id=${id}.L'utilisateur n'a pas été retrouvé `,
+            });
+          }
+        })
+        .catch((err) => {
+          res.status(500).send({
+            message:
+              "Impossible de supprimer l'utilisateur avec l'identifiant id=" +
+              id,
+          });
         });
-        // Post.destroy({
-        //   where:{
-        //     userId: req.params.userId
-        //   }
-        // })
-      
-      } else {
-        res.send({
-          message: `Impossible de supprimer l'utilisateur avec id=${id}.L'utilisateur n'a pas été retrouvé `,
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          "Impossible de supprimer l'utilisateur avec l'identifiant id=" + id,
-      });
-    });
+    }
+  });
 };
