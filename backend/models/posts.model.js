@@ -8,10 +8,6 @@ module.exports = (sequelize, Sequelize) => {
       defaultValue: Sequelize.UUIDV4,
       allowNull: false,
     },
-    username: {
-      type: Sequelize.STRING,
-    },
-
     post: {
       type: Sequelize.TEXT("long"),
     },

@@ -1,18 +1,11 @@
 <template>
   <div class="d-flex justify-content-center">
     <div class="card card-container col-12 col-sm-6">
-      <img
-        id="profile-img"
-        src="../assets/logo.svg"
-        class="profile-img-card"
-      />
+      <img id="profile-img" src="../assets/logo.svg" class="profile-img-card" />
       <Form @submit="handleLogin" :validation-schema="schema">
         <div class="form-group">
-          <!-- <label for="username">Nom d'utilisateur</label> -->
           <label for="email">E-mail</label>
-          <!-- <Field name="username" type="text" class="form-control" /> -->
           <Field name="email" type="text" class="form-control" />
-          <!-- <ErrorMessage name="username" class="error-feedback" /> -->
           <ErrorMessage name="email" class="error-feedback" />
         </div>
         <div class="form-group">
@@ -20,7 +13,6 @@
           <Field name="password" type="password" class="form-control" />
           <ErrorMessage name="password" class="error-feedback" />
         </div>
-
         <div class="form-group">
           <button class="btn btn-primary btn-block" :disabled="loading">
             <span
@@ -30,7 +22,6 @@
             <span>Se connecter</span>
           </button>
         </div>
-
         <div class="form-group">
           <div v-if="message" class="error-feedback" role="alert">
             {{ message }}
@@ -43,7 +34,7 @@
 
 <script>
 import { Form, Field, ErrorMessage } from "vee-validate"; // Composant pour gerer les validations des formulaires
-import * as yup from "yup"; // Yup Validation de saisie basée sur un schéma 
+import * as yup from "yup"; // Yup Validation de saisie basée sur un schéma
 
 export default {
   name: "Login",
@@ -61,7 +52,7 @@ export default {
     return {
       loading: false,
       message: "",
-      schema
+      schema,
     };
   },
   computed: {
@@ -80,8 +71,7 @@ export default {
 
       this.$store.dispatch("auth/login", user).then(
         () => {
-           
-         this.$router.push("/posts");
+          this.$router.push("/posts");
         },
         (error) => {
           this.loading = false;
@@ -99,20 +89,21 @@ export default {
 </script>
 
 <style scoped>
-  .btn-primary {
-    background-color:#fd2d02 ;
-    border-color:#fd2d02 ;
-  }
-  .btn-primary:hover, .btn-primary:focus, .btn-primary:not(:disabled):not(.disabled):active {
-    background-color:#ffd7d7 ;
-    border-color:#ffd7d7 ;
-  }
-  .btn-primary:focus  {
-      box-shadow: 0 0 0 0.2rem rgb(255 215 215 / 50%);
-  }
-  .error-feedback {
-    color: red;
-    font-size: 12px;
-  }
-  
+.btn-primary {
+  background-color: #fd2d02;
+  border-color: #fd2d02;
+}
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:not(:disabled):not(.disabled):active {
+  background-color: #ffd7d7;
+  border-color: #ffd7d7;
+}
+.btn-primary:focus {
+  box-shadow: 0 0 0 0.2rem rgb(255 215 215 / 50%);
+}
+.error-feedback {
+  color: red;
+  font-size: 12px;
+}
 </style>

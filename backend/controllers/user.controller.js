@@ -1,6 +1,7 @@
 // Renvoi le contenu public et protégé
 const db = require("../models");
 const User = db.user;
+const Post = db.posts;
 
 // Récuperer toutes les utilisateurs de la base de données
 exports.findAll = (req, res) => {
@@ -41,18 +42,25 @@ exports.update = (req, res) => {
       });
     });
 };
-// Supprimer une utilisateur avec l'identifiant spécifié dans la demande
+// Supprimer un utilisateur avec l'identifiant spécifié dans la demande
 exports.delete = (req, res) => {
-  const id = req.params.id;
-
-  User.destroy({
-    where: { id: id },
-  })
+//  const id = req.params.id;
+User.destroy({
+  where: {
+    id: req.params.id
+  }
+})
     .then((num) => {
       if (num == 1) {
         res.send({
           message: "L'utilisateur a été supprimé avec succès!",
         });
+        // Post.destroy({
+        //   where:{
+        //     userId: req.params.userId
+        //   }
+        // })
+      
       } else {
         res.send({
           message: `Impossible de supprimer l'utilisateur avec id=${id}.L'utilisateur n'a pas été retrouvé `,

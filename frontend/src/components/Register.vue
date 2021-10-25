@@ -31,7 +31,6 @@
           </div>
         </div>
       </Form>
-
       <div
         v-if="message"
         class="alert"
@@ -42,7 +41,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import { Form, Field, ErrorMessage } from "vee-validate";
 import * as yup from "yup";
