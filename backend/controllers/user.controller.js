@@ -2,7 +2,7 @@
 const db = require("../models");
 const User = db.user;
 const Post = db.posts;
-
+const Comment = db.comments;
 // Récuperer toutes les utilisateurs de la base de données
 exports.findAll = (req, res) => {
   User.findAll()
@@ -44,36 +44,42 @@ exports.update = (req, res) => {
 };
 // Supprimer un utilisateur avec l'identifiant spécifié dans la demande
 exports.delete = (req, res) => {
-  Post.destroy({
+  Comment.destroy({
     where: {
       userId: req.params.id,
-    },
-  }).then((num) => {
-    if (num == 1) {
-      User.destroy({
-        where: {
-          id: req.params.id,
-        },
-      })
-        .then((num) => {
-          if (num == 1) {
-            res.send({
-              message: "L'utilisateur a été supprimé avec succès!",
-            });
-            //
-          } else {
-            res.send({
-              message: `Impossible de supprimer l'utilisateur avec id=${id}.L'utilisateur n'a pas été retrouvé `,
-            });
-          }
-        })
-        .catch((err) => {
-          res.status(500).send({
-            message:
-              "Impossible de supprimer l'utilisateur avec l'identifiant id=" +
-              id,
-          });
-        });
     }
-  });
+  }).then((num) =>{
+    Post.destroy({
+      where: {
+        userId: req.params.id,
+      },
+    }).then((num) => {
+      if (num == 1) {
+        User.destroy({
+          where: {
+            id: req.params.id,
+          },
+        })
+          .then((num) => {
+            if (num == 1) {
+              res.send({
+                message: "L'utilisateur a été supprimé avec succès!",
+              });
+              //
+            } else {
+              res.send({
+                message: `Impossible de supprimer l'utilisateur avec id=${id}.L'utilisateur n'a pas été retrouvé `,
+              });
+            }
+          })
+          .catch((err) => {
+            res.status(500).send({
+              message:
+                "Impossible de supprimer l'utilisateur avec l'identifiant id=" +
+                id,
+            });
+          });
+      }
+    });
+  })  
 };

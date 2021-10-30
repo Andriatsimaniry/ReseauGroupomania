@@ -3,6 +3,7 @@ const Post = db.posts;
 const Op = db.Sequelize.Op;
 const fs = require("fs");
 const Image = db.images;
+const Comment = db.comments;
 
 // Creer et sauver des nouvelles publications
 exports.create = (req, res) => {
@@ -97,27 +98,39 @@ exports.update = (req, res) => {
 // Supprimer une publication avec l'identifiant spécifié dans la demande
 exports.delete = (req, res) => {
   const id = req.params.id;
-
-  Post.destroy({
-    where: { id: id },
-  })
-    .then((num) => {
-      if (num == 1) {
-        res.send({
-          message: "La publication a été supprimé avec succès!",
+  Comment.destroy({
+    where: {
+      postId: req.params.id,
+    },
+  }).then(() => {
+    Image.destroy({
+      where: {
+        postId: req.params.id,
+      },
+    }).then(() => {
+      Post.destroy({
+        where: { id: id },
+      })
+        .then((num) => {
+          if (num == 1) {
+            res.send({
+              message: "La publication a été supprimé avec succès!",
+            });
+          } else {
+            res.send({
+              message: `Impossible de supprimer la publication avec id=${id}. la publication n'a pas été trouvée`,
+            });
+          }
+        })
+        .catch((err) => {
+          res.status(500).send({
+            message:
+              "Impossible de supprimer la publication avec l'identifiant id=" +
+              id,
+          });
         });
-      } else {
-        res.send({
-          message: `Impossible de supprimer la publication avec id=${id}. la publication n'a pas été trouvée`,
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          "Impossible de supprimer la publication avec l'identifiant id=" + id,
-      });
     });
+  });
 };
 
 //Code j'aime , j'aime pas
@@ -183,11 +196,11 @@ exports.like = (req, res, next) => {
 
       if (req.file == undefined) {
         //vérifier le téléchargement du fichier
-        return res.send(`vous dever choisir un fichier.`);
+        return res.send(`vous devez choisir un fichier.`);
       }
 
       Image.create({
-        // modèle sequelize pour pour enregistrer un objet image
+        // modèle sequelize pour enregistrer un objet image
         type: req.file.mimetype,
         name: req.file.originalname,
         data: fs.readFileSync(

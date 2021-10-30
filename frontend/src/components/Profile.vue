@@ -59,7 +59,7 @@ export default {
         .then(() => {
           this.$store.dispatch("auth/update", this.currentUser);
           localStorage.setItem("users", JSON.stringify(this.currentUser));
-          this.$router.push("/posts");
+          this.$router.push("/users");
         })
         .catch((e) => {
           console.log(e);

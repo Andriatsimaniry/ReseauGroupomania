@@ -7,22 +7,20 @@ import { createWebHistory, createRouter } from "vue-router";
 import Login from "./components/Login.vue";
 import Register from "./components/Register.vue";
 import UserList from "./components/UserList.vue";
+// import store from "../src/store";
 
 const Profile = () => import("./components/Profile.vue");
 
 const routes = [
+  {    path: "/register",
+    component: Register,
+  },
   {
     path: "/login",
     component: Login,
   },
-  {
-    path: "/register",
-    component: Register,
-  },
-  {
-    path: "/profile",
+  {    path: "/profile",
     name: "profile",
-
     component: Profile,
   },
   {

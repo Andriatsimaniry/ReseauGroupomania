@@ -29,7 +29,7 @@ exports.signup = (req, res) => {
   };
    
 
-// recherche l"email de la requête dans la base de données, si elle existe
+// recherche l'email de la requête dans la base de données, si elle existe
 exports.signin = (req, res) => {
   User.findOne({
     where: {
@@ -56,8 +56,9 @@ exports.signin = (req, res) => {
 
       // générer un jeton en utilisant jsonwebtoken
       var token = jwt.sign({ id: user.id }, config.secret, {
-        expiresIn: 3600, // 1 heure
+        expiresIn: '20m', 
       });
+  
 
       var authorities = [];
       user.getRoles().then((roles) => {
