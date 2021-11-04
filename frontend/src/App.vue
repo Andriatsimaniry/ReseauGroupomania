@@ -48,6 +48,7 @@
 </template>
 
 <script>
+import EventBus from "./common/EventBus";
 export default {
   computed: {
     // La fonction est mise en cache en fonction de leurs dépendances réactive
@@ -62,13 +63,19 @@ export default {
       return false;
     },
   },
+  
   methods: {
     // La fonction est exécutée à chaque fois qu'un nouveau rendu se produit
     logOut() {
       this.$store.dispatch("auth/logout"); //la valeur renvoyée sera une promesse qui se résout / si ts les gets ont résolus
       this.$router.push("/login"); // Renvoie sur la page Loggin
-    },
+    }, 
   },
+   mounted() {
+    EventBus.on("logout", () => {
+      this.logOut();
+    });
+   },
 };
 </script>
 

@@ -19,6 +19,7 @@ import PostDataService from "../services/PostDataService";
 import CreatePost from "./CreatePost";
 import Post from "./Post";
 import { onMounted, ref } from "vue";
+import EventBus from "../common/EventBus";
 
 export default {
   name: "posts-list",
@@ -40,7 +41,9 @@ export default {
           console.log("reponse find all", posts.value);
         })
         .catch((e) => {
-          console.log(e);
+          if (e.response && e.response.status === 401) {
+            EventBus.dispatch("logout");
+          }
         });
     };
 
