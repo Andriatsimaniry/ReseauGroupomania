@@ -9,6 +9,8 @@ module.exports = (app) => {
 
   // Récupérer toutes les publications
   router.get("/", auth.verifyToken, posts.findAll);
+  // Récupérer toutes les publications
+  router.get("/user/:id", auth.verifyToken, posts.findAllByUser);
 
   // Mettre à jour une publication avec id
   router.put("/:id", auth.verifyToken, posts.update);

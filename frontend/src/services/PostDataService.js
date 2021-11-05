@@ -8,8 +8,8 @@ class PostDataService {
     return http.get("/posts", { headers: authHeader() });
   }
 
-  get(id) {
-    return http.get(`/posts/${id}`, { headers: authHeader() });
+  getPostsByUser(userId) {
+    return http.get(`/posts/user/${userId}`, { headers: authHeader() });
   }
 
   create(data) {

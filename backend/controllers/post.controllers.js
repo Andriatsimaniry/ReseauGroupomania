@@ -40,8 +40,6 @@ exports.create = (req, res) => {
 
 // Récuperer toutes les Publications de la base de données
 exports.findAll = (req, res) => {
-  const post = req.query.post;
-  var condition = post ? { post: { [Op.like]: `%${post}%` } } : null;
 
   Post.findAll({
     include: [
@@ -57,6 +55,40 @@ exports.findAll = (req, res) => {
         ],
       },
     ],
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Une erreur s'est produite lors de la récupération des publications.",
+      });
+    });
+};
+
+// Récuperer toutes les Publications d'un utilisateur la base de données
+exports.findAllByUser = (req, res) => {
+  const userId = req.params.id;
+  
+  Post.findAll({
+    include: [
+      {
+        model: db.user,
+      },
+      {
+        model: db.comments,
+        include: [
+          {
+            model: db.user,
+          },
+        ],
+      },
+    ],
+    where:  {
+      userId: userId
+    }
   })
     .then((data) => {
       res.send(data);
