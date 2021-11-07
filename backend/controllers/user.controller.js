@@ -1,13 +1,21 @@
 // Renvoi le contenu public et protégé
+const { role } = require("../models");
 const db = require("../models");
 const User = db.user;
 const Post = db.posts;
 const Comment = db.comments;
 // Récuperer toutes les utilisateurs de la base de données
 exports.findAll = (req, res) => {
-  User.findAll()
+  User.findAll({
+    include: [
+      {
+        model:db.role
+      },
+    ]
+  })
     .then((data) => {
       res.send(data);
+      
     })
     .catch((err) => {
       res.status(500).send({

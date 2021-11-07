@@ -28,7 +28,7 @@
       </div>
 
     <div class="d-flex mt-4">
-      <button  v-if="isNotAdmin" @click="modifyUser" class="btn btn-success">
+      <button @click="modifyUser" class="btn btn-success">
         Modifier informations
       </button>
       <button  v-if="isNotAdmin" @click="deleteUser" class="btn ml-4 btn-danger">
@@ -57,7 +57,7 @@ export default {
     let posts = ref([]); //Pour être reactive; tableau vide.
     const isNotAdmin = !currentUser.roles.includes("ROLE_ADMIN");
     const retrievePosts = function () {
-      // Fonction pour récupérer toutes les publications
+      // Fonction pour récupérer  les publications d'un utilisateur
       PostDataService.getPostsByUser(currentUser.id)
         .then((response) => {
           posts.value = response.data;

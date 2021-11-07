@@ -41,8 +41,8 @@ export default {
           console.log("reponse find all", posts.value);
         })
         .catch((e) => {
-          if (e.response && e.response.status === 401) {
-            EventBus.dispatch("logout");
+          if (e.response && e.response.status === 401) { 
+            EventBus.dispatch("logout");// Revenir au login après expiration Token
           }
         });
     };

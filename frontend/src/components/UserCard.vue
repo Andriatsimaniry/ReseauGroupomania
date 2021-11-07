@@ -24,7 +24,7 @@
 
     <div class="d-flex justify-content-between">
       <div class="d-flex buttons-container">
-        <button class="btn btn-danger btn-sm mr-2" @click="deleteUser">
+        <button v-if="isNotAdmin" class="btn btn-danger btn-sm mr-2" @click="deleteUser">
           Supprimer
         </button>
         <button
@@ -51,7 +51,7 @@
         >
           Annuler
         </button>
-      </div>
+      </div> 
     </div>
   </div>
 </template>
@@ -59,6 +59,7 @@
 <script>
 import { reactive, ref } from "vue";
 import UserDataService from "../services/userDataService";
+
 
 export default {
   name: "user",
@@ -73,7 +74,7 @@ export default {
         required: true,
       },
       roles: {
-        type: Boolean,
+        type: Array,
         required: true,
       },
       email: {
@@ -84,9 +85,12 @@ export default {
   },
   setup(props, context) {
     const currentUser = reactive(props.user);
+    const isNotAdmin = !currentUser.roles.find( role => { //Si l'utilisateur est administrateur
+      return role.name === 'admin';
+    });
     let modifying = ref(false);
 
-    const deleteUser = function () {
+    function deleteUser() {
       UserDataService.delete(currentUser.id)
         .then((response) => {
           console.log(response.data);
@@ -95,7 +99,7 @@ export default {
         .catch((e) => {
           console.log(e);
         });
-    };
+    }
 
     const updateUser = function () {
       modifying.value = false;
@@ -111,6 +115,7 @@ export default {
       deleteUser,
       updateUser,
       modifying,
+      isNotAdmin,
     };
   },
 };
