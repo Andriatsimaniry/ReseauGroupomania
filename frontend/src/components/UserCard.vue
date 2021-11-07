@@ -24,7 +24,11 @@
 
     <div class="d-flex justify-content-between">
       <div class="d-flex buttons-container">
-        <button v-if="isNotAdmin" class="btn btn-danger btn-sm mr-2" @click="deleteUser">
+        <button
+          v-if="isNotAdmin"
+          class="btn btn-danger btn-sm mr-2"
+          @click="deleteUser"
+        >
           Supprimer
         </button>
         <button
@@ -51,7 +55,7 @@
         >
           Annuler
         </button>
-      </div> 
+      </div>
     </div>
   </div>
 </template>
@@ -59,7 +63,7 @@
 <script>
 import { reactive, ref } from "vue";
 import UserDataService from "../services/userDataService";
-
+import EventBus from "../common/EventBus";
 
 export default {
   name: "user",
@@ -85,8 +89,9 @@ export default {
   },
   setup(props, context) {
     const currentUser = reactive(props.user);
-    const isNotAdmin = !currentUser.roles.find( role => { //Si l'utilisateur est administrateur
-      return role.name === 'admin';
+    const isNotAdmin = !currentUser.roles.find((role) => {
+      //Si l'utilisateur est administrateur on enleve supprimer
+      return role.name === "admin";
     });
     let modifying = ref(false);
 
@@ -97,7 +102,9 @@ export default {
           context.emit("refreshList");
         })
         .catch((e) => {
-          console.log(e);
+          if (e.response && e.response.status === 401) {
+            EventBus.dispatch("logout"); // Revenir au login après expiration Token
+          }
         });
     }
 

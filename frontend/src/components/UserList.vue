@@ -17,6 +17,7 @@
 import UserDataService from "../services/userDataService";
 import UserCard from "./UserCard";
 import { onMounted, ref } from "vue";
+import EventBus from "../common/EventBus";
 
 export default {
   name: "posts-list",
@@ -32,7 +33,9 @@ export default {
           console.log("REFRESH LIST §!!!!!!!!!!", users.value);
         })
         .catch((e) => {
-          console.log(e);
+          if (e.response && e.response.status === 401) {
+            EventBus.dispatch("logout"); // Revenir au login après expiration Token
+          }
         });
     };
 

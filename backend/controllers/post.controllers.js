@@ -228,7 +228,7 @@ exports.like = (req, res, next) => {
 
       if (req.file == undefined) {
         //vérifier le téléchargement du fichier
-        return res.send(`vous devez choisir un fichier.`);
+        return res.send(`vous devez choisir une image.`);
       }
 
       Image.create({

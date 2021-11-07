@@ -1,7 +1,7 @@
 <!-- Création de la Publication -->
 <template>
   <div class="create-post-container col-12">
-    <h3>Créer votre publication :</h3>
+    <h3>Créez votre publication :</h3>
     <div class="form-group">
       <div v-if="imgPost.previewImage">
         <div>

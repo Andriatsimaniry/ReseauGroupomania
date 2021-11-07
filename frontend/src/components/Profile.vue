@@ -5,7 +5,6 @@
       <h3>
         <strong>Bienvenue : {{ currentUser.username }}</strong>
       </h3>
-      
     </header>
     <div>
       <strong>
@@ -14,12 +13,14 @@
     </div>
     <div>
       <strong>
-        <label for="password">Nouveau mot de passe: {{ currentUser.password }}</label>
+        <label for="password"
+          >Nouveau mot de passe: {{ currentUser.password }}</label
+        >
       </strong>
       <input class="ml-4" name="password" v-model="currentUser.password" />
     </div>
-     
-      <div class="col-12">
+
+    <div class="col-12">
       <h4>Liste de vos Publications</h4>
       <div class="post-list-container">
         <div class="post-container my-4" v-for="post in posts" :key="post.id">
@@ -27,15 +28,19 @@
         </div>
       </div>
 
-    <div class="d-flex mt-4">
-      <button @click="modifyUser" class="btn btn-success">
-        Modifier informations
-      </button>
-      <button  v-if="isNotAdmin" @click="deleteUser" class="btn ml-4 btn-danger">
-        Supprimer compte
-      </button>
+      <div class="d-flex mt-4">
+        <button @click="modifyUser" class="btn btn-success">
+          Modifier informations
+        </button>
+        <button
+          v-if="isNotAdmin"
+          @click="deleteUser"
+          class="btn ml-4 btn-danger"
+        >
+          Supprimer compte
+        </button>
+      </div>
     </div>
-  </div>
   </div>
 </template>
 
@@ -44,15 +49,16 @@ import UserDataService from "../services/userDataService";
 import PostDataService from "../services/PostDataService";
 import { onMounted, ref } from "vue";
 import Post from "./Post";
+import EventBus from "../common/EventBus";
 export default {
   name: "Profile",
   components: {
-    Post
+    Post,
   },
-  
+
   setup() {
     const currentUser = localStorage.getItem("user")
-    ? JSON.parse(localStorage.getItem("user"))
+      ? JSON.parse(localStorage.getItem("user"))
       : null;
     let posts = ref([]); //Pour être reactive; tableau vide.
     const isNotAdmin = !currentUser.roles.includes("ROLE_ADMIN");
@@ -67,7 +73,9 @@ export default {
           console.log("reponse find all", posts.value);
         })
         .catch((e) => {
-          console.log(e);
+          if (e.response && e.response.status === 401) {
+            EventBus.dispatch("logout"); // Revenir au login après expiration Token
+          }
         });
     };
     // L'utilisateur peut supprimer son compte
@@ -83,7 +91,7 @@ export default {
     };
 
     // l'Utilisateur peut modifier son compte
-   const modifyUser = function  () {
+    const modifyUser = function () {
       UserDataService.update(this.currentUser.id, this.currentUser)
         .then(() => {
           this.$store.dispatch("auth/update", this.currentUser);
@@ -105,7 +113,6 @@ export default {
       deleteUser,
       modifyUser,
     };
-  }
-}
-
+  },
+};
 </script>

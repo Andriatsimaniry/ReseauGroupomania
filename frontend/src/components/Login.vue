@@ -43,7 +43,6 @@ export default {
     Field,
     ErrorMessage,
   },
-
   data() {
     const schema = yup.object().shape({
       email: yup.string().required("Email d'utilisateur est necessaire!"),
