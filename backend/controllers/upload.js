@@ -1,5 +1,4 @@
 const fs = require("fs");
-
 const db = require("../models");
 const Image = db.images;
 
@@ -9,7 +8,7 @@ const uploadFiles = async (req, res) => {
 
     if (req.file == undefined) {
       //vérifier le téléchargement du fichier
-      return res.send(`vous dever choisir un fichier.`);
+      return res.send(`vous devez choisir un fichier.`);
     }
 
     Image.create({

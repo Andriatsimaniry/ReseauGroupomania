@@ -44,6 +44,7 @@
 <script>
 import { Form, Field, ErrorMessage } from "vee-validate";
 import * as yup from "yup";
+import EventBus from "../common/EventBus";
 
 export default {
   name: "Register",
@@ -95,23 +96,30 @@ export default {
       this.successful = false;
       this.loading = true;
 
-      this.$store.dispatch("auth/register", user).then(
-        (data) => {
-          this.message = data.message;
-          this.successful = true;
-          this.loading = false;
-        },
-        (error) => {
-          this.message =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-          this.successful = false;
-          this.loading = false;
-        }
-      );
+      this.$store
+        .dispatch("auth/register", user)
+        .then(
+          (data) => {
+            this.message = data.message;
+            this.successful = true;
+            this.loading = false;
+          },
+          (error) => {
+            this.message =
+              (error.response &&
+                error.response.data &&
+                error.response.data.message) ||
+              error.message ||
+              error.toString();
+            this.successful = false;
+            this.loading = false;
+          }
+        )
+        .catch((e) => {
+          if (e.response && e.response.status === 401) {
+            EventBus.dispatch("logout"); // Revenir au login après expiration Token
+          }
+        });
     },
   },
 };
