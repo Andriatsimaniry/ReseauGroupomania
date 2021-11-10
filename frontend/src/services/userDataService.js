@@ -14,6 +14,10 @@ class UserDataService {
   delete(id) {
     return http.delete(`/users/${id}`, { headers: authHeader() });
   }
+  getById(id){
+    return http.get(`/users/${id}`, { headers: authHeader() });
+  }
+
 }
 
 export default new UserDataService();

@@ -1,3 +1,4 @@
+
 module.exports = (app) => {
   const auth = require("../middleware/authJwt");
   const users = require("../controllers/user.controller.js");
@@ -6,6 +7,7 @@ module.exports = (app) => {
 
   // Récupérer toutes les utilisateurs
   router.get("/", auth.verifyToken, users.findAll);
+  router.get("/:id", auth.verifyToken, users.findAll);
 
   // Mettre à jour un utilisateur avec id
   router.put("/:id", auth.verifyToken, users.update);

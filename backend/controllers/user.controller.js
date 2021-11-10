@@ -62,13 +62,14 @@ exports.delete = (req, res) => {
         userId: req.params.id,
       },
     }).then((num) => {
-      if (num == 1) {
+      if (num == 1){
         User.destroy({
           where: {
             id: req.params.id,
           },
         })
           .then((num) => {
+            console.log(num);
             if (num == 1) {
               res.send({
                 message: "L'utilisateur a été supprimé avec succès!",
@@ -76,7 +77,7 @@ exports.delete = (req, res) => {
               //
             } else {
               res.send({
-                message: `Impossible de supprimer l'utilisateur avec id=${id}.L'utilisateur n'a pas été retrouvé `,
+                message: `Impossible de supprimer l'utilisateur avec id=${req.params.id}.L'utilisateur n'a pas été retrouvé `,
               });
             }
           })
@@ -84,10 +85,10 @@ exports.delete = (req, res) => {
             res.status(500).send({
               message:
                 "Impossible de supprimer l'utilisateur avec l'identifiant id=" +
-                id,
+               req.params.id,
             });
           });
-      }
+        }
     });
   })  
 };

@@ -19,9 +19,19 @@ verifyToken = (req, res, next) => {
     }
     req.username = decoded.username;
     req.id = decoded.user_id;
-    next();
-    });
-  };
+    // User.findByPk(req.userId).then((user) =>{
+    //   if (user =!null) {
+        next();
+    //   }else{
+    //     return res.status(403).send({
+    //       message: "Aucun utilisateur trouvé avec ce jéton !",
+    //     });
+    //   }   
+    // });
+    
+  });
+}
+
   
 
  // todo verifie si l'userId existe dans la base

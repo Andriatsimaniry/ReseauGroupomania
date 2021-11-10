@@ -7,9 +7,9 @@ import { createWebHistory, createRouter } from "vue-router";
 import Login from "./components/Login.vue";
 import Register from "./components/Register.vue";
 import UserList from "./components/UserList.vue";
-// import store from "../src/store";
+//  import store from "../src/store";
 
-const Profile = () => import("./components/Profile.vue");
+import Profile from "./components/Profile.vue";
 
 const routes = [
   {    path: "/register",
@@ -18,9 +18,9 @@ const routes = [
   {
     path: "/login",
     component: Login,
+    // redirect: '/login',
   },
   {    path: "/profile",
-    name: "profile",
     component: Profile,
   },
   {

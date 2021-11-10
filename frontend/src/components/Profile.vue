@@ -5,40 +5,69 @@
       <h3>
         <strong>Bienvenue : {{ currentUser.username }}</strong>
       </h3>
-    </header>
-    <div>
-      <strong>
-        <label for="email">Email: {{ currentUser.email }}</label>
-      </strong>
-    </div>
-    <div>
-      <strong>
-        <label for="password"
-          >Nouveau mot de passe: {{ currentUser.password }}</label
-        >
-      </strong>
-      <input class="ml-4" name="password" v-model="currentUser.password" />
-    </div>
 
+      <div>
+        <strong>
+          <label for="email">Email: {{ currentUser.email }}</label>
+        </strong>
+      </div>
+      <div>
+        <strong>
+          <label for="password"
+            >Ancien mot de passe: {{ currentUser.password }}</label
+          >
+        </strong>
+        <input class="ml-4" name="password" v-model="currentUser.password" />
+      </div>
+
+      <div>
+        <strong>
+          <label for="password"
+            >Nouveau mot de passe: {{ currentUser.password }}</label
+          >
+        </strong>
+        <input class="ml-4" name="password" v-model="currentUser.password" />
+      </div>
+      <div class="d-flex mt-4">
+        <button
+          v-if="isNotAdmin"
+          class="btn btn-danger btn-sm mr-2"
+          @click="deleteUser"
+        >
+          Supprimer le Compte
+        </button>
+        <button
+          v-if="!modifying"
+          type="submit"
+          class="btn btn-success btn-sm"
+          @click="modifying = true"
+        >
+          Modifier le mot de passe
+        </button>
+        <button
+          v-if="modifying"
+          type="submit"
+          class="btn btn-success btn-sm"
+          @click="updateUser"
+        >
+          Confirmer
+        </button>
+        <button
+          v-if="modifying"
+          type="submit"
+          class="btn btn-danger btn-sm"
+          @click="modifying = false"
+        >
+          Annuler
+        </button>
+      </div>
+    </header>
     <div class="col-12">
       <h4>Liste de vos Publications</h4>
       <div class="post-list-container">
         <div class="post-container my-4" v-for="post in posts" :key="post.id">
           <Post @refreshList="retrievePost" :post="post" />
         </div>
-      </div>
-
-      <div class="d-flex mt-4">
-        <button @click="modifyUser" class="btn btn-success">
-          Modifier informations
-        </button>
-        <button
-          v-if="isNotAdmin"
-          @click="deleteUser"
-          class="btn ml-4 btn-danger"
-        >
-          Supprimer compte
-        </button>
       </div>
     </div>
   </div>
@@ -55,15 +84,15 @@ export default {
   components: {
     Post,
   },
-
   setup() {
     const currentUser = localStorage.getItem("user")
       ? JSON.parse(localStorage.getItem("user"))
       : null;
     let posts = ref([]); //Pour être reactive; tableau vide.
     const isNotAdmin = !currentUser.roles.includes("ROLE_ADMIN");
+
+    // Fonction pour récupérer  les publications d'un utilisateur
     const retrievePosts = function () {
-      // Fonction pour récupérer  les publications d'un utilisateur
       PostDataService.getPostsByUser(currentUser.id)
         .then((response) => {
           posts.value = response.data;
@@ -78,7 +107,9 @@ export default {
           }
         });
     };
+
     // L'utilisateur peut supprimer son compte
+    let modifying = ref(false);
     const deleteUser = function () {
       UserDataService.delete(this.currentUser.id)
         .then(() => {
@@ -89,9 +120,10 @@ export default {
           console.log(e);
         });
     };
-
     // l'Utilisateur peut modifier son compte
-    const modifyUser = function () {
+
+    const updateUser = function () {
+      modifying.value = false;
       UserDataService.update(this.currentUser.id, this.currentUser)
         .then(() => {
           this.$store.dispatch("auth/update", this.currentUser);
@@ -102,16 +134,15 @@ export default {
           console.log(e);
         });
     };
-
     onMounted(retrievePosts); //Appelé après que l'instance à été monté
-
     return {
       retrievePosts,
       posts,
       isNotAdmin,
       currentUser,
       deleteUser,
-      modifyUser,
+      updateUser,
+      modifying,
     };
   },
 };

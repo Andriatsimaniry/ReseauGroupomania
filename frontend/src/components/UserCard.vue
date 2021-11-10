@@ -10,15 +10,24 @@
   >
     <div>
       <div>
-        <span>Nom d'utilisateur : </span>
-        <span v-if="!modifying">{{ currentUser.username }}</span>
-        <span v-if="modifying"
-          ><input name="modifiedText" v-model="currentUser.username"
-        /></span>
+        <span>Nom d'utilisateur : {{ currentUser.username }} </span>
+        
       </div>
       <div>
         <span>E-mail : {{ currentUser.email }} </span>
-        <span></span>
+      </div>
+      <div>
+        <span>Ancien mot de passe : </span>
+        <!-- <span v-if="modifying"</span> -->
+          <input name="password" v-model="currentUser.password"
+        />
+      </div>
+      <div>
+        <span>Nouveau mot de passe : </span>
+        <!-- <span v-if="!modifying">{{ currentUser.password }}</span>
+        <span v-if="modifying"></span> -->
+          <input class="ml-4" name="password" v-model="currentUser.password" />
+        
       </div>
     </div>
 
@@ -63,7 +72,7 @@
 <script>
 import { reactive, ref } from "vue";
 import UserDataService from "../services/userDataService";
-import EventBus from "../common/EventBus";
+
 
 export default {
   name: "user",
@@ -101,10 +110,8 @@ export default {
           console.log(response.data);
           context.emit("refreshList");
         })
-        .catch((e) => {
-          if (e.response && e.response.status === 401) {
-            EventBus.dispatch("logout"); // Revenir au login après expiration Token
-          }
+       .catch((e) => {
+          console.log(e);
         });
     }
 

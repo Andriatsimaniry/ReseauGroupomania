@@ -19,10 +19,12 @@ import UserCard from "./UserCard";
 import { onMounted, ref } from "vue";
 import EventBus from "../common/EventBus";
 
+
 export default {
   name: "posts-list",
   components: {
     UserCard,
+    
   },
   setup() {
     let users = ref([]);
