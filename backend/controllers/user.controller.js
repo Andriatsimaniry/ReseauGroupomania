@@ -9,13 +9,12 @@ exports.findAll = (req, res) => {
   User.findAll({
     include: [
       {
-        model:db.role
+        model: db.role,
       },
-    ]
+    ],
   })
     .then((data) => {
       res.send(data);
-      
     })
     .catch((err) => {
       res.status(500).send({
@@ -56,39 +55,41 @@ exports.delete = (req, res) => {
     where: {
       userId: req.params.id,
     }
-  }).then((num) =>{
+  })
+  .then((num) => {
+    console.log(num);
     Post.destroy({
       where: {
         userId: req.params.id,
-      },
+      }
     }).then((num) => {
-      if (num == 1){
-        User.destroy({
-          where: {
-            id: req.params.id,
-          },
-        })
-          .then((num) => {
-            console.log(num);
-            if (num == 1) {
-              res.send({
-                message: "L'utilisateur a été supprimé avec succès!",
-              });
-              //
-            } else {
-              res.send({
-                message: `Impossible de supprimer l'utilisateur avec id=${req.params.id}.L'utilisateur n'a pas été retrouvé `,
-              });
-            }
-          })
-          .catch((err) => {
-            res.status(500).send({
-              message:
-                "Impossible de supprimer l'utilisateur avec l'identifiant id=" +
-               req.params.id,
+      console.log(num);
+      User.destroy({
+        where: {
+          id: req.params.id,
+        },
+      })
+        .then((num) => {
+          console.log(num);
+          if (num == 1) {
+            res.send({
+              message: "L'utilisateur a été supprimé avec succès!",
             });
+            //
+          } else {
+            res.send({
+              message: `Impossible de supprimer l'utilisateur avec id=${req.params.id}.L'utilisateur n'a pas été retrouvé `,
+            });
+          }
+        })
+        .catch((err) => {
+          res.status(500).send({
+            message:
+              "Impossible de supprimer l'utilisateur avec l'identifiant id=" +
+              req.params.id,
           });
-        }
+        });
     });
-  })  
+  })
+ 
 };

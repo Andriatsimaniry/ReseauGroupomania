@@ -129,28 +129,36 @@ exports.update = (req, res) => {
 
 // DELETE: /:id supprimer une publication
 exports.delete = (req, res, next) => {
-  Post.findOne({
-    where: { id: req.params.id },
-  })
-    .then((post) => {
-      // supprimer l'image d'une publication
-      const filename = post.img.split("/images/")[1];
-      const imgPath = `${__basedir}/resources/static/assets/uploads/${filename}`;
-      fs.unlink(`${imgPath}`, (err) => {
-        if (err) throw err;
-        console.log(`${imgPath} est supprimé`);
-      });
-      Post.destroy({
-        where: { id: req.params.id },
-      })
-        .then(() => res.status(200).json({ message: "Publication supprimé !" }))
-        .catch((error) =>
-          res
-            .status(400)
-            .json({ message: "erreur pour supprimer la publication" })
-        );
+  Comment.destroy({
+    where: {
+      postId: req.params.id,
+    }
+  }).then((num) => {
+    console.log(num);
+    Post.findOne({
+      where: { id: req.params.id },
     })
-    .catch((error) => res.status(500).json({ error }));
+      .then((post) => {
+        // supprimer l'image d'une publication
+        const filename = post.img.split("/images/")[1];
+        const imgPath = `${__basedir}/resources/static/assets/uploads/${filename}`;
+        fs.unlink(`${imgPath}`, (err) => {
+          if (err) throw err;
+          console.log(`${imgPath} est supprimé`);
+        });
+        Post.destroy({
+          where: { id: req.params.id },
+        })
+          .then(() => res.status(200).json({ message: "Publication supprimé !" }))
+          .catch((error) =>
+            res
+              .status(400)
+              .json({ message: "erreur pour supprimer la publication" })
+          );
+      })
+      .catch((error) => res.status(500).json({ error }));
+  })
+ 
 };
 
 //Code j'aime , j'aime pas

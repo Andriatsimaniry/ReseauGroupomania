@@ -40,14 +40,12 @@ db.user.belongsToMany(db.role, {
   foreignKey: "userId", //clé primaire en tant que clé étrangère
   otherKey: "roleId",
 });
-db.user.hasOne(db.posts); // Un post n'appartient qu'un utilisateur
+db.user.hasMany(db.posts); // Un post n'appartient qu'un utilisateur
 db.posts.belongsTo(db.user);
 db.posts.hasMany(db.comments); // Un post a plusieurs commentaires
 db.comments.belongsTo(db.posts);
-db.user.hasOne(db.comments); //un commentaire n'appartient qu'un utilisateur
+db.user.hasMany(db.comments); //un commentaire n'appartient qu'un utilisateur
 db.comments.belongsTo(db.user);
-db.user.hasOne(db.images);
-db.images.belongsTo(db.user);
 db.posts.hasOne(db.images); // Un post a une seul image
 db.images.belongsTo(db.posts);
 

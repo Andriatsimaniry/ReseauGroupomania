@@ -113,8 +113,9 @@ export default {
     const deleteUser = function () {
       UserDataService.delete(this.currentUser.id)
         .then(() => {
-          this.$store.dispatch("auth/logout");
-          this.$router.push("/login");
+          console.log("supprime");
+          // this.$store.dispatch("auth/logout");
+          EventBus.dispatch("logout");
         })
         .catch((e) => {
           console.log(e);
