@@ -109,7 +109,7 @@ export default {
     };
 
     // L'utilisateur peut supprimer son compte
-    let modifying = ref(false);
+    
     const deleteUser = function () {
       UserDataService.delete(this.currentUser.id)
         .then(() => {
@@ -121,7 +121,7 @@ export default {
         });
     };
     // l'Utilisateur peut modifier son compte
-
+let modifying = ref(false);
     const updateUser = function () {
       modifying.value = false;
       UserDataService.update(this.currentUser.id, this.currentUser)
@@ -144,6 +144,11 @@ export default {
       updateUser,
       modifying,
     };
+//     logout () {
+//     localStorage.removeItem('accessToken')
+
+//     this.$router.push('/login')
+// }
   },
 };
 </script>

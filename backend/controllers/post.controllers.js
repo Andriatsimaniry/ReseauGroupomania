@@ -40,7 +40,6 @@ exports.create = (req, res) => {
 
 // Récuperer toutes les Publications de la base de données
 exports.findAll = (req, res) => {
-
   Post.findAll({
     include: [
       {
@@ -71,7 +70,7 @@ exports.findAll = (req, res) => {
 // Récuperer toutes les Publications d'un utilisateur la base de données
 exports.findAllByUser = (req, res) => {
   const userId = req.params.id;
-  
+
   Post.findAll({
     include: [
       {
@@ -86,9 +85,9 @@ exports.findAllByUser = (req, res) => {
         ],
       },
     ],
-    where:  {
-      userId: userId
-    }
+    where: {
+      userId: userId,
+    },
   })
     .then((data) => {
       res.send(data);
@@ -127,42 +126,31 @@ exports.update = (req, res) => {
       });
     });
 };
-// Supprimer une publication avec l'identifiant spécifié dans la demande
-exports.delete = (req, res) => {
-  const id = req.params.id;
-  Comment.destroy({
-    where: {
-      postId: req.params.id,
-    },
-  }).then(() => {
-    Image.destroy({
-      where: {
-        postId: req.params.id,
-      },
-    }).then(() => {
+
+// DELETE: /:id supprimer une publication
+exports.delete = (req, res, next) => {
+  Post.findOne({
+    where: { id: req.params.id },
+  })
+    .then((post) => {
+      // supprimer l'image d'une publication
+      const filename = post.img.split("/images/")[1];
+      const imgPath = `${__basedir}/resources/static/assets/uploads/${filename}`;
+      fs.unlink(`${imgPath}`, (err) => {
+        if (err) throw err;
+        console.log(`${imgPath} est supprimé`);
+      });
       Post.destroy({
-        where: { id: id },
+        where: { id: req.params.id },
       })
-        .then((num) => {
-          if (num == 1) {
-            res.send({
-              message: "La publication a été supprimé avec succès!",
-            });
-          } else {
-            res.send({
-              message: `Impossible de supprimer la publication avec id=${id}. la publication n'a pas été trouvée`,
-            });
-          }
-        })
-        .catch((err) => {
-          res.status(500).send({
-            message:
-              "Impossible de supprimer la publication avec l'identifiant id=" +
-              id,
-          });
-        });
-    });
-  });
+        .then(() => res.status(200).json({ message: "Publication supprimé !" }))
+        .catch((error) =>
+          res
+            .status(400)
+            .json({ message: "erreur pour supprimer la publication" })
+        );
+    })
+    .catch((error) => res.status(500).json({ error }));
 };
 
 //Code j'aime , j'aime pas
@@ -222,35 +210,4 @@ exports.like = (req, res, next) => {
       })
       .catch((error) => res.status(400).json({ message: error }));
   }
-  exports.uploadFiles = async (req, res) => {
-    try {
-      console.log(req.file);
-
-      if (req.file == undefined) {
-        //vérifier le téléchargement du fichier
-        return res.send(`vous devez choisir une image.`);
-      }
-
-      Image.create({
-        // modèle sequelize pour enregistrer un objet image
-        type: req.file.mimetype,
-        name: req.file.originalname,
-        data: fs.readFileSync(
-          //pour lire les données
-          __basedir + "/resources/static/assets/uploads/" + req.file.filename
-        ),
-      }).then((image) => {
-        fs.writeFileSync(
-          //pour écrire des données
-          __basedir + "/resources/static/assets/tmp/" + image.name, //écrire les données images dans le dossier tmp
-          image.data
-        );
-
-        return res.send(`le fichier a bien été télécharger.`);
-      });
-    } catch (error) {
-      console.log(error);
-      return res.send(`Erreur pour télécharger les images: ${error}`);
-    }
-  };
 };

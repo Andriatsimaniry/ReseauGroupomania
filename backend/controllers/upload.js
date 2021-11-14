@@ -14,19 +14,13 @@ const uploadFiles = async (req, res) => {
     Image.create({
       // modèle sequelize pour enregistrer un objet image
       type: req.file.mimetype,
-      name: req.file.originalname,
+      name: req.file.filename,
       data: fs.readFileSync(
         //pour lire les données
         __basedir + "/resources/static/assets/uploads/" + req.file.filename
       ),
-      postId: req.body.postId,
+      postId: req.body.postId
     }).then((image) => {
-      fs.writeFileSync(
-        //pour écrire des données
-        __basedir + "/resources/static/assets/tmp/" + image.name, //écrire les données images dans le dossier tmp
-        image.data
-      );
-
       return res.send({
         imgUrl: "http://localhost:8080" + "/images/" + image.name,
       });

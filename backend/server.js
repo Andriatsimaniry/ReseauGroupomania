@@ -94,7 +94,7 @@ require("./routes/user.routes")(app);
 require("./routes/comment.routes")(app);
 require("./routes/web")(app);
 
-app.use("/images", express.static("resources/static/assets/tmp"));
+app.use("/images", express.static("resources/static/assets/uploads"));
 
 // écouter sur le port 8080 pour les requêtes entrantes.
 

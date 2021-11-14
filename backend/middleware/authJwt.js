@@ -19,15 +19,15 @@ verifyToken = (req, res, next) => {
     }
     req.username = decoded.username;
     req.id = decoded.user_id;
-    // User.findByPk(req.userId).then((user) =>{
-    //   if (user =!null) {
+    User.findByPk(req.userId).then((user) =>{
+      if (user =!null) {
         next();
-    //   }else{
-    //     return res.status(403).send({
-    //       message: "Aucun utilisateur trouvé avec ce jéton !",
-    //     });
-    //   }   
-    // });
+      }else{
+        return res.status(403).send({
+          message: "Aucun utilisateur trouvé avec ce jéton !",
+        });
+      }   
+    });
     
   });
 }
