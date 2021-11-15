@@ -141,7 +141,9 @@ exports.delete = (req, res, next) => {
       .then((post) => {
         // supprimer l'image d'une publication
         const filename = post.img.split("/images/")[1];
+        console.log(`filename: ` + filename);
         const imgPath = `${__basedir}/resources/static/assets/uploads/${filename}`;
+        console.log(`imgPth: ` + imgPath);
         fs.unlink(`${imgPath}`, (err) => {
           if (err) throw err;
           console.log(`${imgPath} est supprimé`);

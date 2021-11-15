@@ -4,6 +4,7 @@ const db = require("../models");
 const User = db.user;
 const Post = db.posts;
 const Comment = db.comments;
+const fs = require("fs");
 // Récuperer toutes les utilisateurs de la base de données
 exports.findAll = (req, res) => {
   User.findAll({
@@ -54,42 +55,57 @@ exports.delete = (req, res) => {
   Comment.destroy({
     where: {
       userId: req.params.id,
-    }
-  })
-  .then((num) => {
+    },
+  }).then((num) => {
     console.log(num);
-    Post.destroy({
-      where: {
-        userId: req.params.id,
-      }
-    }).then((num) => {
-      console.log(num);
-      User.destroy({
-        where: {
-          id: req.params.id,
-        },
-      })
-        .then((num) => {
-          console.log(num);
-          if (num == 1) {
-            res.send({
-              message: "L'utilisateur a été supprimé avec succès!",
-            });
-            //
-          } else {
-            res.send({
-              message: `Impossible de supprimer l'utilisateur avec id=${req.params.id}.L'utilisateur n'a pas été retrouvé `,
-            });
-          }
-        })
-        .catch((err) => {
-          res.status(500).send({
-            message:
-              "Impossible de supprimer l'utilisateur avec l'identifiant id=" +
-              req.params.id,
-          });
+    Post.findAll({
+      where: { userId: req.params.id },
+    }).then((posts) => {
+      console.log(posts);
+    for (const post of posts) {
+        // supprimer l'image d'une publication
+        const filename = post.img.split("/images/")[1];
+        console.log(`filename: ` + filename);
+        const imgPath = `${__basedir}/resources/static/assets/uploads/${filename}`;
+        console.log(`imgPath: ` + imgPath);
+        fs.unlink(`${imgPath}`, (err) => {
+          if (err) throw err;
+          console.log(`${imgPath} est supprimé`);
         });
+      }
+
+      Post.destroy({
+        where: {
+          userId: req.params.id,
+        },
+      }).then((num) => {
+        console.log(num);
+        User.destroy({
+          where: {
+            id: req.params.id,
+          },
+        })
+          .then((num) => {
+            console.log(num);
+            if (num == 1) {
+              res.send({
+                message: "L'utilisateur a été supprimé avec succès!",
+              });
+              //
+            } else {
+              res.send({
+                message: `Impossible de supprimer l'utilisateur avec id=${req.params.id}.L'utilisateur n'a pas été retrouvé `,
+              });
+            }
+          })
+          .catch((err) => {
+            res.status(500).send({
+              message:
+                "Impossible de supprimer l'utilisateur avec l'identifiant id=" +
+                req.params.id,
+            });
+          });
+      });
     });
-  })
- 
+  });
 };
