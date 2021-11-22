@@ -80,14 +80,17 @@ exports.delete = (req, res) => {
       console.log(posts);
     for (const post of posts) {
         // supprimer l'image d'une publication
-        const filename = post.img.split("/images/")[1];
-        console.log(`filename: ` + filename);
-        const imgPath = `${__basedir}/resources/static/assets/uploads/${filename}`;
-        console.log(`imgPath: ` + imgPath);
-        fs.unlink(`${imgPath}`, (err) => {
-          if (err) throw err;
-          console.log(`${imgPath} est supprimé`);
-        });
+        if (post.img) {
+          const filename = post.img.split("/images/")[1];
+          console.log(`filename: ` + filename);
+          const imgPath = `${__basedir}/resources/static/assets/uploads/${filename}`;
+          console.log(`imgPath: ` + imgPath);
+          fs.unlink(`${imgPath}`, (err) => {
+            if (err) throw err;
+            console.log(`${imgPath} est supprimé`);
+          });
+        }
+        
       }
 
       Post.destroy({
