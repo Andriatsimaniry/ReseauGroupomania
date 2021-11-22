@@ -5,6 +5,22 @@ const User = db.user;
 const Post = db.posts;
 const Comment = db.comments;
 const fs = require("fs");
+// Récuperer un utilisateur
+exports.getById = (req, res, next) => {
+  const currentUser = req.user;
+  const id = parseInt(req.params.id);
+
+  // autoriser uniquement les administrateurs à accéder à d'autres enregistrements d'utilisateurs
+  if (id !== currentUser.sub && currentUser.role !== "admin") {
+      return res.status(401).json({ message: 'Non autorisé' });
+  }
+
+  userDataService.getById(req.params.id)
+      .then(user => user ? res.json(user) : res.sendStatus(404))
+      .catch(err => next(err));
+
+};
+
 // Récuperer toutes les utilisateurs de la base de données
 exports.findAll = (req, res) => {
   User.findAll({

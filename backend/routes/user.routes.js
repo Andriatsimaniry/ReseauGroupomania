@@ -7,15 +7,17 @@ module.exports = (app) => {
 
   // Récupérer toutes les utilisateurs
   router.get("/", auth.verifyToken, users.findAll);
-  router.get("/:id", auth.verifyToken, users.findAll);
+  
+  // Récuperer un utilisateur avec un id
+  router.get("/:id", auth.verifyToken, users.getById);
 
   // Mettre à jour un utilisateur avec id
  
-  router.put("/:id", auth.verifyAdminToken, users.update);
+  router.put("/:id", auth.verifyToken, users.update);
 
   //Supprimer un utilisateur avec id
   
-   router.delete("/:id", auth.verifyAdminToken, users.delete);
+   router.delete("/:id", auth.verifyHaveRight, users.delete);
  
 
   app.use("/api/users", router);

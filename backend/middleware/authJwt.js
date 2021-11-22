@@ -31,9 +31,9 @@ verifyToken = (req, res, next) => {
   });
 };
 
-// Verifier si l'utilisateur est admin
+// vérifier l'utilisateur
 
-verifyAdminToken = (req, res, next) => {
+verifyHaveRight  = (req, res, next) => {
   let token = req.headers["x-access-token"];
   if (!token) {
     return res.status(403).send({
@@ -46,40 +46,25 @@ verifyAdminToken = (req, res, next) => {
         message: "Non autorisé !",
       });
     }
-    User.findOne({
-      where: {
-        id: decoded.id,
-      },
-      include: [
-        {
-          model: db.role,
-        },
-      ],
-    }).then((user) => {
-      let isAdminUser = false;
-      if (user !== null) {
-        user.roles.forEach((role) => {
-          if (role.name === "admin") {
-            isAdminUser = true;
-          }
-        });
-        if (isAdminUser) {
-          next();
-        } else {
-          return res.status(403).send({
-            message: "Exiger le rôle d'administrateur !",
-          });
+    User.findByPk(req.userId).then((user) =>{
+      req.id = decoded.user_id;
+      if (user == 'admin' || user == req.body.userId) {
+        next();
+      }else{
+        if (req.body.userId && req.body.userId !== user) {
+          throw "id non validé";
         }
+        return res.status(401).send({
+          message: "Non  autorisé !",
+        });
       }
-      return res.status(403).send({
-        message: "Aucun utilisateur trouvé avec ce jéton !",
-      });
     });
-  });
+  })
 };
 
 const authJwt = {
   verifyToken: verifyToken,
-  verifyAdminToken: verifyAdminToken,
+  verifyHaveRight: verifyHaveRight,
+  
 };
 module.exports = authJwt;

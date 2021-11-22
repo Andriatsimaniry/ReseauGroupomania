@@ -57,6 +57,7 @@ exports.signin = (req, res) => {
       var token = jwt.sign({ id: user.id }, config.secret, {
         expiresIn: "1h",
       });
+      
 
       var authorities = [];
       user.getRoles().then((roles) => {
