@@ -11,6 +11,10 @@
           <label for="email">Email: {{ currentUser.email }}</label>
         </strong>
       </div>
+       <strong>Autorité:</strong>
+    <ul>
+      <li v-for="role in currentUser.roles" :key="role">{{role}}</li>
+    </ul>
       <div>
         <strong>
           <label for="password"
@@ -117,8 +121,8 @@ export default {
           // this.$store.dispatch("auth/logout");
           EventBus.dispatch("logout");
         })
-        .catch((e) => {
-          console.log(e);
+        .catch((err) => {
+          console.log(err);
         });
     };
     // l'Utilisateur peut modifier son compte
@@ -153,3 +157,8 @@ let modifying = ref(false);
   },
 };
 </script>
+<style scoped>
+ul {
+list-style-type: none;
+}
+</style>

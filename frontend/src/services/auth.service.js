@@ -1,3 +1,5 @@
+// 3 services à l'aide de axios pour les requêttes et réponses HTTP
+
 import axios from "axios";
 
 const API_URL = "http://localhost:8080/api/auth/";

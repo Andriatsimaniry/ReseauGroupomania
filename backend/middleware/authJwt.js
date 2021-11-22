@@ -10,7 +10,7 @@ verifyToken = (req, res, next) => {
     return res.status(403).send({
       message: "Aucun jeton fourni !",
     });
-  } 
+  }
   jwt.verify(token, config.secret, (err, decoded) => {
     if (err) {
       return res.status(401).send({
@@ -19,42 +19,67 @@ verifyToken = (req, res, next) => {
     }
     req.username = decoded.username;
     req.id = decoded.user_id;
-    User.findByPk(req.userId).then((user) =>{
-      if (user =!null) {
+    User.findByPk(req.userId).then((user) => {
+      if ((user = !null)) {
         next();
-      }else{
+      } else {
         return res.status(403).send({
           message: "Aucun utilisateur trouvé avec ce jéton !",
         });
-      }   
+      }
     });
-    
   });
-}
+};
 
-  
+// Verifier si l'utilisateur est admin
 
- // todo verifie si l'userId existe dans la base
-  
-isAdmin = (req, res, next) => {
-  User.findByPk(req.userId).then((user) => {
-    user.getRoles().then((roles) => {
-      for (let i = 0; i < roles.length; i++) {
-        if (roles[i].name === "admin") {
+verifyAdminToken = (req, res, next) => {
+  let token = req.headers["x-access-token"];
+  if (!token) {
+    return res.status(403).send({
+      message: "Aucun jeton fourni !",
+    });
+  }
+  jwt.verify(token, config.secret, (err, decoded) => {
+    if (err) {
+      return res.status(401).send({
+        message: "Non autorisé !",
+      });
+    }
+    User.findOne({
+      where: {
+        id: decoded.id,
+      },
+      include: [
+        {
+          model: db.role,
+        },
+      ],
+    }).then((user) => {
+      let isAdminUser = false;
+      if (user !== null) {
+        user.roles.forEach((role) => {
+          if (role.name === "admin") {
+            isAdminUser = true;
+          }
+        });
+        if (isAdminUser) {
           next();
-          return;
+        } else {
+          return res.status(403).send({
+            message: "Exiger le rôle d'administrateur !",
+          });
         }
       }
-      res.status(403).send({
-        message: "Exiger le rôle d'administrateur !",
+      return res.status(403).send({
+        message: "Aucun utilisateur trouvé avec ce jéton !",
       });
-      return;
     });
   });
 };
 
 const authJwt = {
   verifyToken: verifyToken,
-  isAdmin: isAdmin,
+  verifyAdminToken: verifyAdminToken,
 };
 module.exports = authJwt;
