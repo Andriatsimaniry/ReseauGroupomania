@@ -9,17 +9,18 @@ module.exports = (app) => {
 
   // Récupérer toutes les publications
   router.get("/", auth.verifyToken, posts.findAll);
-  // Récupérer toutes les publications
-  router.get("/user/:id", auth.verifyToken, posts.findAllByUser);
+  
+  // Récupérer une publication
+  router.get("/user/:id", auth.verifyHaveRight, posts.findAllByUser);
 
   // Mettre à jour une publication avec id
-  router.put("/:id", auth.verifyToken, posts.update);
+  router.put("/:id", auth.verifyHaveRight, posts.update);
 
   // Mettre à jour une publication avec id et like
-  router.post("/:id/like", auth.verifyToken, posts.like);
+  router.post("/:id/like", auth.verifyHaveRight, posts.like);
 
   //Supprimer une publication avec id
-  router.delete("/:id", auth.verifyToken, posts.delete);
+  router.delete("/:id", auth.verifyHaveRight, posts.delete);
 
   app.use("/api/posts", router);
 };

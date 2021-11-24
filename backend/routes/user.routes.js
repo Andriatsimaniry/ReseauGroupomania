@@ -6,19 +6,21 @@ module.exports = (app) => {
   var router = require("express").Router();
 
   // Récupérer toutes les utilisateurs
-  router.get("/", auth.verifyToken, users.findAll);
+  router.get("/", auth.isAdmin, users.findAll);
   
   // Récuperer un utilisateur avec un id
-  router.get("/:id", auth.verifyToken, users.getById);
+  router.get("/:id", auth.verifyHaveRight, users.findOne);
 
   // Mettre à jour un utilisateur avec id
  
-  router.put("/:id", auth.verifyToken, users.update);
+  router.put("/:id", auth.verifyHaveRight, users.update);
 
   //Supprimer un utilisateur avec id
   
    router.delete("/:id", auth.verifyHaveRight, users.delete);
  
-
-  app.use("/api/users", router);
+  //  router.post("/changepassword", auth.verifyToken, users.changePassword);
+  
+   app.use("/api/users", router);
 };
+

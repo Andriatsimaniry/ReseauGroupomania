@@ -32,6 +32,14 @@
         </strong>
         <input class="ml-4" name="password" v-model="currentUser.password" />
       </div>
+      <div>
+        <strong>
+          <label for="password"
+            >Entrez à nouveau le nouveau mot de passe: {{ currentUser.password }}</label
+          >
+        </strong>
+        <input class="ml-4" name="password" v-model="currentUser.password" />
+      </div>
       <div class="d-flex mt-4">
         <button
           v-if="isNotAdmin"
