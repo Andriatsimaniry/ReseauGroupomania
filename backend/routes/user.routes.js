@@ -9,11 +9,11 @@ module.exports = (app) => {
   router.get("/", auth.isAdmin, users.findAll);
   
   // Récuperer un utilisateur avec un id
-  router.get("/:id", auth.verifyHaveRight, users.findOne);
+  router.get("/:id", auth.verifyToken, users.findOne);
 
   // Mettre à jour un utilisateur avec id
  
-  router.put("/:id", auth.verifyHaveRight, users.update);
+  router.put("/:id", auth.verifyToken, users.update);
 
   //Supprimer un utilisateur avec id
   
