@@ -131,7 +131,7 @@ exports.update = (req, res) => {
 exports.delete = (req, res, next) => {
   Comment.destroy({
     where: {
-      userId: req.params.id,
+      postId: req.params.id,
     }
   }).then((num) => {
     console.log(num);

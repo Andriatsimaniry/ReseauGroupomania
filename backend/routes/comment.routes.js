@@ -14,7 +14,7 @@ module.exports = (app) => {
   router.put("/:postId/comment/:id", auth.verifyToken, comment.update);
 
   //Supprimer un commentaire avec id
-  router.delete("/:postId/comment/:id",auth.verifyHaveRight, comment.delete);
+  router.delete("/:postId/comment/:id",auth.verifyCommentRight, comment.delete);
 
   app.use("/api/posts", router);
 };

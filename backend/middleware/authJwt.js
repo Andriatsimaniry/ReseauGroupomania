@@ -4,6 +4,7 @@ const config = require("../config/auth.config.js");
  const db = require("../models");
  const User = db.user;
  const Post = db.posts;
+ const Comment = db.comments;
 
 verifyToken = (req, res, next) => {
   let token = req.headers["x-access-token"];
@@ -32,7 +33,7 @@ verifyToken = (req, res, next) => {
   });
 };
 
-// vérifier le Token de l'utilisateur Propriétaire
+// vérifier le Token de l'utilisateur Propriétaire du compte
 
 verifyHaveRight = (req, res, next) => {
   let token = req.headers["x-access-token"];
@@ -74,7 +75,7 @@ verifyHaveRight = (req, res, next) => {
   });
 };
 
-// vérifier le Token de l'utilisateur Propriétaire du Post
+// vérifier le Token de l'utilisateur Propriétaire du Publication
 
 verifyPostRight = (req, res, next) => {
   let token = req.headers["x-access-token"];
@@ -118,7 +119,49 @@ verifyPostRight = (req, res, next) => {
   });
 };
 
+// vérifier le Token de l'utilisateur Propriétaire du Commentaire
 
+verifyCommentRight = (req, res, next) => {
+  let token = req.headers["x-access-token"];
+  if (!token) {
+    return res.status(403).send({
+      message: "Aucun jeton fourni !",
+    });
+  }
+  jwt.verify(token, config.secret, (err, decoded) => {
+    if (err) {
+      return res.status(401).send({
+        message: "Non autorisé !",
+      });
+    }
+    // On regarde d'abord si l'utilisateur est admin on continue
+    User.findByPk(decoded.id).then((user) => {
+      user.getRoles().then((roles) => {
+        for (let i = 0; i < roles.length; i++) {
+          console.log(roles[i].name);
+          if (roles[i].name === "admin") {
+            console.log("current est admin");
+            return next();
+          }
+          // Si l'utilisateur n'est pas admin on verifie si il est le proprietaire du commentaire
+          Comment.findByPk(req.params.id).then((comment) => {
+            console.log(req.params.id);
+            comment.getUser().then(user => {
+              if(user.id === decoded.id) {
+                console.log("current est proprietaire");
+                return next();
+              }
+              // si il n'est pas le proprietaire du post on n'autorise pas 
+              return res.status(401).send({
+                message: "Non  autorisé !"
+              });
+            });
+          });
+        }
+      });
+    });
+  });
+};
 
 isAdmin = (req, res, next) => {
   let token = req.headers["x-access-token"];
@@ -156,5 +199,6 @@ const authJwt = {
   verifyHaveRight: verifyHaveRight,
   isAdmin: isAdmin,
   verifyPostRight: verifyPostRight,
+  verifyCommentRight: verifyCommentRight,
 };
 module.exports = authJwt;
