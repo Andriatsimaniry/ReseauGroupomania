@@ -20,6 +20,7 @@ module.exports = (app) => {
   
    router.delete("/:id", auth.verifyHaveRight, users.delete);
  
+  router.put("/:id/changepassword", auth.verifyToken, users.changePassword )
   
   
    app.use("/api/users", router);
