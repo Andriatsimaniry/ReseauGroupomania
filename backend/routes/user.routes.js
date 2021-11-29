@@ -2,6 +2,7 @@
 module.exports = (app) => {
   const auth = require("../middleware/authJwt");
   const users = require("../controllers/user.controller");
+  
 
   var router = require("express").Router();
 
@@ -19,7 +20,7 @@ module.exports = (app) => {
   
    router.delete("/:id", auth.verifyHaveRight, users.delete);
  
-  //  router.post("/changepassword", auth.verifyToken, users.changePassword);
+  
   
    app.use("/api/users", router);
 };

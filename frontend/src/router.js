@@ -23,6 +23,7 @@ const routes = [
   {    path: "/profile",
     component: Profile,
   },
+
   {
     path: "/users",
     name: "users",
@@ -33,6 +34,7 @@ const routes = [
         next(from.path);
       }
     },
+    
 
     component: UserList,
   },

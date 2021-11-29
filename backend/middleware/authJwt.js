@@ -143,7 +143,7 @@ verifyCommentRight = (req, res, next) => {
             console.log("current est admin");
             return next();
           }
-          // Si l'utilisateur n'est pas admin on verifie si il est le proprietaire du commentaire
+          // Si l'utilisateur n'est pas admin on verifie s'il est le proprietaire du commentaire
           Comment.findByPk(req.params.id).then((comment) => {
             console.log(req.params.id);
             comment.getUser().then(user => {
@@ -151,7 +151,7 @@ verifyCommentRight = (req, res, next) => {
                 console.log("current est proprietaire");
                 return next();
               }
-              // si il n'est pas le proprietaire du post on n'autorise pas 
+              // s'il n'est pas le proprietaire du post on n'autorise pas 
               return res.status(401).send({
                 message: "Non  autorisé !"
               });

@@ -2,6 +2,10 @@
 <template>
   <div class="container">
     <header class="jumbotron">
+      <img
+        class="right floated mini ui image"
+        src="https://www.gravatar.com/avatar/default?s=200&r=pg&d=mm"
+      />
       <h3>
         <strong>Bienvenue : {{ currentUser.username }}</strong>
       </h3>
@@ -11,35 +15,22 @@
           <label for="email">Email: {{ currentUser.email }}</label>
         </strong>
       </div>
-       <strong>Autorité:</strong>
-    <ul>
-      <li v-for="role in currentUser.roles" :key="role">{{role}}</li>
-    </ul>
-      <div>
+      <strong>Autorité:</strong>
+      <ul>
+        <li v-for="role in currentUser.roles" :key="role">{{ role }}</li>
+      </ul>
+      <div class="form-group" v-if="modifying">
         <strong>
-          <label for="password"
-            >Ancien mot de passe: {{ currentUser.password }}</label
-          >
+          <label for="password">Mot de passe: {{ currentUser.password }}</label>
         </strong>
-        <input class="ml-4" name="password" v-model="currentUser.password" />
+        <input
+          :type="passwordFieldType"
+          name="password"
+          v-model="currentUser.password"
+        />
+        <button type="password" @click="switchVisibility">show / hide</button>
       </div>
 
-      <div>
-        <strong>
-          <label for="password"
-            >Nouveau mot de passe: {{ currentUser.password }}</label
-          >
-        </strong>
-        <input class="ml-4" name="password" v-model="currentUser.password" />
-      </div>
-      <div>
-        <strong>
-          <label for="password"
-            >Entrez à nouveau le nouveau mot de passe: {{ currentUser.password }}</label
-          >
-        </strong>
-        <input class="ml-4" name="password" v-model="currentUser.password" />
-      </div>
       <div class="d-flex mt-4">
         <button
           v-if="isNotAdmin"
@@ -100,6 +91,7 @@ export default {
     const currentUser = localStorage.getItem("user")
       ? JSON.parse(localStorage.getItem("user"))
       : null;
+
     let posts = ref([]); //Pour être reactive; tableau vide.
     const isNotAdmin = !currentUser.roles.includes("ROLE_ADMIN");
 
@@ -121,7 +113,7 @@ export default {
     };
 
     // L'utilisateur peut supprimer son compte
-    
+
     const deleteUser = function () {
       UserDataService.delete(this.currentUser.id)
         .then(() => {
@@ -133,12 +125,22 @@ export default {
           console.log(err);
         });
     };
-    // l'Utilisateur peut modifier son compte
-let modifying = ref(false);
+
+    let password = ref("");
+    let passwordFieldType = ref("currentUser.password");
+    const switchVisibility = () =>
+      (passwordFieldType.value =
+        passwordFieldType.value === "password" ? "text" : "password");
+
+    // l'Utilisateur peut modifier son mot de passe
+    let modifying = ref(false);
     const updateUser = function () {
       modifying.value = false;
-      UserDataService.update(this.currentUser.id, this.currentUser)
+
+      UserDataService.update(this.currentUser.id)
+
         .then(() => {
+          password.value = currentUser.password;
           this.$store.dispatch("auth/update", this.currentUser);
           localStorage.setItem("users", JSON.stringify(this.currentUser));
           this.$router.push("/users");
@@ -156,17 +158,15 @@ let modifying = ref(false);
       deleteUser,
       updateUser,
       modifying,
+      password,
+      passwordFieldType,
+      switchVisibility,
     };
-//     logout () {
-//     localStorage.removeItem('accessToken')
-
-//     this.$router.push('/login')
-// }
   },
 };
 </script>
 <style scoped>
 ul {
-list-style-type: none;
+  list-style-type: none;
 }
 </style>

@@ -71,7 +71,7 @@ exports.update = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: " Erreur lors de la mise à jour de l'utilisateur avecid=" + id,
+        message: " Erreur lors de la mise à jour de l'utilisateur avec id=" + id,
       });
     });
 };
