@@ -7,8 +7,8 @@ class UserDataService {
     return http.get("/users", { headers: authHeader() });
   }
 
-  update(id, data) {
-    return http.put(`/users/${id}`, data, { headers: authHeader() });
+  updatePassword(id, data) {
+    return http.put(`/users/${id}/changepassword`, data, { headers: authHeader() });
   }
 
   delete(id) {

@@ -19,37 +19,43 @@
       <ul>
         <li v-for="role in currentUser.roles" :key="role">{{ role }}</li>
       </ul>
-      <div class="form-group" v-if="modifying">
-        <div class="d-flex mt-4">
-          <label for="password">Ancien mot de Passe :  {{ oldPassword }}</label>
+      <div v-if="modifying">
+        <div class="form-group" >
+          <strong>
+            <label for="password">Ancien mot de passe: </label>
+          </strong>
           <input
-            :type="passwordFieldType"
+            :type="oldPasswordFieldType"
             name="password"
-            v-model="oldPassword"
-            placeholder="Ancien mot de passe"
+            v-model="motDePasseObj.oldPassword"
           />
-          <button type="password" @click="switchVisibility">show / hide</button>
+          <button @click="switchVisibility('old')">show / hide</button>
         </div>
-        <div class="d-flex mt-4">
-          <label for="newPassword">Nouveau mot de passe :  {{ newPassword }}
-            
-          </label>
+        <div class="form-group">
+          <strong>
+            <label for="password">Nouveau mot de passe: </label>
+          </strong>
           <input
-            type="password"
-            v-model="newPassword"
-            placeholder="Nouveau mot de passe"
+            :type="newPasswordFieldType"
+            name="password"
+            v-model="motDePasseObj.newPassword"
           />
+          <button @click="switchVisibility('new')">show / hide</button>
         </div>
-        <div class="d-flex mt-4">
-          <label for="password">Confirmation :  {{ newPasswordConfirm }}</label>
+        <div class="form-group">
+          <strong>
+            <label for="password">Confirmer mot de passe: </label>
+          </strong>
           <input
-            type="password"
-            name="newPasswordConfirm"
-            v-model="newPasswordConfirm"
-            placeholder="Confirmez le nouveau mot de passe"
+            :type="newPasswordConfirmFieldType"
+            name="password"
+            v-model="motDePasseObj.newPasswordConfirm"
           />
+          <button @click="switchVisibility('confirm')">show / hide</button>
         </div>
+        <span style="color: red;">{{errorMessage}}</span>
       </div>
+      
 
       <div class="d-flex mt-4">
         <button
@@ -71,7 +77,7 @@
           v-if="modifying"
           type="submit"
           class="btn btn-success btn-sm"
-          @click="updateUser"
+          @click="updatePassword"
         >
           Confirmer
         </button>
@@ -99,7 +105,7 @@
 <script>
 import UserDataService from "../services/userDataService";
 import PostDataService from "../services/PostDataService";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, reactive } from "vue";
 import Post from "./Post";
 import EventBus from "../common/EventBus";
 export default {
@@ -111,6 +117,19 @@ export default {
     const currentUser = localStorage.getItem("user")
       ? JSON.parse(localStorage.getItem("user"))
       : null;
+
+    let motDePasseObj = reactive({
+      oldPassword: '',
+      newPassword: '',
+      newPasswordConfirm: ''
+    });
+
+    let oldPasswordFieldType = ref('password');
+    let newPasswordFieldType = ref('password');
+    let newPasswordConfirmFieldType = ref('password');
+
+    let errorMessage = ref('');
+
 
     let posts = ref([]); //Pour être reactive; tableau vide.
     const isNotAdmin = !currentUser.roles.includes("ROLE_ADMIN");
@@ -146,29 +165,43 @@ export default {
         });
     };
 
-    let password = ref("");
-    let passwordFieldType = ref("currentUser.password");
-    const switchVisibility = () =>
-      (passwordFieldType.value =
-        passwordFieldType.value === "password" ? "text" : "password");
-
     // l'Utilisateur peut modifier son mot de passe
     let modifying = ref(false);
-    const updateUser = function () {
-      modifying.value = false;
 
-      UserDataService.update(this.currentUser.id)
+    const updatePassword = function () {
 
-        .then(() => {
-          password.value = currentUser.password;
-          this.$store.dispatch("auth/update", this.currentUser);
-          localStorage.setItem("users", JSON.stringify(this.currentUser));
-          this.$router.push("/users");
+      UserDataService.updatePassword(this.currentUser.id, motDePasseObj)
+        .then((res) => {
+          if (res?.data?.error) {
+            errorMessage.value = res.data.error;
+          } else if (res?.data?.message) {
+            modifying.value = false;
+            errorMessage.value = '';
+            motDePasseObj.oldPassword = '';
+            motDePasseObj.newPassword = '';
+            motDePasseObj.newPasswordConfirm = '';
+            this.$router.push("/login");
+          }
         })
         .catch((e) => {
           console.log(e);
         });
     };
+
+    const switchVisibility = function (value) {
+      switch (value) {
+        case 'old':
+          oldPasswordFieldType.value = oldPasswordFieldType.value === 'password' ? 'text' : 'password';
+          break;
+        case 'new':
+          newPasswordFieldType.value = newPasswordFieldType.value === 'password' ? 'text' : 'password';
+          break;
+        case 'confirm':
+          newPasswordConfirmFieldType.value = newPasswordConfirmFieldType.value === 'password' ? 'text' : 'password';
+          break;
+      }
+    };
+
     onMounted(retrievePosts); //Appelé après que l'instance à été monté
     return {
       retrievePosts,
@@ -176,11 +209,14 @@ export default {
       isNotAdmin,
       currentUser,
       deleteUser,
-      updateUser,
+      updatePassword,
       modifying,
-      password,
-      passwordFieldType,
       switchVisibility,
+      motDePasseObj,
+      oldPasswordFieldType,
+      newPasswordFieldType,
+      newPasswordConfirmFieldType,
+      errorMessage
     };
   },
 };

@@ -5,6 +5,8 @@ const User = db.user;
 const Post = db.posts;
 const Comment = db.comments;
 const fs = require("fs");
+const bcrypt = require("bcrypt");
+
 // Récuperer un utilisateur
 exports.findOne = (req, res) => {
   User.findOne({
