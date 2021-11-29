@@ -20,15 +20,35 @@
         <li v-for="role in currentUser.roles" :key="role">{{ role }}</li>
       </ul>
       <div class="form-group" v-if="modifying">
-        <strong>
-          <label for="password">Mot de passe: {{ currentUser.password }}</label>
-        </strong>
-        <input
-          :type="passwordFieldType"
-          name="password"
-          v-model="currentUser.password"
-        />
-        <button type="password" @click="switchVisibility">show / hide</button>
+        <div class="d-flex mt-4">
+          <label for="password">Ancien mot de Passe :  {{ oldPassword }}</label>
+          <input
+            :type="passwordFieldType"
+            name="password"
+            v-model="oldPassword"
+            placeholder="Ancien mot de passe"
+          />
+          <button type="password" @click="switchVisibility">show / hide</button>
+        </div>
+        <div class="d-flex mt-4">
+          <label for="newPassword">Nouveau mot de passe :  {{ newPassword }}
+            
+          </label>
+          <input
+            type="password"
+            v-model="newPassword"
+            placeholder="Nouveau mot de passe"
+          />
+        </div>
+        <div class="d-flex mt-4">
+          <label for="password">Confirmation :  {{ newPasswordConfirm }}</label>
+          <input
+            type="password"
+            name="newPasswordConfirm"
+            v-model="newPasswordConfirm"
+            placeholder="Confirmez le nouveau mot de passe"
+          />
+        </div>
       </div>
 
       <div class="d-flex mt-4">
