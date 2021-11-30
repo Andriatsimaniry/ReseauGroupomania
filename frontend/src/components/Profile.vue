@@ -20,7 +20,7 @@
         <li v-for="role in currentUser.roles" :key="role">{{ role }}</li>
       </ul>
       <div v-if="modifying">
-        <div class="form-group" >
+        <div class="form-group">
           <strong>
             <label for="password">Ancien mot de passe: </label>
           </strong>
@@ -53,9 +53,8 @@
           />
           <button @click="switchVisibility('confirm')">show / hide</button>
         </div>
-        <span style="color: red;">{{errorMessage}}</span>
+        <span style="color: red">{{ errorMessage }}</span>
       </div>
-      
 
       <div class="d-flex mt-4">
         <button
@@ -119,17 +118,16 @@ export default {
       : null;
 
     let motDePasseObj = reactive({
-      oldPassword: '',
-      newPassword: '',
-      newPasswordConfirm: ''
+      oldPassword: "",
+      newPassword: "",
+      newPasswordConfirm: "",
     });
 
-    let oldPasswordFieldType = ref('password');
-    let newPasswordFieldType = ref('password');
-    let newPasswordConfirmFieldType = ref('password');
+    let oldPasswordFieldType = ref("password");
+    let newPasswordFieldType = ref("password");
+    let newPasswordConfirmFieldType = ref("password");
 
-    let errorMessage = ref('');
-
+    let errorMessage = ref("");
 
     let posts = ref([]); //Pour être reactive; tableau vide.
     const isNotAdmin = !currentUser.roles.includes("ROLE_ADMIN");
@@ -139,9 +137,10 @@ export default {
       PostDataService.getPostsByUser(currentUser.id)
         .then((response) => {
           posts.value = response.data;
+          //Pour mettre la dernière publication de l'utilisateur au dessus
           posts.value = posts.value.sort(function (a, b) {
             return new Date(b.createdAt) - new Date(a.createdAt);
-          }); //Pour mettre la dernière publication de l'utilisateur au dessus
+          });
           console.log("reponse find all", posts.value);
         })
         .catch((e) => {
@@ -169,18 +168,17 @@ export default {
     let modifying = ref(false);
 
     const updatePassword = function () {
-
       UserDataService.updatePassword(this.currentUser.id, motDePasseObj)
         .then((res) => {
           if (res?.data?.error) {
             errorMessage.value = res.data.error;
           } else if (res?.data?.message) {
             modifying.value = false;
-            errorMessage.value = '';
-            motDePasseObj.oldPassword = '';
-            motDePasseObj.newPassword = '';
-            motDePasseObj.newPasswordConfirm = '';
-            this.$router.push("/login");
+            errorMessage.value = "";
+            motDePasseObj.oldPassword = "";
+            motDePasseObj.newPassword = "";
+            motDePasseObj.newPasswordConfirm = "";
+            EventBus.dispatch("logout");
           }
         })
         .catch((e) => {
@@ -190,14 +188,19 @@ export default {
 
     const switchVisibility = function (value) {
       switch (value) {
-        case 'old':
-          oldPasswordFieldType.value = oldPasswordFieldType.value === 'password' ? 'text' : 'password';
+        case "old":
+          oldPasswordFieldType.value =
+            oldPasswordFieldType.value === "password" ? "text" : "password";
           break;
-        case 'new':
-          newPasswordFieldType.value = newPasswordFieldType.value === 'password' ? 'text' : 'password';
+        case "new":
+          newPasswordFieldType.value =
+            newPasswordFieldType.value === "password" ? "text" : "password";
           break;
-        case 'confirm':
-          newPasswordConfirmFieldType.value = newPasswordConfirmFieldType.value === 'password' ? 'text' : 'password';
+        case "confirm":
+          newPasswordConfirmFieldType.value =
+            newPasswordConfirmFieldType.value === "password"
+              ? "text"
+              : "password";
           break;
       }
     };
@@ -216,7 +219,7 @@ export default {
       oldPasswordFieldType,
       newPasswordFieldType,
       newPasswordConfirmFieldType,
-      errorMessage
+      errorMessage,
     };
   },
 };

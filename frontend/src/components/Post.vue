@@ -268,7 +268,7 @@ export default {
     };
 
     const retrieveComments = function () {
-      // Fonction pour récupérer toutes les publications
+      // Fonction pour récupérer tous les commentaires
       CommentService.getAll(currentPost.id)
         .then((response) => {
           comments.value = response.data;
