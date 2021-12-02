@@ -75,7 +75,7 @@ export default {
             return PostDataService.create(userPost);
           })
           .then(() => {
-            // vide  le contenu  de la publication courrante
+            // vider  le contenu  de la publication courrante
             userPost.post = "";
             userPost.img = null;
             imgPost.currentImage = undefined;
@@ -91,7 +91,7 @@ export default {
       } else {
         PostDataService.create(userPost)
           .then(() => {
-            // vide  le contenu  de la publication courrante
+            // vider  le contenu  de la publication courrante
             userPost.post = "";
             context.emit("newPost");
           })

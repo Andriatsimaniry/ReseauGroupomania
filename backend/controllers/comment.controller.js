@@ -1,6 +1,5 @@
 const db = require("../models");
 const Comment = db.comments;
-const Op = db.Sequelize.Op;
 
 // Creer et sauver des nouveaux commentaires
 exports.create = (req, res) => {

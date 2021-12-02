@@ -1,5 +1,4 @@
 // Modèle Sequelize represente la table des Posts dans la base de données
-const { user } = require(".");
 
 module.exports = (sequelize, Sequelize) => {
   const Post = sequelize.define("post", {

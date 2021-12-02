@@ -45,7 +45,7 @@ verifyHaveRight = (req, res, next) => {
   jwt.verify(token, config.secret, (err, decoded) => {
     if (err) {
       return res.status(401).send({
-        message: "Non plus autorisé !",
+        message: "Non autorisé !",
       });
     }
     console.log(decoded);

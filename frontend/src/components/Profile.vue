@@ -94,7 +94,7 @@
       <h4>Liste de vos Publications</h4>
       <div class="post-list-container">
         <div class="post-container my-4" v-for="post in posts" :key="post.id">
-          <Post @refreshList="retrievePost" :post="post" />
+          <Post @refreshList="retrievePosts" :post="post" />
         </div>
       </div>
     </div>
@@ -155,9 +155,8 @@ export default {
     const deleteUser = function () {
       UserDataService.delete(this.currentUser.id)
         .then(() => {
-          console.log("supprime");
-          // this.$store.dispatch("auth/logout");
-          EventBus.dispatch("logout");
+          console.log("supprimer");
+           EventBus.dispatch("logout");
         })
         .catch((err) => {
           console.log(err);

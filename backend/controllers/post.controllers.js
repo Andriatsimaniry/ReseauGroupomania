@@ -1,8 +1,6 @@
 const db = require("../models");
 const Post = db.posts;
-const Op = db.Sequelize.Op;
 const fs = require("fs");
-const Image = db.images;
 const Comment = db.comments;
 
 // Creer et sauver des nouvelles publications

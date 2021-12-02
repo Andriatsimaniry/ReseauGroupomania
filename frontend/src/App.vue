@@ -1,7 +1,7 @@
 <template>
   <div>
     <nav class="navbar navbar-expand">
-      <a href="/" class="navbar-brand">
+      <a class="navbar-brand">
         <img src="./assets/icon-left-font-monochrome-white.svg" />
       </a>
       <div class="navbar-nav mr-auto">

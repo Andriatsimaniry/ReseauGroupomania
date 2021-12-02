@@ -1,5 +1,5 @@
 // Renvoi le contenu public et protégé
-const { role } = require("../models");
+
 const db = require("../models");
 const User = db.user;
 const Post = db.posts;
