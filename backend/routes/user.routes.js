@@ -19,7 +19,7 @@ module.exports = (app) => {
 
   //  Modifier le mot de passe d'un utilisateur
  
-  router.put("/:id/changepassword", auth.verifyToken, users.changePassword )
+  router.put("/:id/changepassword", auth.verifyHaveRight, users.update )
   
   
    app.use("/api/users", router);

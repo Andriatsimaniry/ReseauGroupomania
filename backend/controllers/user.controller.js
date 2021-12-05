@@ -53,7 +53,7 @@ exports.findAll = (req, res) => {
 };
 
 // Changement de mot de passe
-exports.changePassword = (req, res) => {
+exports.update = (req, res) => {
   const id = req.params.id;
   const oldPassword = req.body.oldPassword;
   const newPassword = req.body.newPassword;
