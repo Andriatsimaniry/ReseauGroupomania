@@ -4,7 +4,7 @@ module.exports = (app) => {
 
   var router = require("express").Router();
 
-  // Créer une nouvelle publication pour admin
+  // Créer une nouvelle publication 
   router.post("/", auth.verifyToken, posts.create);  
 
   // Récupérer toutes les publications
@@ -14,7 +14,7 @@ module.exports = (app) => {
   router.get("/user/:id", auth.verifyToken, posts.findAllByUser);
 
   // Mettre à jour une publication avec id
-  router.put("/:id", auth.verifyToken, posts.update);
+  router.put("/:id", auth.verifyPostRight, posts.update);
 
   // Mettre à jour une publication avec id et like
   router.post("/:id/like", auth.verifyToken, posts.like);

@@ -29,7 +29,7 @@ exports.signup = (req, res) => {
 exports.signin = (req, res) => {
   User.findOne({
     where: {
-      email: req.body.email,
+      email: req.body.email 
     },
   })
     .then((user) => {
@@ -52,7 +52,7 @@ exports.signin = (req, res) => {
 
       // générer un jeton en utilisant jsonwebtoken
       var token = jwt.sign({ id: user.id }, config.secret, {
-        expiresIn: "1h",
+        expiresIn: "24h",
       });
       
 

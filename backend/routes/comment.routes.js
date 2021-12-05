@@ -11,7 +11,7 @@ module.exports = (app) => {
   router.get("/:postId/comment", auth.verifyToken, comment.findAll);
 
   // Mettre à jour un commentaire avec id
-  router.put("/:postId/comment/:id", auth.verifyToken, comment.update);
+  router.put("/:postId/comment/:id", auth.verifyCommentRight, comment.update);
 
   //Supprimer un commentaire avec id
   router.delete("/:postId/comment/:id",auth.verifyCommentRight, comment.delete);

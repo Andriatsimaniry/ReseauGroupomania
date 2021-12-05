@@ -52,31 +52,6 @@ exports.findAll = (req, res) => {
     });
 };
 
-// Mettre à jour utilisateur avec un identifiant
-exports.update = (req, res) => {
-  const id = req.params.id;
-
-  User.update({
-    where: { userId: id },
-    
-  })
-    .then((num) => {
-      if (num == 1) {
-        res.send({
-          message: "L'utilisateur a été mis à jour avec succès.",
-        });
-      } else {
-        res.send({
-          message: `Impossible de mettre à jour l' utilisateur avec id=${id}.L'utilisateur n'a pas été trouvé !`,
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: " Erreur lors de la mise à jour de l'utilisateur avec id=" + id,
-      });
-    });
-};
 // Changement de mot de passe
 exports.changePassword = (req, res) => {
   const id = req.params.id;

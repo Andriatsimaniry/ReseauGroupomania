@@ -12,13 +12,12 @@ module.exports = (app) => {
   // Récuperer un utilisateur avec un id
   router.get("/:id", auth.verifyToken, users.findOne);
 
-  // Mettre à jour un utilisateur avec id
- 
-  router.put("/:id", auth.verifyToken, users.update);
 
   //Supprimer un utilisateur avec id
   
    router.delete("/:id", auth.verifyHaveRight, users.delete);
+
+  //  Modifier le mot de passe d'un utilisateur
  
   router.put("/:id/changepassword", auth.verifyToken, users.changePassword )
   
