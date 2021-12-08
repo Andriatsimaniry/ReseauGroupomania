@@ -22,12 +22,12 @@ Mysql V.5.6.17  système de gestion de bases de données
 
 ### Installation de la base de donnée
 * Crée un utilisateur de base de donnée root avec mot de passe
-* Mettre à jour le fichier /ReseauGroupomania/backend/config/db.config.js avec vos identifiant et mot de passe mysql root
+* Mettre à jour le fichier ReseauGroupomania/backend/config/db.config.js avec vos identifiant et mot de passe mysql root
 * Crée la base de donnée : CREATE DATABASE GROUPOMANIA;
 ***
-### Lancement du serveur backend Nodejs : node server.js
+### Lancement du serveur backend Nodejs : allez dans ReseauGroupomania/backend/ et éxecutez la commande node server.js
 ***
-### Lancement de l'application frontend : npm run serve
+### Lancement de l'application frontend : allez dans ReseauGroupomania/frontend/  et éxecutez la commandenpm run serve
 
 
 
