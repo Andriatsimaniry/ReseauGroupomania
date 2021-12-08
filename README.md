@@ -15,9 +15,9 @@ Mysql V.5.6.17  système de gestion de bases de données
 ***
 ### Clonez le Projet: git clone https://github.com/Andriatsimaniry/ReseauGroupomania.git
 ***
-#### Dans fichier Backend: tapez npm install
+#### Dans ReseauGroupomania/backend/: tapez npm install
 ***
-#### Dans fichier Frontend: tapez npm install
+#### Dans ReseauGroupomania/frontend/: tapez npm install
 ***
 
 ### Installation de la base de donnée
@@ -25,9 +25,11 @@ Mysql V.5.6.17  système de gestion de bases de données
 * Mettre à jour le fichier ReseauGroupomania/backend/config/db.config.js avec vos identifiant et mot de passe mysql root
 * Crée la base de donnée : CREATE DATABASE GROUPOMANIA;
 ***
-### Lancement du serveur backend Nodejs : allez dans ReseauGroupomania/backend/ et éxecutez la commande node server.js
+### Lancement du serveur backend Nodejs : 
+* aller dans ReseauGroupomania/backend/ et éxecutez la commande node server.js
 ***
-### Lancement de l'application frontend : allez dans ReseauGroupomania/frontend/  et éxecutez la commandenpm run serve
+### Lancement de l'application frontend : 
+* aller dans ReseauGroupomania/frontend/  et éxecutez la commande npm run serve
 
 
 
