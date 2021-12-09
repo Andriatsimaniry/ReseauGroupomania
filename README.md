@@ -1,7 +1,7 @@
 # Construire un réseau social interne pour les employés de Groupomania.
 *** 
 ***
-## Pocédure d'installation
+## Procédure d'installation
 ***
 ### Au préalable il faut installer sur la machine:
 ***
