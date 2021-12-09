@@ -140,7 +140,7 @@ export default {
   box-shadow: 0 0 0 0.2rem rgb(255 215 215 / 50%);
 }
 .error-feedback {
-  color: #000;
+  color: #A72532;
   font-size: 12px;
 }
 p{
