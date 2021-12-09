@@ -227,4 +227,7 @@ export default {
 ul {
   list-style-type: none;
 }
+.jumbotron{
+  background-color: #F8FAFC !important;
+}
 </style>

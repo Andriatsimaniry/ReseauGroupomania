@@ -82,7 +82,7 @@ export default {
 </script>
    <style>
 .date-creation {
-  color: lightgray;
+  color: #000;
   font-size: 12px;
 }
 </style>  

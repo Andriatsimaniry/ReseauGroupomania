@@ -58,7 +58,14 @@ export default {
   margin: auto;
 }
 .user-card {
-  border: 1px solid lightgray;
+  border: 1px solid #838181;
   border-radius: 3px;
 }
+.btn-danger {
+  background-color: #A72532 !important;
+}
+.btn-success {
+  background-color: #1A612A !important;
+}
+
 </style>

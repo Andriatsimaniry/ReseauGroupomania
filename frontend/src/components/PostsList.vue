@@ -64,7 +64,7 @@ export default {
   margin: auto;
 }
 .post-container {
-  border: 1px solid lightgray;
+  border: 1px solid #838181;
   border-radius: 3px;
 }
 </style>

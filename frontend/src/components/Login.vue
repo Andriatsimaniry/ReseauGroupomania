@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex justify-content-center">
     <div class="card card-container col-12 col-sm-6">
-      <img id="profile-img" src="../assets/logo.svg" class="profile-img-card" />
+      <img id="profile-img" src="../assets/icon-left-font-monochrome-black.png" class="profile-img-card" />
       <Form @submit="handleLogin" :validation-schema="schema">
         <div class="form-group">
           <label for="email">E-mail</label>
@@ -19,7 +19,7 @@
               v-show="loading"
               class="spinner-border spinner-border-sm"
             ></span>
-            <span>Se connecter</span>
+            <p>Se connecter</p>
           </button>
         </div>
         <div class="form-group">
@@ -90,8 +90,8 @@ export default {
 
 <style scoped>
 .btn-primary {
-  background-color: #fd2d02;
-  border-color: #fd2d02;
+  background-color: #ffd7d7;
+  border-color: #ffd7d7;
 }
 .btn-primary:hover,
 .btn-primary:focus,
@@ -103,7 +103,11 @@ export default {
   box-shadow: 0 0 0 0.2rem rgb(255 215 215 / 50%);
 }
 .error-feedback {
-  color: red;
+  color: #A72532;
   font-size: 12px;
+}
+p {
+  color: #000;
+  font-size: 18px;
 }
 </style>

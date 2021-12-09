@@ -175,11 +175,11 @@ export default {
   margin: auto;
 }
 .comment-container {
-  border: 1px solid lightgray;
+  border: 1px solid #838181;
   border-radius: 3px;
 }
 .date-creation {
-  color: gray;
+  color:#000;
   font-size: 12px;
 }
 .comment-header {
@@ -190,5 +190,15 @@ export default {
 }
 .thumbs-up {
   color: green;
+}
+.btn-danger {
+  background-color: #A72532 !important;
+}
+.btn-success {
+  background-color: #1A612A !important;
+}
+.comment-button{
+  color: #1A612A !important;
+
 }
 </style>

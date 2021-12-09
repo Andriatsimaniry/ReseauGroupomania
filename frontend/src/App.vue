@@ -2,7 +2,7 @@
   <div>
     <nav class="navbar navbar-expand">
       <a class="navbar-brand">
-        <img src="./assets/icon-left-font-monochrome-white.svg" />
+        <img src="./assets/icon-left-font-monochrome-black.svg" />
       </a>
       <div class="navbar-nav mr-auto">
         <li class="nav-item">
@@ -81,13 +81,13 @@ export default {
 
 <style scoped>
 .navbar {
-  background: #fd2d02;
+  background: #ffd7d7;
 }
 a.nav-link {
-  color: white;
+  color: #000000;
   cursor: pointer;
 }
 a.navbar-brand img {
-  height: 20px;
+  height: 30px;
 }
 </style>

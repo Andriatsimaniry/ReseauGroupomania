@@ -305,20 +305,20 @@ export default {
 
 <style scoped>
 .date-creation {
-  color: gray;
+  color: #000;
   font-size: 12px;
 }
 .post-header {
   background-color: #ffd7d7;
 }
 .thumbs-down {
-  color: red;
+  color: #A72532;
 }
 .thumbs-up {
-  color: blue;
+  color: #1A612A;
 }
 .comment-section {
-  border: 1px lightgray solid;
+  border: 1px #838181 solid;
   margin: 1rem;
   border-radius: 16px;
   padding: 0 12px;
@@ -333,7 +333,7 @@ textarea:focus-visible {
 .comment-button {
   background-color: transparent;
   border: none;
-  color: green;
+  color: #1A612A !important;
 }
 .comment-button:hover {
   color: darkgreen;
@@ -341,5 +341,11 @@ textarea:focus-visible {
 
 img {
   max-width: 100%;
+}
+.btn-danger {
+  background-color: #A72532 !important;
+}
+.btn-success {
+  background-color: #1A612A !important;
 }
 </style>  

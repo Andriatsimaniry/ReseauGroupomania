@@ -143,4 +143,7 @@ export default {
 .preview {
   max-width: 200px;
 }
+.btn-success {
+  background-color: #1A612A !important;
+}
 </style>    
